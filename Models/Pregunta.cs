@@ -34,7 +34,10 @@ namespace puceAsk_dev1.Models
         [Column("id_cuenta")]
         public Cuenta Cuenta { get; set; }
 
- 
+        [Required]
+        [Column("id_categoria")]
+        public Categoria Categoria { get; set; }
+
         [Column("mejor_respuesta")]
         public virtual Respuesta MejorRespuesta { get; set; }
 
