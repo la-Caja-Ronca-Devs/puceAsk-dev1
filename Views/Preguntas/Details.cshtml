@@ -1,0 +1,50 @@
+﻿@model puceAsk_dev1.Models.Pregunta
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Pregunta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RowVersion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RowVersion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TituloPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TituloPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DescPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DescPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fechapregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fechapregunta)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PreguntaId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

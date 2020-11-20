@@ -3,20 +3,30 @@
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+                @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()"> Log off </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loginMenu"><asp:Literal runat="server" Text="<%$Resources:Resources, Language%>" />Usuario<span class="caret"></span></a>
+                <div class="dropdown-menu" aria-labelledby="loginMenu">
+                    @Html.ActionLink("Preguntas realizadas", "PreguntasRealizadas", "Preguntas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
+                    @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
+                    @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", routeValues: null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
+                </div>
+            </li>
+        </ul>
     }
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    <ul class="navbar-nav navbar-right">
+        <li class="nav-item">@Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })</li>
+        <li class="nav-item">@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
     </ul>
 }
