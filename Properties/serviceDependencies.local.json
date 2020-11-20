@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/ppa/databases/ProyectoPA",
+      "type": "mssql.azure",
+      "connectionId": "pa_con",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
+}
