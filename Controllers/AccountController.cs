@@ -151,7 +151,7 @@ namespace puceAsk_dev1.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Foto=model.Foto, Sexo=model.Sexo };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
