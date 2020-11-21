@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace puceAsk_dev1.Models
 {
+    [NotMapped]
     public class PreguntasManager
     {
         public IEnumerable<Pregunta> preguntas { get; set; }
+
         public IEnumerable<Respuesta> respuestas { get; set; }
+
+        public IEnumerable<Categoria> categorias { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace puceAsk_dev1.Models
 {
-    [Table("Respuesta", Schema = "ask")]
+    [Table("Respuestas", Schema = "ask")]
     public class Respuesta
     {
         [Key]
@@ -28,11 +28,11 @@ namespace puceAsk_dev1.Models
         [Required]
         [Column("desc_respuesta")]
         public String DescRespuesta { get; set; }
+        
+   
 
-        [Required]
-        [Column("id_pregunta")]
+        public int PreguntaId { get; set; }
         public Pregunta Pregunta { get; set; }
-        public virtual Pregunta MejorRespuesta { get; set; }
 
     }
 }

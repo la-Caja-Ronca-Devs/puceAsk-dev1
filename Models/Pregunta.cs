@@ -41,7 +41,8 @@ namespace puceAsk_dev1.Models
         [Column("mejor_respuesta")]
         public virtual Respuesta MejorRespuesta { get; set; }
 
-        public ICollection<Respuesta> Respuestas { get; set; }
+        public ICollection<Respuesta> Respuestas {get; set;}
+        
 
     }
 }

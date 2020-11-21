@@ -179,23 +179,21 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />
+    <Compile Include="Controllers\RespuestasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202011200843225_Carga1.cs" />
-    <Compile Include="Migrations\202011200843225_Carga1.designer.cs">
-      <DependentUpon>202011200843225_Carga1.cs</DependentUpon>
+    <Compile Include="Migrations\202011201956245_carga1.cs" />
+    <Compile Include="Migrations\202011201956245_carga1.designer.cs">
+      <DependentUpon>202011201956245_carga1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202011200952298_Carga2.cs" />
-    <Compile Include="Migrations\202011200952298_Carga2.designer.cs">
-      <DependentUpon>202011200952298_Carga2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011201044195_carga3.cs" />
-    <Compile Include="Migrations\202011201044195_carga3.designer.cs">
-      <DependentUpon>202011201044195_carga3.cs</DependentUpon>
+    <Compile Include="Migrations\202011210346535_carga2.cs" />
+    <Compile Include="Migrations\202011210346535_carga2.designer.cs">
+      <DependentUpon>202011210346535_carga2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -203,6 +201,7 @@
     <Compile Include="Models\Cuenta.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Mensaje.cs" />
     <Compile Include="Models\Pregunta.cs" />
     <Compile Include="Models\PreguntasManager.cs" />
     <Compile Include="Models\Respuesta.cs" />
@@ -427,6 +426,16 @@
     <Content Include="Views\Preguntas\Edit.cshtml" />
     <Content Include="Views\Preguntas\Index.cshtml" />
     <Content Include="Views\Preguntas\Inicio.cshtml" />
+    <Content Include="Views\Respuestas\Create.cshtml" />
+    <Content Include="Views\Respuestas\Delete.cshtml" />
+    <Content Include="Views\Respuestas\Details.cshtml" />
+    <Content Include="Views\Respuestas\Edit.cshtml" />
+    <Content Include="Views\Respuestas\Index.cshtml" />
+    <Content Include="Views\Categorias\Create.cshtml" />
+    <Content Include="Views\Categorias\Delete.cshtml" />
+    <Content Include="Views\Categorias\Details.cshtml" />
+    <Content Include="Views\Categorias\Edit.cshtml" />
+    <Content Include="Views\Categorias\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -443,14 +452,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202011200843225_Carga1.resx">
-      <DependentUpon>202011200843225_Carga1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202011201956245_carga1.resx">
+      <DependentUpon>202011201956245_carga1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011200952298_Carga2.resx">
-      <DependentUpon>202011200952298_Carga2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011201044195_carga3.resx">
-      <DependentUpon>202011201044195_carga3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202011210346535_carga2.resx">
+      <DependentUpon>202011210346535_carga2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

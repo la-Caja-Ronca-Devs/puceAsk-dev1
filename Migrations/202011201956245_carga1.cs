@@ -3,10 +3,42 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Carga1 : DbMigration
+    public partial class carga1 : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "ask.Categoria",
+                c => new
+                    {
+                        id_categoria = c.Int(nullable: false, identity: true),
+                        RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
+                        nombre_categoria = c.String(nullable: false),
+                        desc_categoria = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.id_categoria);
+            
+            CreateTable(
+                "ask.pregunta",
+                c => new
+                    {
+                        id_pregunta = c.Int(nullable: false, identity: true),
+                        RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
+                        titulo_pregunta = c.String(nullable: false, maxLength: 150),
+                        desc_pregunta = c.String(nullable: false),
+                        fecha_pregunta = c.DateTime(nullable: false),
+                        Categoria_CategoriaId = c.Int(nullable: false),
+                        Cuenta_CuentaId = c.Int(nullable: false),
+                        MejorRespuesta_RespuestaId = c.Int(),
+                    })
+                .PrimaryKey(t => t.id_pregunta)
+                .ForeignKey("ask.Categoria", t => t.Categoria_CategoriaId, cascadeDelete: true)
+                .ForeignKey("ask.Cuenta", t => t.Cuenta_CuentaId, cascadeDelete: true)
+                .ForeignKey("ask.Respuestas", t => t.MejorRespuesta_RespuestaId)
+                .Index(t => t.Categoria_CategoriaId)
+                .Index(t => t.Cuenta_CuentaId)
+                .Index(t => t.MejorRespuesta_RespuestaId);
+            
             CreateTable(
                 "ask.Cuenta",
                 c => new
@@ -22,45 +54,32 @@
                 .Index(t => t.Usuario_Id);
             
             CreateTable(
-                "ask.pregunta",
-                c => new
-                    {
-                        id_pregunta = c.Int(nullable: false, identity: true),
-                        RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
-                        titulo_pregunta = c.String(nullable: false, maxLength: 150),
-                        desc_pregunta = c.String(nullable: false),
-                        fecha_pregunta = c.DateTime(nullable: false),
-                        Cuenta_CuentaId = c.Int(nullable: false),
-                        MejorRespuesta_RespuestaId = c.Int(),
-                    })
-                .PrimaryKey(t => t.id_pregunta)
-                .ForeignKey("ask.Cuenta", t => t.Cuenta_CuentaId, cascadeDelete: true)
-                .ForeignKey("ask.Respuestas", t => t.MejorRespuesta_RespuestaId)
-                .Index(t => t.Cuenta_CuentaId)
-                .Index(t => t.MejorRespuesta_RespuestaId);
-            
-            CreateTable(
                 "ask.Respuestas",
                 c => new
                     {
                         id_respuesta = c.Int(nullable: false, identity: true),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                         fecha_publicacion = c.DateTime(nullable: false),
-                        desc_pegunta = c.String(nullable: false),
+                        desc_respuesta = c.String(nullable: false),
+                        PreguntaId = c.Int(nullable: false),
                         Cuenta_CuentaId = c.Int(nullable: false),
-                        Pregunta_PreguntaId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.id_respuesta)
                 .ForeignKey("ask.Cuenta", t => t.Cuenta_CuentaId, cascadeDelete: false)
-                .ForeignKey("ask.pregunta", t => t.Pregunta_PreguntaId, cascadeDelete: false)
-                .Index(t => t.Cuenta_CuentaId)
-                .Index(t => t.Pregunta_PreguntaId);
+                .ForeignKey("ask.pregunta", t => t.PreguntaId, cascadeDelete: false)
+                .Index(t => t.PreguntaId)
+                .Index(t => t.Cuenta_CuentaId);
             
             CreateTable(
                 "dbo.ApplicationUsers",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
+                        FechaNacimiento = c.DateTime(nullable: false),
+                        Foto = c.Binary(),
+                        Nombre = c.String(nullable: false),
+                        Apellido = c.String(nullable: false),
+                        Sexo = c.Boolean(nullable: false),
                         Email = c.String(),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -131,33 +150,34 @@
         public override void Down()
         {
             DropForeignKey("dbo.IdentityUserRoles", "IdentityRole_Id", "dbo.IdentityRoles");
+            DropForeignKey("ask.Respuestas", "PreguntaId", "ask.pregunta");
+            DropForeignKey("ask.pregunta", "MejorRespuesta_RespuestaId", "ask.Respuestas");
+            DropForeignKey("ask.pregunta", "Cuenta_CuentaId", "ask.Cuenta");
             DropForeignKey("dbo.IdentityUserRoles", "ApplicationUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.IdentityUserLogins", "ApplicationUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("ask.Cuenta", "Usuario_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.IdentityUserClaims", "ApplicationUser_Id", "dbo.ApplicationUsers");
-            DropForeignKey("ask.Respuestas", "Pregunta_PreguntaId1", "ask.pregunta");
-            DropForeignKey("ask.pregunta", "MejorRespuesta_RespuestaId", "ask.Respuestas");
-            DropForeignKey("ask.Respuestas", "Pregunta_PreguntaId", "ask.pregunta");
             DropForeignKey("ask.Respuestas", "Cuenta_CuentaId", "ask.Cuenta");
-            DropForeignKey("ask.pregunta", "Cuenta_CuentaId", "ask.Cuenta");
+            DropForeignKey("ask.pregunta", "Categoria_CategoriaId", "ask.Categoria");
             DropIndex("dbo.IdentityUserRoles", new[] { "IdentityRole_Id" });
             DropIndex("dbo.IdentityUserRoles", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserLogins", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.IdentityUserClaims", new[] { "ApplicationUser_Id" });
-            DropIndex("ask.Respuestas", new[] { "Pregunta_PreguntaId1" });
-            DropIndex("ask.Respuestas", new[] { "Pregunta_PreguntaId" });
             DropIndex("ask.Respuestas", new[] { "Cuenta_CuentaId" });
+            DropIndex("ask.Respuestas", new[] { "PreguntaId" });
+            DropIndex("ask.Cuenta", new[] { "Usuario_Id" });
             DropIndex("ask.pregunta", new[] { "MejorRespuesta_RespuestaId" });
             DropIndex("ask.pregunta", new[] { "Cuenta_CuentaId" });
-            DropIndex("ask.Cuenta", new[] { "Usuario_Id" });
+            DropIndex("ask.pregunta", new[] { "Categoria_CategoriaId" });
             DropTable("dbo.IdentityRoles");
             DropTable("dbo.IdentityUserRoles");
             DropTable("dbo.IdentityUserLogins");
             DropTable("dbo.IdentityUserClaims");
             DropTable("dbo.ApplicationUsers");
             DropTable("ask.Respuestas");
-            DropTable("ask.pregunta");
             DropTable("ask.Cuenta");
+            DropTable("ask.pregunta");
+            DropTable("ask.Categoria");
         }
     }
 }
