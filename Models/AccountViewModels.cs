@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace puceAsk_dev1.Models
 {
-    public class ExternalLoginConfirmationViewModel
+    
+
+public class ExternalLoginConfirmationViewModel
     {
         [Required]
         [Display(Name = "Email")]
@@ -78,6 +80,8 @@ namespace puceAsk_dev1.Models
         public string Email { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         public DateTime FechaNacimiento { get; set; }
         public byte[] Foto { get; set; }
 
@@ -130,4 +134,7 @@ namespace puceAsk_dev1.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+
+
 }
