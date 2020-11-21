@@ -10,126 +10,107 @@ using puceAsk_dev1.Models;
 
 namespace puceAsk_dev1.Controllers
 {
-    public class PreguntasController : Controller
+    public class RespuestasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Preguntas
+        // GET: Respuestas
         public ActionResult Index()
         {
-            return View(db.Pregunta.ToList());
+            return View(db.Respuesta.ToList());
         }
 
-        public ActionResult PreguntasManager(int? id, int? respuestaID)
-        {
-            var viewModel = new PreguntasManager();
-            viewModel.preguntas = db.Pregunta
-                .Include(i => i.Categoria);
-            return View(viewModel);
-        }
-
-        public ActionResult Inicio()
-        {
-            var viewModel = new PreguntasManager();
-            viewModel.preguntas = db.Pregunta
-                .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
-
-            viewModel.categorias = db.Categoria;
-            return View(viewModel);
-        }
-
-        // GET: Preguntas/Details/5
+        // GET: Respuestas/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Respuesta respuesta = db.Respuesta.Find(id);
+            if (respuesta == null)
             {
                 return HttpNotFound();
             }
-            return View(pregunta);
+            return View(respuesta);
         }
 
-        // GET: Preguntas/Create
+        // GET: Respuestas/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Preguntas/Create
+        // POST: Respuestas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
+        public ActionResult Create([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
         {
             if (ModelState.IsValid)
             {
-                db.Pregunta.Add(pregunta);
+                db.Respuesta.Add(respuesta);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(pregunta);
+            return View(respuesta);
         }
 
-        // GET: Preguntas/Edit/5
+        // GET: Respuestas/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Respuesta respuesta = db.Respuesta.Find(id);
+            if (respuesta == null)
             {
                 return HttpNotFound();
             }
-            return View(pregunta);
+            return View(respuesta);
         }
 
-        // POST: Preguntas/Edit/5
+        // POST: Respuestas/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
+        public ActionResult Edit([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pregunta).State = EntityState.Modified;
+                db.Entry(respuesta).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(pregunta);
+            return View(respuesta);
         }
 
-        // GET: Preguntas/Delete/5
+        // GET: Respuestas/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Respuesta respuesta = db.Respuesta.Find(id);
+            if (respuesta == null)
             {
                 return HttpNotFound();
             }
-            return View(pregunta);
+            return View(respuesta);
         }
 
-        // POST: Preguntas/Delete/5
+        // POST: Respuestas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Pregunta pregunta = db.Pregunta.Find(id);
-            db.Pregunta.Remove(pregunta);
+            Respuesta respuesta = db.Respuesta.Find(id);
+            db.Respuesta.Remove(respuesta);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

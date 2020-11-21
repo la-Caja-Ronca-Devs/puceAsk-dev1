@@ -4,9 +4,113 @@
     ViewBag.Title = "Inicio";
 }
 
-<h1>PUCE_ASK 2.0</h1>
+<h2>Inicio</h2>
 
-<p>
-    @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
-</p>
+<div class="row">
+    <div class="col-md-2" style="padding: 15px">
 
+        <h4>Categorías</h4>
+
+        <ul class="categorias">
+            
+                @foreach (var item in Model.categorias)
+                {
+                    <li>@item.NombreCategoria</li>
+                }
+            
+            
+        </ul>
+    </div>
+
+    <div class="col-md-10">
+        <h2>Preguntas</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="filtrar">Filtar</label>
+                <input type="text" name="filtar" />
+            </div>
+
+            <div class="col">
+                @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
+            </div>
+        </div>
+
+        <br />
+
+        @foreach (var item in Model.preguntas)
+        {
+
+            <div class="jumbotron jumbotron-fluid pregunta">
+                <div class="container">
+                    <h2 class="display-4 titulo">@Html.DisplayFor(modelItem => item.TituloPregunta)</h2>
+                    <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
+                    <hr class="my-4">
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Fechapregunta) |
+                        @if (item.Categoria != null)
+                        {
+                            @item.Categoria.DescCategoria
+                        }
+                    </p>
+                </div>
+            </div>
+
+
+
+            <br />
+            <br />
+
+        }
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<style>
+    .pregunta {
+        background-color: darkcyan;
+        padding: 10px !important;
+    }
+
+    .titulo {
+        color: white;
+    }
+
+    .preg, a {
+        color: ghostwhite;
+    }
+
+    .respuesta {
+        left: 5%;
+        border: solid 1px;
+        border-color: darkcyan;
+        padding: 10px !important;
+    }
+
+    .categorias {
+        list-style: none;
+    }
+
+    .link-button {
+        -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        background-color: #FFBB33;
+        border-color: #FFBB33;
+        border-style: solid;
+        border-width: 1px;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 1.167em;
+        font-weight: bold;
+        line-height: 1.429em;
+        padding: 0.286em 1em 0.357em;
+        text-decoration: none !important;
+    }
+</style>

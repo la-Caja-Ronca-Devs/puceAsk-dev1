@@ -24,7 +24,6 @@ namespace puceAsk_dev1.Models
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
             return userIdentity;
         }
     }
@@ -39,7 +38,7 @@ namespace puceAsk_dev1.Models
         public DbSet<Cuenta> Cuentas { get; set; }
         public DbSet<Pregunta> Pregunta { get; set; }
         public DbSet<Respuesta> Respuesta { get; set; }
-
+        public DbSet<Categoria> Categoria { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -48,6 +47,15 @@ namespace puceAsk_dev1.Models
                         .WithRequired(ad => ad.Usuario);
             modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(s => s.UserId);
             modelBuilder.Entity<IdentityUserRole>().HasKey<string>(s => s.UserId);
+            modelBuilder.Entity<Pregunta>().HasMany<Respuesta>(s => s.Respuestas)
+                .WithRequired(s => s.Pregunta)
+                .HasForeignKey<int>(s => s.PreguntaId);
+            modelBuilder.Entity<Cuenta>().HasMany<Mensaje>(s => s.Enviados)
+               .WithRequired(s => s.Emisor)
+               .HasForeignKey<int>(s => s.EmisorId);
+            modelBuilder.Entity<Cuenta>().HasMany<Mensaje>(s => s.Recibidos)
+               .WithRequired(s => s.Receptor)
+               .HasForeignKey<int>(s => s.ReceptorId);
         }
 
     public static ApplicationDbContext Create()

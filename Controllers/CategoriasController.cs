@@ -10,126 +10,107 @@ using puceAsk_dev1.Models;
 
 namespace puceAsk_dev1.Controllers
 {
-    public class PreguntasController : Controller
+    public class CategoriasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Preguntas
+        // GET: Categorias
         public ActionResult Index()
         {
-            return View(db.Pregunta.ToList());
+            return View(db.Categoria.ToList());
         }
 
-        public ActionResult PreguntasManager(int? id, int? respuestaID)
-        {
-            var viewModel = new PreguntasManager();
-            viewModel.preguntas = db.Pregunta
-                .Include(i => i.Categoria);
-            return View(viewModel);
-        }
-
-        public ActionResult Inicio()
-        {
-            var viewModel = new PreguntasManager();
-            viewModel.preguntas = db.Pregunta
-                .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
-
-            viewModel.categorias = db.Categoria;
-            return View(viewModel);
-        }
-
-        // GET: Preguntas/Details/5
+        // GET: Categorias/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Categoria categoria = db.Categoria.Find(id);
+            if (categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(pregunta);
+            return View(categoria);
         }
 
-        // GET: Preguntas/Create
+        // GET: Categorias/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Preguntas/Create
+        // POST: Categorias/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
+        public ActionResult Create([Bind(Include = "CategoriaId,RowVersion,NombreCategoria,DescCategoria")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {
-                db.Pregunta.Add(pregunta);
+                db.Categoria.Add(categoria);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(pregunta);
+            return View(categoria);
         }
 
-        // GET: Preguntas/Edit/5
+        // GET: Categorias/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Categoria categoria = db.Categoria.Find(id);
+            if (categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(pregunta);
+            return View(categoria);
         }
 
-        // POST: Preguntas/Edit/5
+        // POST: Categorias/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
+        public ActionResult Edit([Bind(Include = "CategoriaId,RowVersion,NombreCategoria,DescCategoria")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pregunta).State = EntityState.Modified;
+                db.Entry(categoria).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(pregunta);
+            return View(categoria);
         }
 
-        // GET: Preguntas/Delete/5
+        // GET: Categorias/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
+            Categoria categoria = db.Categoria.Find(id);
+            if (categoria == null)
             {
                 return HttpNotFound();
             }
-            return View(pregunta);
+            return View(categoria);
         }
 
-        // POST: Preguntas/Delete/5
+        // POST: Categorias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Pregunta pregunta = db.Pregunta.Find(id);
-            db.Pregunta.Remove(pregunta);
+            Categoria categoria = db.Categoria.Find(id);
+            db.Categoria.Remove(categoria);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
