@@ -3,7 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace puceAsk_dev1.Models
 {
-    public class ExternalLoginConfirmationViewModel
+    
+
+public class ExternalLoginConfirmationViewModel
     {
         [Required]
         [Display(Name = "Email")]
@@ -49,9 +51,11 @@ namespace puceAsk_dev1.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Nombre de Usuario")]
+
+        public string Nickname { get; set; }
+
+        
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,10 +68,30 @@ namespace puceAsk_dev1.Models
 
     public class RegisterViewModel
     {
+
+        [Required]
+        [Display(Name = "Nombre de Usuario")]
+        public string Nickname { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        public DateTime FechaNacimiento { get; set; }
+        public byte[] Foto { get; set; }
+
+        [Required]
+        public string Nombre { get; set; }
+
+        [Required]
+        public string Apellido { get; set; }
+        public bool Sexo { get; set; }
+
+        
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
@@ -109,4 +133,7 @@ namespace puceAsk_dev1.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+
+
 }
