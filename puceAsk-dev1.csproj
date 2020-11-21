@@ -191,12 +191,17 @@
     <Compile Include="Migrations\202011201956245_carga1.designer.cs">
       <DependentUpon>202011201956245_carga1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011210346535_carga2.cs" />
+    <Compile Include="Migrations\202011210346535_carga2.designer.cs">
+      <DependentUpon>202011210346535_carga2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Cuenta.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Mensaje.cs" />
     <Compile Include="Models\Pregunta.cs" />
     <Compile Include="Models\PreguntasManager.cs" />
     <Compile Include="Models\Respuesta.cs" />
@@ -396,6 +401,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202011201956245_carga1.resx">
       <DependentUpon>202011201956245_carga1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011210346535_carga2.resx">
+      <DependentUpon>202011210346535_carga2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

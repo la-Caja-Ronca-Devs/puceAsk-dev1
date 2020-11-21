@@ -29,5 +29,7 @@ namespace puceAsk_dev1.Models
         public virtual ApplicationUser Usuario { get; set; }
         public ICollection<Pregunta> Preguntas { get; set; }
         public ICollection<Respuesta> Respuestas { get; set; }
+        public ICollection<Mensaje> Enviados { get; set; }
+        public ICollection<Mensaje> Recibidos { get; set; }
     }
 }
