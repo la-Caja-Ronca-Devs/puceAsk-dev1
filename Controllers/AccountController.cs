@@ -79,6 +79,7 @@ namespace puceAsk_dev1.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    Session["puntaje"] = 20;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

@@ -51,6 +51,12 @@ namespace puceAsk_dev1.Models
             modelBuilder.Entity<Pregunta>().HasMany<Respuesta>(s => s.Respuestas)
                 .WithRequired(s => s.Pregunta)
                 .HasForeignKey<int>(s => s.PreguntaId);
+            modelBuilder.Entity<Cuenta>().HasMany<Mensaje>(s => s.Enviados)
+               .WithRequired(s => s.Emisor)
+               .HasForeignKey<int>(s => s.EmisorId);
+            modelBuilder.Entity<Cuenta>().HasMany<Mensaje>(s => s.Recibidos)
+               .WithRequired(s => s.Receptor)
+               .HasForeignKey<int>(s => s.ReceptorId);
         }
 
     public static ApplicationDbContext Create()
