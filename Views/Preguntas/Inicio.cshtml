@@ -4,12 +4,6 @@
     ViewBag.Title = "Inicio";
 }
 
-<br />
-<br />
-<link href="~/Style/estilos.css" rel="stylesheet" />
-
-<br />
-<br />
 
 <div class="row">
     <div class="col-md-2" >
@@ -31,7 +25,8 @@
     <div class="col-md-10">
         <h2>Preguntas</h2> <br />
         <div class="row">
-            <div class="col-md-6"><br />
+            <div class="col-md-6">
+                <br />
                 <label for="filtrar">Filtar</label>
                 <input type="text" name="filtar" />
             </div>
@@ -41,7 +36,7 @@
             </div>
         </div>
 
-      <br/>
+        <br />
 
         @foreach (var item in Model.preguntas)
         {
@@ -52,7 +47,7 @@
                     <h4>@Html.ActionLink(item.TituloPregunta, "Details", new { id = item.PreguntaId }, new { @class = "enlaces" }) </h4>
 
                 </div>
-              
+
                 <div class="card-body pregunta">
                     <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
                     <hr>
@@ -63,15 +58,12 @@
                             @item.Categoria.NombreCategoria
                         }
 
-                        | @Html.ActionLink("Ver pregunta", "Details", new { id = item.PreguntaId }, new { @class = "ver" } )
+                        | @Html.ActionLink("Ver pregunta", "Details", new { id = item.PreguntaId }, new { @class = "ver" })
 
-                        
+
                     </p>
                 </div>
             </div>
-        }
-    </div>
-</div>
 
             if (item.PreguntaId != 0)
             {
@@ -123,22 +115,15 @@
                 </div>
             }
 
+        }
+    </div>
+</div>
+
 
             <br />
             <br />
 
         }
-
-
-
-
-      
-    </div>
-</div>
-
-
-   
-
 
 
 <style>
