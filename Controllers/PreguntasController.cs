@@ -30,7 +30,6 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-       
         public ActionResult Inicio()
         {
             var viewModel = new PreguntasManager();
