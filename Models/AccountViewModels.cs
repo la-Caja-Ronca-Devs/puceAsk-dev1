@@ -72,6 +72,7 @@ public class ExternalLoginConfirmationViewModel
 
         [Required]
         [Display(Name = "Nombre de Usuario")]
+        [RegularExpression(@"^[A-Za-z\.\-_]+[A-Za-z0-9\.\-_]*", ErrorMessage = "No se permiten caracteres especiales (A excepción de guion (-), underscore(_) o punto (.)")]
         public string Nickname { get; set; }
 
         [Required]
@@ -82,6 +83,7 @@ public class ExternalLoginConfirmationViewModel
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
         public byte[] Foto { get; set; }
 
@@ -97,11 +99,11 @@ public class ExternalLoginConfirmationViewModel
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirmación de contraseña")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
