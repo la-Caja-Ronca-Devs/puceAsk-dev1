@@ -13,7 +13,7 @@
                 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <h4>Ingrese sus credenciales para iniciar sesión.</h4>
+                    <h5>Ingrese sus credenciales.</h5>
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group">
@@ -34,7 +34,9 @@
                    
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Iniciar sesión" class="btn btn-default" />
+
+                            <input type="submit" value="Iniciar sesión" class="btn btn-info" />
+
                         </div>
                     </div>
 
@@ -47,7 +49,8 @@
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-center links">
-                ¿No tienes una cuenta? &nbsp; @Html.ActionLink("Registrar nuevo usuario", "Register", "Account")
+                ¿No tienes una cuenta? &nbsp; @Html.ActionLink("Regístratre", "Register", "Account")
+
             </div>
         </div>
 

@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace puceAsk_dev1.Models
 {
-    public class ExternalLoginConfirmationViewModel
+    
+
+public class ExternalLoginConfirmationViewModel
     {
         [Required]
         [Display(Name = "Email")]
@@ -63,13 +65,18 @@ namespace puceAsk_dev1.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        public Cuenta Cuenta { get; set; }
     }
 
     public class RegisterViewModel
     {
+        [Display(Name = "Foto")]
+        public byte[] Foto { get; set; }
 
         [Required]
         [Display(Name = "Nombre de Usuario")]
+        [RegularExpression(@"^[A-Za-z\.\-_]+[A-Za-z0-9\.\-_]*", ErrorMessage = "No se permiten caracteres especiales (A excepción de guion (-), underscore(_) o punto (.)")]
         public string Nickname { get; set; }
 
         [Required]
@@ -78,8 +85,10 @@ namespace puceAsk_dev1.Models
         public string Email { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
+        [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
-        public byte[] Foto { get; set; }
 
         [Required]
         public string Nombre { get; set; }
@@ -93,11 +102,11 @@ namespace puceAsk_dev1.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirmación de contraseña")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
@@ -130,4 +139,7 @@ namespace puceAsk_dev1.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+
+
 }

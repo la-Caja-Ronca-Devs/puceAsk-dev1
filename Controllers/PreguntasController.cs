@@ -10,16 +10,18 @@ using puceAsk_dev1.Models;
 
 namespace puceAsk_dev1.Controllers
 {
-    public class PreguntasController : Controller
+    public class PreguntasController : InfoBaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Preguntas
+        [Authorize(Roles = "admin,user")]
         public ActionResult Index()
         {
             return View(db.Pregunta.ToList());
         }
 
+        [Authorize(Roles = "admin,user")]
         public ActionResult PreguntasManager(int? id, int? respuestaID)
         {
             var viewModel = new PreguntasManager();
@@ -28,6 +30,7 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "admin,user")]
         public ActionResult Inicio()
         {
             var viewModel = new PreguntasManager();
@@ -52,6 +55,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Details/5
+        [Authorize(Roles = "admin,user")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -67,6 +71,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Create
+        [Authorize(Roles = "user")]
         public ActionResult Create()
         {
             return View();
@@ -76,6 +81,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
         {
@@ -90,6 +96,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Edit/5
+        [Authorize(Roles = "user")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -108,6 +115,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
         {
@@ -121,6 +129,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -137,6 +146,7 @@ namespace puceAsk_dev1.Controllers
 
         // POST: Preguntas/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

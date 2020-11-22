@@ -10,17 +10,19 @@ using puceAsk_dev1.Models;
 
 namespace puceAsk_dev1.Controllers
 {
-    public class CategoriasController : Controller
+    public class CategoriasController : InfoBaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categorias
+        [Authorize(Roles = "admin,user")]
         public ActionResult Index()
         {
             return View(db.Categoria.ToList());
         }
 
         // GET: Categorias/Details/5
+        [Authorize(Roles = "admin,user")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,6 +38,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Categorias/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
@@ -45,6 +48,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CategoriaId,RowVersion,NombreCategoria,DescCategoria")] Categoria categoria)
         {
@@ -59,6 +63,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Categorias/Edit/5
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -77,6 +82,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "CategoriaId,RowVersion,NombreCategoria,DescCategoria")] Categoria categoria)
         {
@@ -90,6 +96,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Categorias/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -106,6 +113,7 @@ namespace puceAsk_dev1.Controllers
 
         // POST: Categorias/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

@@ -7,6 +7,7 @@
 <br />
 <br />
 <link href="~/Style/estilos.css" rel="stylesheet" />
+
 <div class="row">
     <div class="col-md-2" >
 
@@ -25,7 +26,7 @@
     </div>
 
     <div class="col-md-10">
-        <h2>Preguntas</h2>
+        <h2>Preguntas</h2> <br />
         <div class="row">
             <div class="col-md-6"><br />
                 <label for="filtrar">Filtar</label>
@@ -42,9 +43,14 @@
         @foreach (var item in Model.preguntas)
         {
 
-            <div class="jumbotron jumbotron-fluid pregunta">
-                <div class="container">
-                    <h2 class="display-4 titulo">@Html.DisplayFor(modelItem => item.TituloPregunta)</h2>
+            <div class="card ">
+                <div class="card-header titulo">
+
+                    <h4>@Html.ActionLink(item.TituloPregunta, "Details", new { id = item.PreguntaId }, new { @class = "enlaces" }) </h4>
+
+                </div>
+              
+                <div class="card-body pregunta">
                     <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
                     <hr>
                     <p class="detalles">
@@ -53,10 +59,133 @@
                         {
                             @item.Categoria.NombreCategoria
                         }
+
+                        | @Html.ActionLink("Ver pregunta", "Details", new { id = item.PreguntaId }, new { @class = "ver" } )
+
+                        
                     </p>
                 </div>
             </div>
         }
     </div>
 </div>
+
+
+            if (item.PreguntaId != 0)
+            {
+                ViewBag.PreguntaID = item.PreguntaId;
+                Model.respuestas = Model.preguntas.Where(
+                   i => i.PreguntaId == item.PreguntaId).Single().Respuestas;
+            }
+
+
+            if (Model.respuestas.Count() > 0)
+            {
+                <h3>Respuestas</h3>
+
+
+
+                foreach (var resp in Model.respuestas)
+                {
+                    string imgDataURL = "";
+                    if (resp.Cuenta.Usuario.Foto != null)
+                    {
+                        byte[] foto = resp.Cuenta.Usuario.Foto;
+                        string imreBase64Data = Convert.ToBase64String(foto);
+                        imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                    }
+                    <div class="card respuesta">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img alt="fotito" src="@imgDataURL"  width="100" height="100"  />
+                            </div>
+                            <div class="col">
+                                <div class="container">
+                                    <p class="lead">@resp.DescRespuesta</p>
+                                    <hr class="my-4">
+                                    <p>
+                                        Usuario: @resp.Cuenta.Usuario.Nombre
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="card respuesta">
+                    No hay respuestas.
+                </div>
+            }
+
+
+            <br />
+            <br />
+
+        }
+    </div>
+
+</div>
+
+
+
+<style>
+    .pregunta {
+        background-color: darkcyan;
+        padding: 10px !important;
+    }
+
+    .titulo {
+        color: white;
+        background-color: #006666;
+    }
+
+    .preg, a {
+        color: ghostwhite;
+    }
+
+    .respuesta {
+        left: 5%;
+        border: solid 1px;
+        border-color: darkcyan;
+        padding: 10px !important;
+        margin-top: 15px;
+        width: 95%;
+    }
+
+    .categorias {
+        list-style: none;
+    }
+
+    .link-button {
+        -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        background-color: #FFBB33;
+        border-color: #FFBB33;
+        border-style: solid;
+        border-width: 1px;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 1.167em;
+        font-weight: bold;
+        line-height: 1.429em;
+        padding: 0.286em 1em 0.357em;
+        text-decoration: none !important;
+    }
+
+    .enlaces{
+        text-decoration: none !important;
+    }
+
+    .ver {
+        text-decoration: none;
+        color: #212529;
+    }
+
+    .enlaces:hover{
+        color: white;
+    }
+</style>
 
