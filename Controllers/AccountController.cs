@@ -9,12 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using puceAsk_dev1.Models;
+using System.IO;
 
 namespace puceAsk_dev1.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -87,7 +89,7 @@ namespace puceAsk_dev1.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "No se pudo iniciar sesión.");
                     return View(model);
             }
         }
@@ -148,12 +150,24 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register([Bind(Exclude = "Foto")]RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Foto=model.Foto, Sexo=model.Sexo };
+                byte[] imageData = null;
+                if (Request.Files.Count > 0)
+                {
+                    HttpPostedFileBase poImgFile = Request.Files["Foto"];
+
+                    using (var binary = new BinaryReader(poImgFile.InputStream))
+                    {
+                        imageData = binary.ReadBytes(poImgFile.ContentLength);
+                    }
+                }
+                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Sexo=model.Sexo };
+                user.Foto = imageData;
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
@@ -164,7 +178,7 @@ namespace puceAsk_dev1.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Inicio", "Preguntas");
                 }
                 AddErrors(result);
             }
@@ -393,7 +407,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Inicio", "Preguntas");
         }
 
         //
@@ -450,7 +464,7 @@ namespace puceAsk_dev1.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Inicio", "Preguntas");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

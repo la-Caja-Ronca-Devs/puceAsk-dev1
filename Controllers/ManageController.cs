@@ -11,7 +11,7 @@ using puceAsk_dev1.Models;
 namespace puceAsk_dev1.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : InfoBaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

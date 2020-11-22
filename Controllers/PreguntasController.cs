@@ -10,7 +10,7 @@ using puceAsk_dev1.Models;
 
 namespace puceAsk_dev1.Controllers
 {
-    public class PreguntasController : Controller
+    public class PreguntasController : InfoBaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

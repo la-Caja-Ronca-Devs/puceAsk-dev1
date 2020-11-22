@@ -181,6 +181,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InfoBaseController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />
     <Compile Include="Controllers\RespuestasController.cs" />
@@ -439,6 +440,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\InfoBase\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
