@@ -41,7 +41,9 @@
 
             <div class="card ">
                 <div class="card-header titulo">
+
                     <h4>@Html.ActionLink(item.TituloPregunta, "Details", new { id = item.PreguntaId }, new { @class = "enlaces" }) </h4>
+
                 </div>
               
                 <div class="card-body pregunta">
@@ -53,7 +55,9 @@
                         {
                             @item.Categoria.NombreCategoria
                         }
+
                         | @Html.ActionLink("Ver pregunta", "Details", new { id = item.PreguntaId }, new { @class = "ver" } )
+
                         
                     </p>
                 </div>

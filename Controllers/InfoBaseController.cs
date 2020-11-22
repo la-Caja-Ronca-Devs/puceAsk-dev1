@@ -21,6 +21,7 @@ namespace puceAsk_dev1.Controllers
                 {
                     var user = context.Users.SingleOrDefault(u => u.UserName == username);
                     int cuenta = user.Cuenta.SaldoCuenta;
+
                     if(user.Foto != null)
                     {
                         byte[] foto = user.Foto;
@@ -31,7 +32,7 @@ namespace puceAsk_dev1.Controllers
                     }
                     
                     ViewData.Add("Puntaje", cuenta);
-                    
+
                 }
             }
             base.OnActionExecuted(filterContext);
