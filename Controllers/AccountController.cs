@@ -163,16 +163,21 @@ namespace puceAsk_dev1.Controllers
                 {
                     HttpPostedFileBase poImgFile = Request.Files["Foto"];
 
-                    using (var binary = new BinaryReader(poImgFile.InputStream))
+                    if (poImgFile.ContentLength != 0)
                     {
-                        imageData = binary.ReadBytes(poImgFile.ContentLength);
+                        using (var binary = new BinaryReader(poImgFile.InputStream))
+                        {
+                            imageData = binary.ReadBytes(poImgFile.ContentLength);
+                        }
+                    }
+                    else
+                    {
+                        imageData = null;
                     }
                 }
                 var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Sexo=model.Sexo };
                 user.Foto = imageData;
                 var result = await UserManager.CreateAsync(user, model.Password);
-
-
                 var RolResult = await this.UserManager.AddToRolesAsync(user.Id, "user");
 
                 if (result.Succeeded)
