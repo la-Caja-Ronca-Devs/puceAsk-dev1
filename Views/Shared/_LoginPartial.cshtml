@@ -8,12 +8,12 @@
 
         <ul class="navbar-nav navbar-right">
             <li class="nav-item nav-link">
-                <h6>Puntaje: <span class="badge badge-secondary">@Session["puntaje"]</span></h6>
+                <h6 >Puntaje: <span class="badge badge-secondary">@ViewData["puntaje"] </span></h6>
             </li>
-            <li> </li>
             <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loginMenu"><asp:Literal runat="server" Text="<%$Resources:Resources, Language%>" />Hola @User.Identity.GetUserName()<span class="caret"></span></a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loginMenu"><asp:Literal runat="server" Text="<%$Resources:Resources, Language%>" /><img src="@ViewData["Foto"]" alt="foto" class="avatar" /><span class="caret"></span></a>
                 <div class="dropdown-menu" aria-labelledby="loginMenu">
+                    <p class="dropdown-item">Sesión iniciada como: @User.Identity.GetUserName()</p> <hr />
                     @Html.ActionLink("Preguntas realizadas", "PreguntasRealizadas", "Preguntas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
                     @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
                     @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", routeValues: null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
@@ -32,3 +32,12 @@ else
         <li class="nav-item">@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
     </ul>
 }
+
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+</style>

@@ -63,10 +63,14 @@ namespace puceAsk_dev1.Models
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        public Cuenta Cuenta { get; set; }
     }
 
     public class RegisterViewModel
     {
+        [Display(Name = "Foto")]
+        public byte[] Foto { get; set; }
 
         [Required]
         [Display(Name = "Nombre de Usuario")]
@@ -79,7 +83,6 @@ namespace puceAsk_dev1.Models
 
         [Required]
         public DateTime FechaNacimiento { get; set; }
-        public byte[] Foto { get; set; }
 
         [Required]
         public string Nombre { get; set; }
