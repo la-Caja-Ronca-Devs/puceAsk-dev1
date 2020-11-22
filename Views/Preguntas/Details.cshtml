@@ -1,50 +1,108 @@
-﻿@model puceAsk_dev1.Models.Pregunta
+﻿@model puceAsk_dev1.Models.PreguntasManager
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalles</h2>
 
-<div>
-    <h4>Pregunta</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RowVersion)
-        </dt>
+@*@Model.preguntas 
 
-        <dd>
-            @Html.DisplayFor(model => model.RowVersion)
-        </dd>
+<div class="card ">
+    <div class="card-header titulo">
+        <h4>@Html.DisplayFor(Model.preguntas => model.TituloPregunta) </h4>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TituloPregunta)
-        </dt>
+    <div class="card-body pregunta">
+        <p class="lead preg">@Html.DisplayFor(model => model.DescPregunta)</p>
+        <hr class="my-4">
+        <p>
+            @Html.DisplayFor(model => model.Fechapregunta) |
+            @Html.DisplayFor(model => model.Categoria.NombreCategoria) 
+        </p>
+    </div>
+</div>*@
 
-        <dd>
-            @Html.DisplayFor(model => model.TituloPregunta)
-        </dd>
+@*@if (Model.Respuestas.Count > 0)
+{
+    <h3>Respuestas</h3>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DescPregunta)
-        </dt>
+    foreach (var resp in Model.Respuestas)
+    {
+        string imgDataURL = "";
+        if (resp.Cuenta.Usuario.Foto != null)
+        {
+            byte[] foto = resp.Cuenta.Usuario.Foto;
+            string imreBase64Data = Convert.ToBase64String(foto);
+            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+        }
+        <div class="card respuesta">
+            <div class="row">
+                <div class="col-md-2">
+                    <img alt="fotito" src="@imgDataURL" width="100" height="100" />
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <p class="lead">@resp.DescRespuesta</p>
+                        <hr class="my-4">
+                        <p>
+                            Usuario: @resp.Cuenta.Usuario.Nombre
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
 
-        <dd>
-            @Html.DisplayFor(model => model.DescPregunta)
-        </dd>
+else
+{
+    <div class="card respuesta">
+        No hay respuestas.
+    </div>
+}*@
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Fechapregunta)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Fechapregunta)
-        </dd>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PreguntaId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<style>
+    .pregunta {
+        background-color: darkcyan;
+        padding: 10px !important;
+    }
+
+    .titulo {
+        color: white;
+        background-color: #006666;
+    }
+
+    .preg, a {
+        color: ghostwhite;
+    }
+
+    .respuesta {
+        left: 5%;
+        border: solid 1px;
+        border-color: darkcyan;
+        padding: 10px !important;
+        margin-top: 15px;
+        width: 95%;
+    }
+
+    .categorias {
+        list-style: none;
+    }
+
+    .enlaces {
+        text-decoration: none !important;
+    }
+
+    .ver {
+        text-decoration: none;
+        color: #212529;
+    }
+
+    .enlaces:hover {
+        color: white;
+    }
+</style>
