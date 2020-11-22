@@ -5,36 +5,42 @@
 }
 
 
+<br />
+<br />
+<link href="~/Style/estilos.css" rel="stylesheet" />
+
+
 <div class="row">
-    <div class="col-md-2" style="padding: 15px">
+    <div class="col-md-2" >
 
         <h4>Categorías</h4>
 
         <ul class="categorias">
-            
-                @foreach (var item in Model.categorias)
-                {
-                    <li>@item.NombreCategoria</li>
-                }
-            
-            
+
+
+            @foreach (var item in Model.categorias)
+            {//Imprime todas las categorias
+             // <li><a href="" >@item.NombreCategoria</a></li>
+               // string nombre = item.NombreCategoria;
+                @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { id = @item.NombreCategoria})<br/>
+            }
         </ul>
     </div>
 
     <div class="col-md-10">
         <h2>Preguntas</h2> <br />
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6"><br />
                 <label for="filtrar">Filtar</label>
                 <input type="text" name="filtar" />
             </div>
 
-            <div class="col">
+            <div class="col" align="right">
                 @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
             </div>
         </div>
 
-        <br />
+      <br/>
 
         @foreach (var item in Model.preguntas)
         {
@@ -48,8 +54,8 @@
               
                 <div class="card-body pregunta">
                     <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
-                    <hr class="my-4">
-                    <p>
+                    <hr>
+                    <p class="detalles">
                         @Html.DisplayFor(modelItem => item.Fechapregunta) |
                         @if (item.Categoria != null)
                         {
@@ -62,6 +68,9 @@
                     </p>
                 </div>
             </div>
+        }
+    </div>
+</div>
 
 
             if (item.PreguntaId != 0)
@@ -188,3 +197,4 @@
         border-radius: 50%;
     }
 </style>
+
