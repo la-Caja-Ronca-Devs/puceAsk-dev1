@@ -52,6 +52,7 @@ namespace puceAsk_dev1.Controllers
 
         //
         // GET: /Manage/Index
+        [Authorize(Roles = "admin,user")]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -78,6 +79,7 @@ namespace puceAsk_dev1.Controllers
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
+        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
@@ -215,6 +217,7 @@ namespace puceAsk_dev1.Controllers
 
         //
         // GET: /Manage/ChangePassword
+        [Authorize(Roles = "admin,user")]
         public ActionResult ChangePassword()
         {
             return View();
@@ -223,6 +226,7 @@ namespace puceAsk_dev1.Controllers
         //
         // POST: /Manage/ChangePassword
         [HttpPost]
+        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
@@ -246,6 +250,7 @@ namespace puceAsk_dev1.Controllers
 
         //
         // GET: /Manage/SetPassword
+        [Authorize(Roles = "admin,user")]
         public ActionResult SetPassword()
         {
             return View();
@@ -254,6 +259,7 @@ namespace puceAsk_dev1.Controllers
         //
         // POST: /Manage/SetPassword
         [HttpPost]
+        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
@@ -278,6 +284,7 @@ namespace puceAsk_dev1.Controllers
 
         //
         // GET: /Manage/ManageLogins
+        [Authorize(Roles = "admin,user")]
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -302,6 +309,7 @@ namespace puceAsk_dev1.Controllers
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
+        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
@@ -311,6 +319,7 @@ namespace puceAsk_dev1.Controllers
 
         //
         // GET: /Manage/LinkLoginCallback
+        [Authorize(Roles = "admin,user")]
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
