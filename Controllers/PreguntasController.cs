@@ -42,6 +42,18 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
+        //Selección de Categorias
+        public ActionResult BCategoria()
+        {
+            var viewModel = new PreguntasManager();
+            viewModel.preguntas = db.Pregunta
+                .Include(i => i.Categoria)
+                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
+
+            viewModel.categorias = db.Categoria;
+            return View(viewModel);
+        }
+
         // GET: Preguntas/Details/5
         [Authorize(Roles = "admin,user")]
         public ActionResult Details(int? id)
