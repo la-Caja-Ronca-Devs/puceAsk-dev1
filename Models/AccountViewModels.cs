@@ -65,10 +65,14 @@ public class ExternalLoginConfirmationViewModel
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        public Cuenta Cuenta { get; set; }
     }
 
     public class RegisterViewModel
     {
+        [Display(Name = "Foto")]
+        public byte[] Foto { get; set; }
 
         [Required]
         [Display(Name = "Nombre de Usuario")]
@@ -85,7 +89,6 @@ public class ExternalLoginConfirmationViewModel
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
-        public byte[] Foto { get; set; }
 
         [Required]
         public string Nombre { get; set; }

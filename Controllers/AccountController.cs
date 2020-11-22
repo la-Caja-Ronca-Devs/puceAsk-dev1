@@ -9,12 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using puceAsk_dev1.Models;
+using System.IO;
 
 namespace puceAsk_dev1.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -55,6 +57,7 @@ namespace puceAsk_dev1.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
+        [Authorize(Roles = "admin,user")]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -65,6 +68,7 @@ namespace puceAsk_dev1.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
+        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -87,7 +91,7 @@ namespace puceAsk_dev1.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "No se pudo iniciar sesión.");
                     return View(model);
             }
         }
@@ -138,6 +142,7 @@ namespace puceAsk_dev1.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
+        [Authorize(Roles = "user")]
         public ActionResult Register()
         {
             return View();
@@ -147,24 +152,44 @@ namespace puceAsk_dev1.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register([Bind(Exclude = "Foto")]RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Foto=model.Foto, Sexo=model.Sexo };
+                byte[] imageData = null;
+                if (Request.Files.Count > 0)
+                {
+                    HttpPostedFileBase poImgFile = Request.Files["Foto"];
+
+                    using (var binary = new BinaryReader(poImgFile.InputStream))
+                    {
+                        imageData = binary.ReadBytes(poImgFile.ContentLength);
+                    }
+                }
+                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Sexo=model.Sexo };
+                user.Foto = imageData;
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+
+                var RolResult = await this.UserManager.AddToRolesAsync(user.Id, "user");
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    if (RolResult.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
+                        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        return RedirectToAction("Inicio", "Preguntas");
+                    }
+                    AddErrors(RolResult);
                 }
                 AddErrors(result);
             }
@@ -389,11 +414,12 @@ namespace puceAsk_dev1.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
+        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Inicio", "Preguntas");
         }
 
         //
@@ -450,7 +476,7 @@ namespace puceAsk_dev1.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Inicio", "Preguntas");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
@@ -481,6 +507,10 @@ namespace puceAsk_dev1.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
+
         #endregion
+
+
     }
 }

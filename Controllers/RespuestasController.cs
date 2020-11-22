@@ -10,17 +10,19 @@ using puceAsk_dev1.Models;
 
 namespace puceAsk_dev1.Controllers
 {
-    public class RespuestasController : Controller
+    public class RespuestasController : InfoBaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Respuestas
+        [Authorize(Roles = "admin,user")]
         public ActionResult Index()
         {
             return View(db.Respuesta.ToList());
         }
 
         // GET: Respuestas/Details/5
+        [Authorize(Roles = "admin,user")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -36,6 +38,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Respuestas/Create
+        [Authorize(Roles = "user")]
         public ActionResult Create()
         {
             return View();
@@ -45,6 +48,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
         {
@@ -59,6 +63,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Respuestas/Edit/5
+        [Authorize(Roles = "user")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -77,6 +82,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
         {
@@ -90,6 +96,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Respuestas/Delete/5
+        [Authorize(Roles = "user")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -106,6 +113,7 @@ namespace puceAsk_dev1.Controllers
 
         // POST: Respuestas/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
