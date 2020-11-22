@@ -4,38 +4,38 @@
 }
 <h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+   @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+        @Html.AntiForgeryToken()
+        <h4>Creación de cuenta.</h4>
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
 
-    <div class="form-group">
+         <div class="form-group">
         @Html.LabelFor(m => m.Foto, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
 
             <input type="file" name="Foto" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif" />
 
-        </div>
-    </div>
+         </div>
+      </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Nickname, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control" })
-
+        <div class="form-group">
+            @Html.LabelFor(m => m.Nickname, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Nickname, new { @class = "form-control", @autocomplete = "off", pattern = ".{8,}" })
+            </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @autocomplete = "off" })
             </div>
         </div>
-        <div class="form-group  ">
+        <div class="form-group"  >
             @Html.LabelFor(m => m.FechaNacimiento, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.FechaNacimiento, new { @class = "form-control datepicker" })
+                @Html.TextBoxFor(m => m.FechaNacimiento, new { @class = "form-control datepicker readonly", @autocomplete = "off", @readonly = "readonly" })
 
             </div>
 
@@ -44,32 +44,34 @@
         <div class="form-group">
             @Html.LabelFor(m => m.Nombre, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", @autocomplete = "off" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Apellido, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control", @autocomplete = "off" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Sexo, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Sexo, new { @class = "form-control" })
+                @Html.RadioButtonFor(m => m.Sexo, "false") Femenino
+                @Html.RadioButtonFor(m => m.Sexo, "true") Masculino
+
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @autocomplete = "off" })
             </div>
         </div>
         <div class="form-group" typeof="date">
             @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control ", @autocomplete = "off" })
             </div>
         </div>
         <div class="form-group">
@@ -91,13 +93,30 @@
             $(document).ready(function () {
                 $(".datepicker").datepicker({
                     dateFormat: "dd/mm/yy",
-                    changemonth: true,
-                    changeyear: true
+                    changeMonth: true,
+                    changeYear: true
                 });
+
+                $(".selector").datepicker({
+                    yearRange: "2002:2012"
+                });
+                var yearRange = $(".datepicker").datepicker("option", "yearRange");
+                $(".datepicker").datepicker("option", "yearRange", "1900:2002");
             });
         </script>
-
-
+        <script>
+            $(function () {
+                $.validator.methods.date = function (value, element) {
+                    if ($.browser.webkit) {
+                        var d = new Date();
+                        return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                    }
+                    else {
+                        return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
+                    }
+                };
+            });
+        </script>
     }
 
 
