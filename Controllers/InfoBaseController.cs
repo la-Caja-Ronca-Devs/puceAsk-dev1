@@ -30,7 +30,14 @@ namespace puceAsk_dev1.Controllers
                         System.Diagnostics.Debug.WriteLine(imgDataURL);
                         ViewData.Add("Foto", imgDataURL);
                     }
-                    
+
+                    else
+                    {
+
+                        ViewData.Add("Foto", "https://img.icons8.com/color/user");
+                    }
+
+
                     ViewData.Add("Puntaje", cuenta);
 
                 }
