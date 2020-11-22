@@ -171,6 +171,7 @@ namespace puceAsk_dev1.Controllers
                 var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Sexo=model.Sexo };
                 user.Foto = imageData;
                 var result = await UserManager.CreateAsync(user, model.Password);
+
                 var RolResult = await this.UserManager.AddToRolesAsync(user.Id, "user");
 
                 if (result.Succeeded)
