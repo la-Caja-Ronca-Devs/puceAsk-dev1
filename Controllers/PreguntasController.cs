@@ -45,7 +45,7 @@ namespace puceAsk_dev1.Controllers
             var viewModel = new PreguntasManager();
             viewModel.preguntas = db.Pregunta
                 .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c => c.Cuenta));
+                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
 
             viewModel.categorias = db.Categoria;
             return View(viewModel);
