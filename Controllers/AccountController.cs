@@ -172,6 +172,7 @@ namespace puceAsk_dev1.Controllers
                 user.Foto = imageData;
                 var result = await UserManager.CreateAsync(user, model.Password);
 
+
                 var RolResult = await this.UserManager.AddToRolesAsync(user.Id, "user");
 
                 if (result.Succeeded)

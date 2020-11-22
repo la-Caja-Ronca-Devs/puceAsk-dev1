@@ -21,12 +21,18 @@ namespace puceAsk_dev1.Controllers
                 {
                     var user = context.Users.SingleOrDefault(u => u.UserName == username);
                     int cuenta = user.Cuenta.SaldoCuenta;
-                    byte[] foto = user.Foto;
-                    string imreBase64Data = Convert.ToBase64String(foto);
-                    string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                    System.Diagnostics.Debug.WriteLine(imgDataURL);
+
+                    if(user.Foto != null)
+                    {
+                        byte[] foto = user.Foto;
+                        string imreBase64Data = Convert.ToBase64String(foto);
+                        string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        System.Diagnostics.Debug.WriteLine(imgDataURL);
+                        ViewData.Add("Foto", imgDataURL);
+                    }
+                    
                     ViewData.Add("Puntaje", cuenta);
-                    ViewData.Add("Foto", imgDataURL);
+
                 }
             }
             base.OnActionExecuted(filterContext);
