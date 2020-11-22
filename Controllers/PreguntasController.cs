@@ -30,8 +30,19 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-        [Authorize(Roles = "admin,user")]
         public ActionResult Inicio()
+        {
+            var viewModel = new PreguntasManager();
+            viewModel.preguntas = db.Pregunta
+                .Include(i => i.Categoria)
+                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
+
+            viewModel.categorias = db.Categoria;
+            return View(viewModel);
+        }
+
+        //Selección de Categorias
+        public ActionResult BCategoria()
         {
             var viewModel = new PreguntasManager();
             viewModel.preguntas = db.Pregunta

@@ -11,20 +11,24 @@
 <body>
     <div class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("Q&R", "Inicio", "Preguntas", new { area = "" }, new { @class = "navbar-brand" })
+            @*@Html.ActionLink("Inicio", "Preguntas", new { area = "" }, new { @class = "navbar-brand classname" })*@
+            <a href="@Url.Action("Inicio", "Preguntas", new { area = "" })"> <img  src="https://s.gravatar.com/avatar/2ad520845878d36234a4472cd39300a1?s=80" alt="logo" class="avatar"/></a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">@Html.ActionLink("Preguntas", "PreguntasManager", "Preguntas", new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })</li>
+
+                    <li class="nav-item">@Html.ActionLink("Inicio", "Inicio", "Preguntas",null,  new { @class = "nav-link" })</li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content" style="margin-top: 5%;">
+
+    <div class="container body-content" style="margin-top: 3%; margin-bottom: 200px;">
+
         @RenderBody()
         <hr />
 
@@ -68,5 +72,12 @@
         background: linear-gradient(to bottom left, #007991, #78ffd6);
         padding: 10px;
         text-align: center;
+    }
+
+    .avatar {
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
     }
 </style>
