@@ -4,47 +4,119 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Pregunta</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RowVersion)
-        </dt>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li ><a class="enlace" href="~/">Preguntas</a></li>  &nbsp; /  &nbsp;
+        <li>@Html.ActionLink(Model.Categoria.NombreCategoria, "Inicio", null, new { categoria = Model.Categoria.NombreCategoria }, new {@class = "enlace" })</li> &nbsp; /  &nbsp;
+        <li class=" breadcrumb-item active">@( Model.TituloPregunta)</li>
+    </ol>
+</nav>
 
-        <dd>
-            @Html.DisplayFor(model => model.RowVersion)
-        </dd>
+<div class="card ">
+    <div class="card-header titulo">
+        <h4>@Html.DisplayFor(model => model.TituloPregunta) </h4>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TituloPregunta)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TituloPregunta)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DescPregunta)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DescPregunta)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Fechapregunta)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Fechapregunta)
-        </dd>
-
-    </dl>
+    <div class="card-body pregunta">
+        <p class="lead preg">@Html.DisplayFor(model => model.DescPregunta)</p>
+        <hr class="my-4">
+        <p>
+            @Html.DisplayFor(model => model.Fechapregunta) |
+            @Html.DisplayFor(model => model.Categoria.NombreCategoria) 
+        </p>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PreguntaId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<br />  
+<hr />
+
+
+@if (Model.Respuestas.Count() > 0)
+{
+    <h3>Respuestas</h3>
+
+    foreach (var resp in Model.Respuestas)
+    {
+        string imgDataURL = "";
+        if (resp.Cuenta.Usuario.Foto != null)
+        {
+            byte[] foto = resp.Cuenta.Usuario.Foto;
+            string imreBase64Data = Convert.ToBase64String(foto);
+            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+        }
+        <div class="card respuesta">
+            <div class="row">
+                <div class="col-md-2">
+                    <img alt="fotito" src="@imgDataURL" width="100" height="100" />
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <p class="lead">@resp.DescRespuesta</p>
+                        <hr class="my-4">
+                        <p>
+                            Usuario: @resp.Cuenta.Usuario.Nombre
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+else
+{
+    <div class="card respuesta">
+        No hay respuestas.
+    </div>
+}
+
+
+
+
+<style>
+    .pregunta {
+        background-color: darkcyan;
+        padding: 10px !important;
+    }
+
+    .titulo {
+        color: white;
+        background-color: #006666;
+    }
+
+    .preg {
+        color: ghostwhite;
+    }
+
+    .respuesta {
+        left: 5%;
+        border: solid 1px;
+        border-color: darkcyan;
+        padding: 10px !important;
+        margin-top: 15px;
+        width: 95%;
+    }
+
+    .categorias {
+        list-style: none;
+    }
+
+    .enlace {
+        text-decoration: none !important;
+        color: black;
+    }
+
+    .ver {
+        text-decoration: none;
+        color: #212529;
+    }
+
+
+    .fotos {
+        vertical-align: middle;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+    }
+</style>

@@ -4,9 +4,178 @@
     ViewBag.Title = "Inicio";
 }
 
-<h1>PUCE_ASK 2.0</h1>
+<div class="row">
+    <div class="col-md-2" >
 
-<p>
-    @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
-</p>
+        <h4>Categorías</h4>
+
+        <ul class="categorias">
+
+            <li>
+                @Html.ActionLink("Todas", "Inicio", null, null, null)
+            </li>
+
+            <li>
+                @foreach (var item in Model.categorias)
+                {
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, null) <br />
+
+                }
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-md-10">
+        <h2>Preguntas</h2> <br />
+
+        @*Ver paginacion*@
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace"})</li> &nbsp; / &nbsp;
+                <li>@Html.ActionLink(ViewData["categoria" ].ToString(), "Inicio", null, null, new { @class = "enlace" })</li> 
+            </ol>
+        </nav>
+
+
+        <div class="row">
+            <div class="col-md-6"><br />
+                <label for="filtrar">Filtar</label>
+                <input type="text" name="filtar" />
+            </div>
+
+           
+            <div class="col" align="right">
+                @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
+            </div>
+            
+        </div>
+
+      <br/>
+        @if (Model.preguntas.Count() > 0)
+        {
+
+            foreach (var item in Model.preguntas)
+            {
+
+                <div class="card" style="margin-top: 20px">
+                    <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="card-block stretched-link text-decoration-none">
+                        <div class="card-header titulo">
+
+                            <h4>@Html.DisplayFor(modelItem => item.TituloPregunta) </h4>
+
+                        </div>
+
+                        <div class="card-body pregunta">
+                            <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
+                            <hr>
+                            <p class="detalles">
+                                @Html.DisplayFor(modelItem => item.Fechapregunta) |
+                                @if (item.Categoria != null)
+                                {
+                                    @Html.DisplayFor(motelItem => item.Categoria.NombreCategoria)
+                                }
+
+                            </p>
+                            <p  class="detalles">
+                                Autor: @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
+                            </p>
+
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="card pregunta">
+                No hay preguntas de esa categoría.
+            </div>
+        }
+        
+        <br /> <br />
+
+    </div>
+</div>
+
+
+<style>
+    .pregunta {
+            background-color: darkcyan;
+            padding: 10px !important;
+        }
+
+    .titulo {
+            color: white;
+            background-color: #006666;
+        color: ghostwhite;
+        }
+
+    .preg, .enlaces {
+            color: ghostwhite;
+        }
+
+    .respuesta {
+            left: 5%;
+            border: solid 1px;
+            border-color: darkcyan;
+            padding: 10px !important;
+            margin-top: 15px;
+            width: 95%;
+        }
+
+    .categorias {
+            list-style: none;
+        }
+
+    .link-button {
+            -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
+            -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            background-color: #FFBB33;
+        border-color: #FFBB33;
+        border-style: solid;
+            border-width: 1px;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 1.167em;
+            font-weight: bold;
+            line-height: 1.429em;
+            padding: 0.286em 1em 0.357em;
+            text-decoration: none !important;
+        }
+
+    .enlaces{
+            text-decoration: none !important;
+        }
+
+    .ver {
+            text-decoration: none;
+            color: #212529;
+    }
+
+    .enlaces:hover{
+            color: white;
+        }
+
+    .card:hover {
+            transform: scale(1.05);
+            background: #fff;
+        box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+        /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+        / -webkit-transition: all 0.2s ease-in;
+            -moz-transition: all 0.2s ease-in;
+            -ms-transition: all 0.2s ease-in;
+            -o-transition: all 0.2s ease-in;
+            transition: all 0.2s ease-in;
+            margin-top: 50px;
+        }
+    
+    .detalles{
+            color: black;
+        }
+    .enlace {
+        text-decoration: none !important;
+        color: black;
+    }
+</style>
 

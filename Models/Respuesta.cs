@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace puceAsk_dev1.Models
 {
-    [Table("Respuesta", Schema = "ask")]
+    [Table("Respuestas", Schema = "ask")]
     public class Respuesta
     {
         [Key]
@@ -21,18 +21,17 @@ namespace puceAsk_dev1.Models
         [Column("fecha_publicacion")]
         public DateTime FechaPublicacion { get; set; }
 
-        [Required]
-        [Column("id_cuenta")]
+        public int CuentaId { get; set; }
         public Cuenta Cuenta { get; set; }
 
         [Required]
         [Column("desc_respuesta")]
         public String DescRespuesta { get; set; }
+        
+   
 
-        [Required]
-        [Column("id_pregunta")]
+        public int PreguntaId { get; set; }
         public Pregunta Pregunta { get; set; }
-        public virtual Pregunta MejorRespuesta { get; set; }
 
     }
 }

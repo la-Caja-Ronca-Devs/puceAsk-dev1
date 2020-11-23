@@ -16,7 +16,7 @@ namespace puceAsk_dev1
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Preguntas", action = "Inicio", id = UrlParameter.Optional }
             );
         }
     }

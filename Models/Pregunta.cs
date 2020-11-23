@@ -30,18 +30,17 @@ namespace puceAsk_dev1.Models
         [Column("fecha_pregunta")]
         public DateTime Fechapregunta { get; set; }
 
-        [Required]
-        [Column("id_cuenta")]
+        public int CuentaId { get; set; }
         public Cuenta Cuenta { get; set; }
 
-        [Required]
-        [Column("id_categoria")]
-        public Categoria Categoria { get; set; }
+        public  int CategoriaId { get; set; }
+        public  Categoria Categoria { get; set; }
 
         [Column("mejor_respuesta")]
         public virtual Respuesta MejorRespuesta { get; set; }
 
-        public ICollection<Respuesta> Respuestas { get; set; }
+        public ICollection<Respuesta> Respuestas {get; set;}
+        
 
     }
 }

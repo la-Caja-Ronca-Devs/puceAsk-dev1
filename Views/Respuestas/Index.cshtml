@@ -1,0 +1,45 @@
+﻿@model IEnumerable<puceAsk_dev1.Models.Respuesta>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RowVersion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaPublicacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescRespuesta)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.RowVersion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaPublicacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescRespuesta)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RespuestaId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RespuestaId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RespuestaId })
+        </td>
+    </tr>
+}
+
+</table>
