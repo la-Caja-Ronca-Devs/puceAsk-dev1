@@ -15,7 +15,7 @@ namespace puceAsk_dev1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Preguntas
-        [Authorize(Roles = "admin,user")]
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
             return View(db.Pregunta.ToList());
@@ -30,42 +30,52 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Inicio()
+        public ActionResult Inicio(string categoria)
         {
             var viewModel = new PreguntasManager();
-            viewModel.preguntas = db.Pregunta
-                .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
-
+            if (categoria != null)
+            {
+                var NombreCategoria = categoria;
+                
+                viewModel.preguntas = (from c in db.Pregunta
+                                .Include(i => i.Categoria)
+                                .Include(i => i.Respuestas.Select(c => c.Cuenta))
+                                .Include(i => i.Cuenta.Usuario)
+                                       where c.Categoria.NombreCategoria == categoria
+                                       select c);
+                ViewData["categoria"] = categoria;
+            }
+            else
+            {
+                viewModel.preguntas = db.Pregunta
+                    .Include(i => i.Categoria)
+                    .Include(i => i.Respuestas.Select(c => c.Cuenta))
+                    .Include(i => i.Cuenta.Usuario);
+                ViewData["categoria"] = "Todas";
+            }
             viewModel.categorias = db.Categoria;
             return View(viewModel);
         }
 
-        //Selección de Categorias
-        public ActionResult BCategoria()
-        {
-            var viewModel = new PreguntasManager();
-            viewModel.preguntas = db.Pregunta
-                .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
-
-            viewModel.categorias = db.Categoria;
-            return View(viewModel);
-        }
+        
 
         // GET: Preguntas/Details/5
-        [Authorize(Roles = "admin,user")]
+        
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
-            {
-                return HttpNotFound();
-            }
+
+                       
+            var pregunta = (from p in db.Pregunta
+                .Include(i => i.Categoria)
+                .Include(i => i.Respuestas.Select(c => c.Cuenta))
+                .Include(i=> i.Cuenta)
+                where p.PreguntaId == id 
+                select p).First();
+
             return View(pregunta);
         }
 
@@ -73,7 +83,7 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "user")]
         public ActionResult Create()
         {
-            return View();
+            return View(new PreguntasManager());
         }
 
         // POST: Preguntas/Create
@@ -82,10 +92,13 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
+        public ActionResult Create([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta, CategoriaId")] Pregunta pregunta)
         {
             if (ModelState.IsValid)
             {
+                var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                var cuenta = (from c in db.Cuentas where c.Usuario.Id == usuario.Id select c).First();
+                pregunta.CuentaId = cuenta.CuentaId;
                 db.Pregunta.Add(pregunta);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -95,7 +108,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Edit/5
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -114,7 +127,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
         {
