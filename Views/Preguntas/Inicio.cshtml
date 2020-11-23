@@ -18,7 +18,7 @@
             <li>
                 @foreach (var item in Model.categorias)
                 {
-                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, null) <br />
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria}, null) <br />
 
                 }
             </li>
@@ -50,6 +50,7 @@
             </div>
 
         </div>
+
 
         <br />
         @if (Model.preguntas.Count() > 0)
@@ -87,6 +88,8 @@
                     @Html.ActionLink("Responder","Create", "Respuestas", null, new { style = "color: white;" })
                 </div>
             }
+            { Html.RenderPartial("_Paginacion", Model);}
+
         }
         else
         {
@@ -96,10 +99,8 @@
         }
 
         <br /> <br />
-
     </div>
 </div>
-
 
 <style>
     .pregunta {
