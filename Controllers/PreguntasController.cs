@@ -36,7 +36,8 @@ namespace puceAsk_dev1.Controllers
             var viewModel = new PreguntasManager();
             viewModel.preguntas = db.Pregunta
                 .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c=> c.Cuenta));
+                .Include(i => i.Respuestas.Select(c=> c.Cuenta))
+                .Include(i=> i.Cuenta.Usuario);
 
             viewModel.categorias = db.Categoria;
             return View(viewModel);
@@ -55,18 +56,22 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Details/5
-        [Authorize(Roles = "admin,user")]
+        
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
-            if (pregunta == null)
-            {
-                return HttpNotFound();
-            }
+
+                       
+            var pregunta = (from p in db.Pregunta
+                .Include(i => i.Categoria)
+                .Include(i => i.Respuestas.Select(c => c.Cuenta))
+                .Include(i=> i.Cuenta)
+                where p.PreguntaId == id 
+                select p).First();
+
             return View(pregunta);
         }
 

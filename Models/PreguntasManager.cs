@@ -11,5 +11,6 @@ namespace puceAsk_dev1.Models
         public IEnumerable<Respuesta> respuestas { get; set; }
 
         public IEnumerable<Categoria> categorias { get; set; }
+        public Pregunta pregunta { get; set; }
     }
 }
