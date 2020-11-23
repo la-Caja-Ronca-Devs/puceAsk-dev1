@@ -7,7 +7,8 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li ><a class="enlace" href="~/">Preguntas &nbsp;</a></li> /
+        <li ><a class="enlace" href="~/">Preguntas</a></li>  &nbsp; /  &nbsp;
+        <li>@Html.ActionLink(Model.Categoria.NombreCategoria, "Inicio", null, new { categoria = Model.Categoria.NombreCategoria }, new {@class = "enlace" })</li> &nbsp; /  &nbsp;
         <li class=" breadcrumb-item active">@( Model.TituloPregunta)</li>
     </ol>
 </nav>
@@ -31,7 +32,7 @@
 <hr />
 
 
-@if (Model.Respuestas != null)
+@if (Model.Respuestas.Count() > 0)
 {
     <h3>Respuestas</h3>
 
