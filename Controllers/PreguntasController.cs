@@ -16,6 +16,7 @@ namespace puceAsk_dev1.Controllers
 
         // GET: Preguntas
         [Authorize(Roles = "admin,user")]
+
         public ActionResult Index()
         {
             return View(db.Pregunta.ToList());
