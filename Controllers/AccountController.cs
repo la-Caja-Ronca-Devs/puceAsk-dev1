@@ -175,14 +175,14 @@ namespace puceAsk_dev1.Controllers
                         imageData = null;
                     }
                 }
-                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento=model.FechaNacimiento, Sexo=model.Sexo };
+                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, Nombre=model.Nombre, Apellido=model.Apellido, FechaNacimiento =model.FechaNacimiento, Sexo=model.Sexo };
                 user.Foto = imageData;
                 var result = await UserManager.CreateAsync(user, model.Password);
-                var RolResult = await this.UserManager.AddToRolesAsync(user.Id, "user");
-
                 if (result.Succeeded)
                 {
-                    if (RolResult.Succeeded)
+                    ApplicationUser NoRolUser = await UserManager.FindByNameAsync(user.UserName);
+                    var userResult = await UserManager.AddToRoleAsync(NoRolUser.Id, "user");
+                    if (userResult.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
@@ -194,7 +194,8 @@ namespace puceAsk_dev1.Controllers
 
                         return RedirectToAction("Inicio", "Preguntas");
                     }
-                    AddErrors(RolResult);
+                    await UserManager.DeleteAsync(NoRolUser);
+                    AddErrors(userResult);
                 }
                 AddErrors(result);
             }

@@ -30,8 +30,8 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-       
         public ActionResult Inicio(string categoria, string buscar)
+
         {
             var viewModel = new PreguntasManager();
             if (categoria != null)
@@ -55,6 +55,7 @@ namespace puceAsk_dev1.Controllers
                 ViewData["categoria"] = "Todas";
             }
             viewModel.categorias = db.Categoria;
+
 
             using (db = new ApplicationDbContext())
             {
