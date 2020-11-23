@@ -31,6 +31,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         public ActionResult Inicio(string categoria)
+
         {
             var viewModel = new PreguntasManager();
             if (categoria != null)
