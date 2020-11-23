@@ -100,18 +100,6 @@
 
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @autocomplete = "off" })
-            </div>
-        </div>
-        <div class="form-group"  >
-            @Html.LabelFor(m => m.FechaNacimiento, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.FechaNacimiento, new { @class = "form-control datepicker readonly", @autocomplete = "off", @readonly = "readonly" })
-
         </div>
 </div>
 <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
@@ -127,7 +115,6 @@
                 changeMonth: true,
                 changeYear: true
             });
-
 
             $(".selector").datepicker({
                 yearRange: "2002:2012"
