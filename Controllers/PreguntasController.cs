@@ -30,8 +30,8 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-       
         public ActionResult Inicio(string categoria)
+
         {
             var viewModel = new PreguntasManager();
             if (categoria != null)
