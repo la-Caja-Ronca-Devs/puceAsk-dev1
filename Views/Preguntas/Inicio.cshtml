@@ -81,9 +81,11 @@
                             <p class="detalles">
                                 Autor: @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
                             </p>
-
                         </div>
-                    </a>
+                    </a>                    
+                </div>
+                <div class="card-header titulo">
+                    @Html.ActionLink("Responder","Create", "Respuestas", null, new { style = "color: white;" })
                 </div>
             }
             { Html.RenderPartial("_Paginacion", Model);}
@@ -95,6 +97,7 @@
                 No hay preguntas de esa categoría.
             </div>
         }
+
         <br /> <br />
     </div>
 </div>

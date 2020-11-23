@@ -31,7 +31,6 @@ namespace puceAsk_dev1.Controllers
         }
 
         public ActionResult Inicio(string categoria, string buscar, int pagina =1)
-
         {
             var viewModel = new PreguntasManager();
             if (categoria != null && pagina >= 2)
