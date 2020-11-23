@@ -393,7 +393,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+
     <Content Include="Styles\sweetalert.css" />
+
     <Content Include="Style\estilos.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
