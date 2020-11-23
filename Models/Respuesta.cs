@@ -21,8 +21,7 @@ namespace puceAsk_dev1.Models
         [Column("fecha_publicacion")]
         public DateTime FechaPublicacion { get; set; }
 
-        [Required]
-        [Column("id_cuenta")]
+        public int CuentaId { get; set; }
         public Cuenta Cuenta { get; set; }
 
         [Required]

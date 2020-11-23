@@ -1,16 +1,21 @@
-﻿@model puceAsk_dev1.Models.PreguntasManager
+﻿@model puceAsk_dev1.Models.Pregunta
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Detalles</h2>
 
-@*@Model.preguntas 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li ><a class="enlace" href="~/">Preguntas</a></li>  &nbsp; /  &nbsp;
+        <li>@Html.ActionLink(Model.Categoria.NombreCategoria, "Inicio", null, new { categoria = Model.Categoria.NombreCategoria }, new {@class = "enlace" })</li> &nbsp; /  &nbsp;
+        <li class=" breadcrumb-item active">@( Model.TituloPregunta)</li>
+    </ol>
+</nav>
 
 <div class="card ">
     <div class="card-header titulo">
-        <h4>@Html.DisplayFor(Model.preguntas => model.TituloPregunta) </h4>
+        <h4>@Html.DisplayFor(model => model.TituloPregunta) </h4>
     </div>
 
     <div class="card-body pregunta">
@@ -21,9 +26,13 @@
             @Html.DisplayFor(model => model.Categoria.NombreCategoria) 
         </p>
     </div>
-</div>*@
+</div>
 
-@*@if (Model.Respuestas.Count > 0)
+<br />  
+<hr />
+
+
+@if (Model.Respuestas.Count() > 0)
 {
     <h3>Respuestas</h3>
 
@@ -60,7 +69,7 @@ else
     <div class="card respuesta">
         No hay respuestas.
     </div>
-}*@
+}
 
 
 
@@ -76,7 +85,7 @@ else
         background-color: #006666;
     }
 
-    .preg, a {
+    .preg {
         color: ghostwhite;
     }
 
@@ -93,8 +102,9 @@ else
         list-style: none;
     }
 
-    .enlaces {
+    .enlace {
         text-decoration: none !important;
+        color: black;
     }
 
     .ver {
@@ -102,7 +112,11 @@ else
         color: #212529;
     }
 
-    .enlaces:hover {
-        color: white;
+
+    .fotos {
+        vertical-align: middle;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
     }
 </style>
