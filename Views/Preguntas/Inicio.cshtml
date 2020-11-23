@@ -4,25 +4,35 @@
     ViewBag.Title = "Inicio";
 }
 
+
 <div class="row">
     <div class="col-md-2" >
 
         <h4>Categorías</h4>
+        
+        <div class="categorias list-group">
 
-        <ul class="categorias">
-
-            <li>
-                @Html.ActionLink("Todas", "Inicio", null, null, null)
-            </li>
-
-            <li>
-                @foreach (var item in Model.categorias)
+            @if (ViewData["categoria"].ToString()!="Todas")
+            {
+                @Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
+            }
+            else
+            {
+                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action active" })
+            }
+            @foreach (var item in Model.categorias)
+            {
+                if (item.NombreCategoria == ViewData["categoria"].ToString())
                 {
-                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, null) <br />
-
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action active" })
                 }
-            </li>
-        </ul>
+                else
+                {
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action" })
+                }
+            }
+
+        </div>
     </div>
 
     <div class="col-md-10">
@@ -176,6 +186,20 @@
     .enlace {
         text-decoration: none !important;
         color: black;
+    }
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
     }
 </style>
 
