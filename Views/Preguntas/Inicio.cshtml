@@ -4,7 +4,6 @@
     ViewBag.Title = "Inicio";
 }
 
-
 <div class="row">
     <div class="col-md-2" >
 
@@ -12,27 +11,21 @@
         
         <div class="categorias list-group">
 
-            @if (ViewData["categoria"].ToString()!="Todas")
-            {
-                @Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
-            }
-            else
-            {
-                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action active" })
-            }
-            @foreach (var item in Model.categorias)
-            {
-                if (item.NombreCategoria == ViewData["categoria"].ToString())
-                {
-                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action active" })
-                }
-                else
-                {
-                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action" })
-                }
-            }
 
-        </div>
+        <ul class="categorias">
+
+            <li>
+                @Html.ActionLink("Todas", "Inicio", null, null, null)
+            </li>
+
+            <li>
+                @foreach (var item in Model.categorias)
+                {
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, null) <br />
+
+                }
+            </li>
+        </ul>
     </div>
 
     <div class="col-md-10">
@@ -200,6 +193,7 @@
         -ms-transition: all 0.2s ease-in;
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
+
     }
 </style>
 
