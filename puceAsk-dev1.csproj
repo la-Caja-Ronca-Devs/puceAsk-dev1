@@ -202,6 +202,14 @@
     <Compile Include="Migrations\202011210346535_carga2.designer.cs">
       <DependentUpon>202011210346535_carga2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011230710061_carga3.cs" />
+    <Compile Include="Migrations\202011230710061_carga3.designer.cs">
+      <DependentUpon>202011230710061_carga3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011230714446_carga4.cs" />
+    <Compile Include="Migrations\202011230714446_carga4.designer.cs">
+      <DependentUpon>202011230714446_carga4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Categoria.cs" />
@@ -383,6 +391,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Style\estilos.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -465,6 +474,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011210346535_carga2.resx">
       <DependentUpon>202011210346535_carga2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011230710061_carga3.resx">
+      <DependentUpon>202011230710061_carga3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011230714446_carga4.resx">
+      <DependentUpon>202011230714446_carga4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -15,7 +15,7 @@ namespace puceAsk_dev1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Respuestas
-        [Authorize(Roles = "admin,user")]
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
             return View(db.Respuesta.ToList());
@@ -63,7 +63,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Respuestas/Edit/5
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,7 +82,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
         {
@@ -96,7 +96,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Respuestas/Delete/5
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
