@@ -4,9 +4,6 @@
     ViewBag.Title = "Inicio";
 }
 
-
-
-
 <div class="row">
     <div class="col-md-2" >
 
@@ -64,6 +61,7 @@
       <br/>
         @if (Model.preguntas.Count() > 0)
         {
+
             foreach (var item in Model.preguntas)
             {
 
@@ -89,6 +87,7 @@
                             <p  class="detalles">
                                 Autor: @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
                             </p>
+
                         </div>
                     </a>
                 </div>
@@ -105,11 +104,6 @@
 
     </div>
 </div>
-
-
-
-
-
 
 
 <style>
