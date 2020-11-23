@@ -31,26 +31,27 @@
         @*Ver paginacion*@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace"})</li> &nbsp; / &nbsp;
-                <li>@Html.ActionLink(ViewData["categoria" ].ToString(), "Inicio", null, null, new { @class = "enlace" })</li> 
+                <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace" })</li> &nbsp; / &nbsp;
+                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "enlace" })</li>
             </ol>
         </nav>
 
 
         <div class="row">
-            <div class="col-md-6"><br />
+            <div class="col-md-6">
+                <br />
                 <label for="filtrar">Filtar</label>
                 <input type="text" name="filtar" />
             </div>
 
-           
+
             <div class="col" align="right">
                 @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
             </div>
-            
+
         </div>
 
-      <br/>
+        <br />
         @if (Model.preguntas.Count() > 0)
         {
 
@@ -76,12 +77,14 @@
                                 }
 
                             </p>
-                            <p  class="detalles">
+                            <p class="detalles">
                                 Autor: @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
                             </p>
-
                         </div>
-                    </a>
+                    </a>                    
+                </div>
+                <div class="card-header titulo">
+                    @Html.ActionLink("Responder","Create", "Respuestas", null, new { style = "color: white;" })
                 </div>
             }
         }
@@ -91,7 +94,7 @@
                 No hay preguntas de esa categoría.
             </div>
         }
-        
+
         <br /> <br />
 
     </div>
