@@ -31,7 +31,7 @@ namespace puceAsk_dev1.Controllers
         }
 
        
-        public ActionResult Inicio(string categoria)
+        public ActionResult Inicio(string categoria, string buscar)
         {
             var viewModel = new PreguntasManager();
             if (categoria != null)
@@ -55,7 +55,24 @@ namespace puceAsk_dev1.Controllers
                 ViewData["categoria"] = "Todas";
             }
             viewModel.categorias = db.Categoria;
-            return View(viewModel);
+
+            using (db = new ApplicationDbContext())
+            {
+
+                // Filtramos el resultado por el 'texto de búqueda'
+                if (!string.IsNullOrEmpty(buscar))
+                {
+                    foreach (var item in buscar.Split(new char[] { ' ' },
+                             StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        viewModel.preguntas = viewModel.preguntas.Where(x => x.TituloPregunta.Contains(item) ||
+                                                      x.DescPregunta.Contains(item) ||
+                                                      x.Categoria.NombreCategoria.Contains(item))
+                                                      .ToList();
+                    }
+                }
+                return View(viewModel);
+            }
         }
 
         
