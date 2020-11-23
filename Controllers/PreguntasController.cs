@@ -83,7 +83,8 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "user")]
         public ActionResult Create()
         {
-            return View(new PreguntasManager());
+            ViewBag.categorias = (from c in db.Categoria select c).ToList();
+            return View();
         }
 
         // POST: Preguntas/Create
@@ -92,16 +93,18 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta, CategoriaId")] Pregunta pregunta)
+        public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta)
         {
             if (ModelState.IsValid)
             {
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
                 var cuenta = (from c in db.Cuentas where c.Usuario.Id == usuario.Id select c).First();
                 pregunta.CuentaId = cuenta.CuentaId;
+                pregunta.Fechapregunta = DateTime.Now;
                 db.Pregunta.Add(pregunta);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                int preg = db.Pregunta.Max(item => item.PreguntaId);
+                return RedirectToAction("Details",new { id = preg});
             }
 
             return View(pregunta);
