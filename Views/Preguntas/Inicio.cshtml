@@ -8,6 +8,9 @@
     <div class="col-md-2" >
 
         <h4>Categorías</h4>
+        
+        <div class="categorias list-group">
+
 
         <ul class="categorias">
 
@@ -39,8 +42,16 @@
 
         <div class="row">
             <div class="col-md-6"><br />
-                <label for="filtrar">Filtar</label>
-                <input type="text" name="filtar" />
+                <form method="get" action=@Url.Action("Inicio", "Preguntas" )>
+                    <div class="form-group">
+                        @Html.TextBox("buscar", null, new
+                       {
+                           placeholder = "texto de búsqueda",
+                           @class = "form-control"
+                       })
+                    </div>
+                    <button class="btn btn-default" type="submit">Buscar</button>
+                </form>
             </div>
 
            
@@ -88,7 +99,7 @@
         else
         {
             <div class="card pregunta">
-                No hay preguntas de esa categoría.
+                No se han encontrado preguntas.
             </div>
         }
         
@@ -176,6 +187,19 @@
     .enlace {
         text-decoration: none !important;
         color: black;
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
     }
 </style>
 

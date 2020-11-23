@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - PUCE ASK </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -12,14 +12,13 @@
         <div class="container">
             @*@Html.ActionLink("Inicio", "Preguntas", new { area = "" }, new { @class = "navbar-brand classname" })*@
             <a href="@Url.Action("Inicio", "Preguntas", new { area = "" })"> <img src="https://s.gravatar.com/avatar/2ad520845878d36234a4472cd39300a1?s=80" alt="logo" class="avatar" /></a>
+
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
                     <li class="nav-item">@Html.ActionLink("Inicio", "Inicio", "Preguntas", null, new { @class = "nav-link" })</li>
-
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -33,7 +32,7 @@
     </div>
     <footer class="footer">
 
-        <h1>Q&R</h1>
+        <h1>PUCE ASK</h1>
         <hr />
         <p>Proyecto Final</p>
         <p>&copy; @DateTime.Now.Year</p>
