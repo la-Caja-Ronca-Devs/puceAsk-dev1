@@ -30,21 +30,12 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Inicio(string categoria, string buscar, int pagina =1)
+        public ActionResult Inicio(string categoria, int pagina =1)
         {
             var viewModel = new PreguntasManager();
-            if (categoria != null && pagina >= 2)
+            if (categoria != null)
             {
-                var cantidadRegistrosPorPagina = 2;
-                var preguntas = db.Pregunta.OrderBy(x => x.Fechapregunta)
-                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                    .Take(cantidadRegistrosPorPagina).ToList();
-                var totalRegistros = db.Pregunta.Count();
-
-                viewModel.preguntas = preguntas;
-                viewModel.PaginaActual = pagina;
-                viewModel.TotalRegistro = totalRegistros;
-                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
+                
 
                 var NombreCategoria = categoria;
                 
@@ -54,7 +45,19 @@ namespace puceAsk_dev1.Controllers
                                 .Include(i => i.Cuenta.Usuario)
                                        where c.Categoria.NombreCategoria == categoria
                                        select c);
-                ViewData["categoria"] = categoria;
+                
+
+                var cantidadRegistrosPorPagina = 2;
+                var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
+                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                    .Take(cantidadRegistrosPorPagina).ToList();
+                var totalRegistros = db.Pregunta.Count();
+
+                viewModel.preguntas = consulta;
+                viewModel.PaginaActual = pagina;
+                viewModel.TotalRegistro = totalRegistros;
+                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
+                ViewData["categoria"] = categoria+"?"+pagina;
             }
             else
             {
