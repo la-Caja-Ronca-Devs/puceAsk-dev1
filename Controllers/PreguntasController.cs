@@ -30,9 +30,11 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-       
-        public ActionResult Inicio(string categoria, string buscar)
+
+        public ActionResult Inicio(string categoria, string buscar, string ordenar)
         {
+            ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
+            
             var viewModel = new PreguntasManager();
             if (categoria != null)
             {
@@ -55,20 +57,44 @@ namespace puceAsk_dev1.Controllers
                 ViewData["categoria"] = "Todas";
             }
             viewModel.categorias = db.Categoria;
+            ViewBag.categorias = (from c in db.Categoria select c).ToList();
+
+            switch (ordenar)
+            {
+                case "categoria":
+                    viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.Categoria.NombreCategoria);
+                    break;
+                case "antiguos":
+                    viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.Fechapregunta);
+                    break;
+                case "Date":
+                    viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.Fechapregunta);
+                    break;
+                case "titulo":
+                    viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.TituloPregunta);
+                    break;
+                default:
+                    viewModel.preguntas = viewModel.preguntas;
+
+                    break;
+            }
+
+
 
             using (db = new ApplicationDbContext())
             {
 
-                // Filtramos el resultado por el 'texto de búqueda'
                 if (!string.IsNullOrEmpty(buscar))
                 {
                     foreach (var item in buscar.Split(new char[] { ' ' },
                              StringSplitOptions.RemoveEmptyEntries))
                     {
-                        viewModel.preguntas = viewModel.preguntas.Where(x => x.TituloPregunta.Contains(item) ||
-                                                      x.DescPregunta.Contains(item) ||
-                                                      x.Categoria.NombreCategoria.Contains(item))
+                        viewModel.preguntas = viewModel.preguntas.Where(x => x.TituloPregunta.ToLower().Contains(item.ToLower()) ||
+                                                      x.DescPregunta.ToLower().Contains(item.ToLower()) ||
+                                                      x.Categoria.NombreCategoria.ToLower().Contains(item.ToLower()))
                                                       .ToList();
+
+                        //viewModel.preguntas = from p in db.Pregunta where p.TituloPregunta == like%buscar 
                     }
                 }
                 return View(viewModel);

@@ -64,5 +64,7 @@ namespace puceAsk_dev1.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<puceAsk_dev1.Models.Mensaje> Mensajes { get; set; }
     }
 }

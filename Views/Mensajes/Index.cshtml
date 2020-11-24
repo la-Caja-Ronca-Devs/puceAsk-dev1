@@ -1,0 +1,51 @@
+﻿@model IEnumerable<puceAsk_dev1.Models.Mensaje>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Emisor.CuentaId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Receptor.CuentaId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MensajeDesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaMensaje)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Emisor.CuentaId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Receptor.CuentaId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MensajeDesc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaMensaje)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MensajeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.MensajeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.MensajeId })
+        </td>
+    </tr>
+}
+
+</table>

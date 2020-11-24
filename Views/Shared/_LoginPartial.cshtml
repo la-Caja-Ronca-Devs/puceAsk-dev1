@@ -17,7 +17,7 @@
                     <p class="dropdown-item">Sesión iniciada como: @User.Identity.GetUserName()</p> <hr />
                     @Html.ActionLink("Preguntas realizadas", "PreguntasRealizadas", "Preguntas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
                     @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
-                    @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", routeValues: null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
+                    @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
                     @Html.ActionLink("Administrar Cuenta", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
                     <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"> Cerrar sesión </a>
 

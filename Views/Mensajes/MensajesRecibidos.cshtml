@@ -1,0 +1,66 @@
+﻿@model IEnumerable<puceAsk_dev1.Models.Mensaje>
+
+@{
+    ViewBag.Title = "MensajesRecibidos";
+}
+
+<h2>Mensajes Recibidos <span class="badge badge-info">@Model.Count()</span></h2><hr />
+
+@if (Model.Count() > 0)
+{
+    foreach (var item in Model)
+    {
+        string imgDataURL = "";
+        if (item.Emisor.Usuario.Foto != null)
+        {
+            byte[] foto = item.Emisor.Usuario.Foto;
+            string imreBase64Data = Convert.ToBase64String(foto);
+            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+        }
+
+        <div class="card mensaje " style="margin-top: 20px">
+
+                <div class="card-header titulo">
+                        <img alt="Foto" src="@imgDataURL" width="100" height="100" class="emisor" style="float:left; margin:10px;"/>
+                    De: @item.Emisor.Usuario.Nombre  @item.Emisor.Usuario.Apellido
+                    <br />
+                    @Html.DisplayFor(modelItem => item.FechaMensaje)
+                </div>
+
+                    <div class="card-body ">
+                        <h6 class="lead preg">@Html.DisplayFor(modelItem => item.MensajeDesc)</h6>
+                        <hr>
+                            
+                    </div>
+
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        No tiene mensajes
+    </div>
+}
+
+<style>
+    .emisor {
+        vertical-align: middle;
+        width: 40px;
+        height: 40px;
+        border-radius: 30%;
+    }
+
+   
+
+    .mensaje {
+        border: 3px solid;
+        border-image-source: linear-gradient(45deg, #007991, #78ffd6);
+        border-image-slice: 1;
+    }
+
+    .titulo {
+        background: linear-gradient(to bottom left, #007991, #78ffd6);
+    }
+    
+</style>
