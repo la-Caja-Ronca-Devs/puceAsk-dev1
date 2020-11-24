@@ -66,7 +66,7 @@ public class ExternalLoginConfirmationViewModel
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        public Cuenta Cuenta { get; set; }
+        public ApplicationUser Usuario { get; set; }
     }
 
     public class RegisterViewModel

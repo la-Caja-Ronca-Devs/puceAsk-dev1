@@ -5,24 +5,35 @@
 }
 
 <div class="row">
-    <div class="col-md-2" >
+    <div class="col-md-2">
 
         <h4>Categorías</h4>
 
-        <ul class="categorias">
 
-            <li>
-                @Html.ActionLink("Todas", "Inicio", null, null, null)
-            </li>
+        <div class="categorias list-group">
 
-            <li>
-                @foreach (var item in Model.categorias)
+            @if (ViewData["categoria"].ToString() != "Todas")
+            {
+                @Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
+            }
+            else
+            {
+                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action active" })
+            }
+            @foreach (var item in Model.categorias)
+            {
+                if (item.NombreCategoria == ViewData["categoria"].ToString())
                 {
-                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria}, null) <br />
-
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action active" })
                 }
-            </li>
-        </ul>
+                else
+                {
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action" })
+                }
+            }
+
+        </div>
+
     </div>
 
     <div class="col-md-10">
@@ -48,7 +59,6 @@
             <div class="col" align="right">
                 @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
             </div>
-
         </div>
 
 
@@ -58,7 +68,6 @@
 
             foreach (var item in Model.preguntas)
             {
-
                 <div class="card" style="margin-top: 20px">
                     <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="card-block stretched-link text-decoration-none">
                         <div class="card-header titulo">
@@ -90,6 +99,7 @@
             }
             { Html.RenderPartial("_Paginacion", Model);}
 
+
         }
         else
         {
@@ -110,15 +120,16 @@
         }
 
     .titulo {
-            color: white;
-            background-color: #006666;
+        color: white;
+        background-color: #006666;
         color: ghostwhite;
-        }
+    }
 
     .preg, .enlaces {
+            background-color: #006666;
             color: ghostwhite;
         }
-
+  
     .respuesta {
             left: 5%;
             border: solid 1px;
@@ -149,38 +160,56 @@
             text-decoration: none !important;
         }
 
+
     .enlaces{
             text-decoration: none !important;
         }
+
 
     .ver {
             text-decoration: none;
             color: #212529;
     }
 
-    .enlaces:hover{
-            color: white;
-        }
+    .enlaces:hover {
+        color: white;
+    }
 
     .card:hover {
-            transform: scale(1.05);
-            background: #fff;
+        transform: scale(1.05);
+        background: #fff;
         box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
         /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
         / -webkit-transition: all 0.2s ease-in;
-            -moz-transition: all 0.2s ease-in;
-            -ms-transition: all 0.2s ease-in;
-            -o-transition: all 0.2s ease-in;
-            transition: all 0.2s ease-in;
-            margin-top: 50px;
-        }
-    
-    .detalles{
-            color: black;
-        }
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        margin-top: 50px;
+    }
+
+    .detalles {
+        color: black;
+    }
+
     .enlace {
         text-decoration: none !important;
         color: black;
     }
-</style>
 
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+    }
+</style>
