@@ -20,7 +20,7 @@ namespace puceAsk_dev1.Controllers
                 if (!string.IsNullOrEmpty(username))
                 {
                     var user = context.Users.SingleOrDefault(u => u.UserName == username);
-                    int cuenta = user.Cuenta.SaldoCuenta;
+                    int cuenta = user.SaldoCuenta;
 
                     if(user.Foto != null)
                     {

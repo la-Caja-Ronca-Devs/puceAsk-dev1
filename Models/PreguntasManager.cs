@@ -33,4 +33,5 @@ namespace puceAsk_dev1.Models
         public string BusquedaActual { get; set; }
         public IEnumerable<T> Resultado { get; set; }
     }
+    
 }

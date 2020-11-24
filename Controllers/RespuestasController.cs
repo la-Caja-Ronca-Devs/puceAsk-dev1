@@ -47,7 +47,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "DescRespuesta")] Respuesta respuesta)
         {           
