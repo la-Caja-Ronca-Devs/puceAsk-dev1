@@ -23,8 +23,11 @@
         <hr class="my-4">
         <p>
             @Html.DisplayFor(model => model.Fechapregunta) |
-            @Html.DisplayFor(model => model.Categoria.NombreCategoria) 
+            @Html.DisplayFor(model => model.Categoria.NombreCategoria)
         </p>
+    </div>
+    <div class="card-header titulo">
+        @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
     </div>
 </div>
 
