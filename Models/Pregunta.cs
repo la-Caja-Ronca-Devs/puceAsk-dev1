@@ -10,34 +10,30 @@ namespace puceAsk_dev1.Models
     [Table("pregunta", Schema = "ask")]
     public class Pregunta
     {
-        [Key]
-        [Column("id_pregunta")]
+        [Key, Column(Order = 0)]
         public int PreguntaId { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
         [Required]
-        [MaxLength(150)]
-        [Column("titulo_pregunta")]
         public string TituloPregunta { get; set; }
 
         [Required]
-        [Column("desc_pregunta")]
         public string DescPregunta { get; set; }
 
         [Required]
-        [Column("fecha_pregunta")]
         public DateTime Fechapregunta { get; set; }
-
-        public int CuentaId { get; set; }
-        public Cuenta Cuenta { get; set; }
-
+      
+        [Column(Order = 1),ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public ApplicationUser Usuario { get; set; }
+      
+        [Column(Order = 2), ForeignKey("Categoria")]
         public  int CategoriaId { get; set; }
         public  Categoria Categoria { get; set; }
 
-        [Column("mejor_respuesta")]
-        public virtual Respuesta MejorRespuesta { get; set; }
+        public string MejorUsuarioRespuestaId { get; set; }
 
         public ICollection<Respuesta> Respuestas {get; set;}
         

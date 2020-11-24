@@ -6,12 +6,13 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+
 namespace puceAsk_dev1.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public virtual Cuenta Cuenta { get; set; }
         [Required]
         public DateTime FechaNacimiento { get; set; }
         public byte[] Foto { get; set; }
@@ -20,6 +21,12 @@ namespace puceAsk_dev1.Models
         [Required]
         public string Apellido { get; set; }
         public bool Sexo { get; set; }
+        public int SaldoCuenta { get; set; }
+        public ICollection<Pregunta> Preguntas { get; set; }
+        public ICollection<Respuesta> Respuestas { get; set; }
+        public ICollection<Mensaje> Recibidos { get; set; }
+        public ICollection<Mensaje> Enviados { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -37,30 +44,33 @@ namespace puceAsk_dev1.Models
         {
         }
 
-        public DbSet<Cuenta> Cuentas { get; set; }
         public DbSet<Pregunta> Pregunta { get; set; }
         public DbSet<Respuesta> Respuesta { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ApplicationUser>()
-                        .HasOptional(s => s.Cuenta)
-                        .WithRequired(ad => ad.Usuario);
-            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(s => s.UserId);
-            modelBuilder.Entity<IdentityUserRole>().HasKey<string>(s => s.UserId);
+            modelBuilder.Entity<Categoria>().HasMany<Pregunta>(s => s.Preguntas)
+                .WithRequired(s => s.Categoria)
+                .HasForeignKey<int>(s => s.CategoriaId);
             modelBuilder.Entity<Pregunta>().HasMany<Respuesta>(s => s.Respuestas)
                 .WithRequired(s => s.Pregunta)
                 .HasForeignKey<int>(s => s.PreguntaId);
-            modelBuilder.Entity<Cuenta>().HasMany<Mensaje>(s => s.Enviados)
+            modelBuilder.Entity<ApplicationUser>().HasMany<Pregunta>(s => s.Preguntas)
+                .WithRequired(s => s.Usuario)
+                .HasForeignKey<string>(s => s.UsuarioId);
+            modelBuilder.Entity<ApplicationUser>().HasMany<Respuesta>(s => s.Respuestas)
+                .WithRequired(s => s.Usuario)
+                .HasForeignKey<string>(s => s.UsuarioId);
+            modelBuilder.Entity<ApplicationUser>().HasMany<Mensaje>(s => s.Enviados)
                .WithRequired(s => s.Emisor)
-               .HasForeignKey<int>(s => s.EmisorId);
-            modelBuilder.Entity<Cuenta>().HasMany<Mensaje>(s => s.Recibidos)
+               .HasForeignKey<string>(s => s.EmisorId);
+            modelBuilder.Entity<ApplicationUser>().HasMany<Mensaje>(s => s.Recibidos)
                .WithRequired(s => s.Receptor)
-               .HasForeignKey<int>(s => s.ReceptorId);
+               .HasForeignKey<string>(s => s.ReceptorId);
+            base.OnModelCreating(modelBuilder);
         }
 
-    public static ApplicationDbContext Create()
+        public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }

@@ -10,19 +10,16 @@ namespace puceAsk_dev1.Models
     [Table("Categoria", Schema = "ask")]
     public class Categoria
     {
-        [Key]
-        [Column("id_categoria")]
+        [Key, Column(Order = 0)]
         public int CategoriaId { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
         [Required]
-        [Column("nombre_categoria")]
         public string NombreCategoria { get; set; }
 
         [Required]
-        [Column("desc_categoria")]
         public string DescCategoria { get; set; }
 
         public ICollection<Pregunta> Preguntas { get; set; }
