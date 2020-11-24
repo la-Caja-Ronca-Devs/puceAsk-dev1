@@ -30,21 +30,36 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Inicio(string categoria, string buscar)
 
+        public ActionResult Inicio(string categoria, int pagina =1)
         {
             var viewModel = new PreguntasManager();
             if (categoria != null)
             {
+
                 var NombreCategoria = categoria;
                 
                 viewModel.preguntas = (from c in db.Pregunta
                                 .Include(i => i.Categoria)
+
                                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                                 .Include(i => i.Usuario)
                                        where c.Categoria.NombreCategoria == categoria
                                        select c);
-                ViewData["categoria"] = categoria;
+
+
+                var cantidadRegistrosPorPagina = 2;
+                var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
+                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                    .Take(cantidadRegistrosPorPagina).ToList();
+                var totalRegistros = db.Pregunta.Count();
+
+                viewModel.preguntas = consulta;
+                viewModel.PaginaActual = pagina;
+                viewModel.TotalRegistro = totalRegistros;
+                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
+                ViewData["categoria"] = categoria+"?"+pagina;
+
             }
             else
             {
@@ -52,30 +67,10 @@ namespace puceAsk_dev1.Controllers
                     .Include(i => i.Categoria)
                     .Include(i => i.Respuestas.Select(c => c.Usuario))
                     .Include(i => i.Usuario);
+
                 ViewData["categoria"] = "Todas";
             }
             viewModel.categorias = db.Categoria;
-
-
-            using (db = new ApplicationDbContext())
-            {
-
-                // Filtramos el resultado por el 'texto de búqueda'
-                if (!string.IsNullOrEmpty(buscar))
-                {
-                    foreach (var item in buscar.Split(new char[] { ' ' },
-                             StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        viewModel.preguntas = viewModel.preguntas.Where(x => x.TituloPregunta.Contains(item) ||
-                                                      x.DescPregunta.Contains(item) ||
-                                                      x.Categoria.NombreCategoria.Contains(item))
-                                                      .ToList();
-                    }
-                }
-                return View(viewModel);
-            }
-        }
-
         
 
         // GET: Preguntas/Details/5
@@ -92,6 +87,7 @@ namespace puceAsk_dev1.Controllers
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                 .Include(i=> i.Usuario)
+
                 where p.PreguntaId == id 
                 select p).First();
 
@@ -103,7 +99,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create()
         {
             ViewBag.categorias = (from c in db.Categoria select c).ToList();
-            return View();
+            return View(new PreguntasManager());
         }
 
         // POST: Preguntas/Create
@@ -112,7 +108,8 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta)
+
+        public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta
         {
             if (ModelState.IsValid)
             {
@@ -120,6 +117,7 @@ namespace puceAsk_dev1.Controllers
                 var cuenta = (from c in db.Users where c.Id == usuario.Id select c).First();
                 pregunta.UsuarioId = cuenta.Id;
                 pregunta.Fechapregunta = DateTime.Now;
+
                 db.Pregunta.Add(pregunta);
                 db.SaveChanges();
                 int preg = db.Pregunta.Max(item => item.PreguntaId);
@@ -130,7 +128,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Preguntas/Edit/5
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -154,7 +152,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PreguntaId,DescPregunta,MejorRespuesta")] Pregunta pregunta)
         {
@@ -205,8 +203,6 @@ namespace puceAsk_dev1.Controllers
             }
             base.Dispose(disposing);
         }
-
-
         [Authorize(Roles = "user")]
         public ActionResult PreguntasRealizadas()
         {
@@ -222,5 +218,6 @@ namespace puceAsk_dev1.Controllers
 
             return View(preguntas);
         }
+
     }
 }

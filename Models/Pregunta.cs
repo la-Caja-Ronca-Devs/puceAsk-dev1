@@ -24,10 +24,11 @@ namespace puceAsk_dev1.Models
 
         [Required]
         public DateTime Fechapregunta { get; set; }
-
+      
         [Column(Order = 1),ForeignKey("Usuario")]
         public string UsuarioId { get; set; }
         public ApplicationUser Usuario { get; set; }
+      
         [Column(Order = 2), ForeignKey("Categoria")]
         public  int CategoriaId { get; set; }
         public  Categoria Categoria { get; set; }

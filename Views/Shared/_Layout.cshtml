@@ -12,7 +12,6 @@
         <div class="container">
             @*@Html.ActionLink("Inicio", "Preguntas", new { area = "" }, new { @class = "navbar-brand classname" })*@
             <a href="@Url.Action("Inicio", "Preguntas", new { area = "" })"> <img src="https://s.gravatar.com/avatar/2ad520845878d36234a4472cd39300a1?s=80" alt="logo" class="avatar" /></a>
-
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -39,6 +38,7 @@
     </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundle/sweetalert")
     @RenderSection("scripts", required: false)
 </body>
 </html>

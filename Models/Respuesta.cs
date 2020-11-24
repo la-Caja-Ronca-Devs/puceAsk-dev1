@@ -19,8 +19,10 @@ namespace puceAsk_dev1.Models
         public string UsuarioId { get; set; }
         public ApplicationUser Usuario { get; set; }
 
+
         [Required]
         public String DescRespuesta { get; set; }
+      
         [Key,Column(Order = 1), ForeignKey("Pregunta")]
         public int PreguntaId { get; set; }
         public Pregunta Pregunta { get; set; }
