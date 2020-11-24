@@ -86,7 +86,7 @@ namespace puceAsk_dev1.Controllers
                 .Include(i=> i.Cuenta)
                 where p.PreguntaId == id 
                 select p).First();
-
+            TempData["idPregunta"] = pregunta;
             return View(pregunta);
         }
 
