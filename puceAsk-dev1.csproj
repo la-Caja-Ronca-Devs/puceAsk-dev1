@@ -189,6 +189,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InfoBaseController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MensajesController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />
     <Compile Include="Controllers\RespuestasController.cs" />
     <Compile Include="Global.asax.cs">
@@ -205,6 +206,10 @@
     <Compile Include="Migrations\202011230714446_carga4.cs" />
     <Compile Include="Migrations\202011230714446_carga4.designer.cs">
       <DependentUpon>202011230714446_carga4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011240732005_carga5.cs" />
+    <Compile Include="Migrations\202011240732005_carga5.designer.cs">
+      <DependentUpon>202011240732005_carga5.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -450,8 +455,15 @@
     <Content Include="Views\Categorias\Details.cshtml" />
     <Content Include="Views\Categorias\Edit.cshtml" />
     <Content Include="Views\Categorias\Index.cshtml" />
+
     <Content Include="Views\Preguntas\PreguntasRealizadas.cshtml" />
     <Content Include="Views\Preguntas\_Paginacion.cshtml" />
+    <Content Include="Views\Mensajes\Create.cshtml" />
+    <Content Include="Views\Mensajes\Delete.cshtml" />
+    <Content Include="Views\Mensajes\Details.cshtml" />
+    <Content Include="Views\Mensajes\Edit.cshtml" />
+    <Content Include="Views\Mensajes\Index.cshtml" />
+    <Content Include="Views\Mensajes\MensajesRecibidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -477,6 +489,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011230714446_carga4.resx">
       <DependentUpon>202011230714446_carga4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011240732005_carga5.resx">
+      <DependentUpon>202011240732005_carga5.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
