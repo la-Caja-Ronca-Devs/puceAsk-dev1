@@ -6,13 +6,13 @@
 
 
 <div class="row">
-    <div class="col-md-2" >
+    <div class="col-md-2">
 
         <h4>Categorías</h4>
-        
+
         <div class="categorias list-group">
 
-            @if (ViewData["categoria"].ToString()!="Todas")
+            @if (ViewData["categoria"].ToString() != "Todas")
             {
                 @Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
             }
@@ -41,26 +41,27 @@
         @*Ver paginacion*@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace"})</li> &nbsp; / &nbsp;
-                <li>@Html.ActionLink(ViewData["categoria" ].ToString(), "Inicio", null, null, new { @class = "enlace" })</li> 
+                <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace" })</li> &nbsp; / &nbsp;
+                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "enlace" })</li>
             </ol>
         </nav>
 
 
         <div class="row">
-            <div class="col-md-6"><br />
+            <div class="col-md-6">
+                <br />
                 <label for="filtrar">Filtar</label>
                 <input type="text" name="filtar" />
             </div>
 
-           
+
             <div class="col" align="right">
                 @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
             </div>
-            
+
         </div>
 
-      <br/>
+        <br />
         @if (Model.preguntas.Count() > 0)
         {
 
@@ -86,8 +87,8 @@
                                 }
 
                             </p>
-                            <p  class="detalles">
-                                Autor: @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
+                            <p class="detalles">
+                                Autor: @Html.DisplayFor(modelItem => item.Usuario.Nombre)
                             </p>
 
                         </div>
@@ -101,7 +102,7 @@
                 No hay preguntas de esa categoría.
             </div>
         }
-        
+
         <br /> <br />
 
     </div>
@@ -110,87 +111,90 @@
 
 <style>
     .pregunta {
-            background-color: darkcyan;
-            padding: 10px !important;
-        }
-
-    .titulo {
-            color: white;
-            background-color: #006666;
-        color: ghostwhite;
-        }
-
-    .preg, .enlaces {
-            color: ghostwhite;
-        }
-
-    .respuesta {
-            left: 5%;
-            border: solid 1px;
-            border-color: darkcyan;
-            padding: 10px !important;
-            margin-top: 15px;
-            width: 95%;
-        }
-
-    .categorias {
-            list-style: none;
-        }
-
-    .link-button {
-            -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
-            -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-            background-color: #FFBB33;
-        border-color: #FFBB33;
-        border-style: solid;
-            border-width: 1px;
-            color: white;
-            cursor: pointer;
-            display: inline-block;
-            font-size: 1.167em;
-            font-weight: bold;
-            line-height: 1.429em;
-            padding: 0.286em 1em 0.357em;
-            text-decoration: none !important;
-        }
-
-    .enlaces{
-            text-decoration: none !important;
-        }
-
-    .ver {
-            text-decoration: none;
-            color: #212529;
+        background-color: darkcyan;
+        padding: 10px !important;
     }
 
-    .enlaces:hover{
-            color: white;
-        }
+    .titulo {
+        color: white;
+        background-color: #006666;
+        color: ghostwhite;
+    }
+
+    .preg, .enlaces {
+        color: ghostwhite;
+    }
+
+    .respuesta {
+        left: 5%;
+        border: solid 1px;
+        border-color: darkcyan;
+        padding: 10px !important;
+        margin-top: 15px;
+        width: 95%;
+    }
+
+    .categorias {
+        list-style: none;
+    }
+
+    .link-button {
+        -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        background-color: #FFBB33;
+        border-color: #FFBB33;
+        border-style: solid;
+        border-width: 1px;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 1.167em;
+        font-weight: bold;
+        line-height: 1.429em;
+        padding: 0.286em 1em 0.357em;
+        text-decoration: none !important;
+    }
+
+    .enlaces {
+        text-decoration: none !important;
+    }
+
+    .ver {
+        text-decoration: none;
+        color: #212529;
+    }
+
+    .enlaces:hover {
+        color: white;
+    }
 
     .card:hover {
-            transform: scale(1.05);
-            background: #fff;
+        transform: scale(1.05);
+        background: #fff;
         box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
         /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
         / -webkit-transition: all 0.2s ease-in;
-            -moz-transition: all 0.2s ease-in;
-            -ms-transition: all 0.2s ease-in;
-            -o-transition: all 0.2s ease-in;
-            transition: all 0.2s ease-in;
-            margin-top: 50px;
-        }
-    
-    .detalles{
-            color: black;
-        }
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        margin-top: 50px;
+    }
+
+    .detalles {
+        color: black;
+    }
+
     .enlace {
         text-decoration: none !important;
         color: black;
     }
+
     .list-group-item.list-group-item-action.active {
         background-color: darkcyan;
         border-color: cyan;
     }
+
     .list-group-item:hover {
         transform: scale(1.05);
         background-color: darkcyan;
@@ -202,4 +206,3 @@
         transition: all 0.2s ease-in;
     }
 </style>
-
