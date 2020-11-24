@@ -11,56 +11,168 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Pregunta</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PreguntaId)
+<div class="form-horizontal">
+    <h4>Pregunta</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.PreguntaId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RowVersion, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RowVersion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RowVersion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TituloPregunta, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TituloPregunta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TituloPregunta, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DescPregunta, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DescPregunta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Fechapregunta, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Fechapregunta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Fechapregunta, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TituloPregunta, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.Label(Model.TituloPregunta, new { htmlAttributes = new { @class = "form-control"} })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DescPregunta, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DescPregunta, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.Label("Mejor Respuesta", htmlAttributes: new { @class = "control-label col-md-2" })
+    @if (Model.MejorRespuestaId == null)
+    {
+        <div class="form-group">
+            @if (Model.Respuestas.Count() > 0)
+            {
+                foreach (var item in Model.Respuestas)
+                {
+                    <div class="col-md-10">
+                        @Html.RadioButtonFor(model => model.MejorRespuestaId, item.RespuestaId) @item.DescRespuesta
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="card pregunta">
+                    No hay respuestas de esta pregunta.
+                    @Html.HiddenFor(model => model.MejorRespuestaId)
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.Label("test", new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    }
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Actualizar" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    <a href="javascript:void(0);" onclick="history.go(-1);">Regresar</a>
 </div>
+
+<style>
+    .pregunta {
+        background-color: darkcyan;
+        padding: 10px !important;
+    }
+
+    .titulo {
+        color: white;
+        background-color: #006666;
+        color: ghostwhite;
+    }
+
+    .preg, .enlaces {
+        color: ghostwhite;
+    }
+
+    .respuesta {
+        left: 5%;
+        border: solid 1px;
+        border-color: darkcyan;
+        padding: 10px !important;
+        margin-top: 15px;
+        width: 95%;
+    }
+
+    .categorias {
+        list-style: none;
+    }
+
+    .link-button {
+        -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
+        -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        background-color: #FFBB33;
+        border-color: #FFBB33;
+        border-style: solid;
+        border-width: 1px;
+        color: white;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 1.167em;
+        font-weight: bold;
+        line-height: 1.429em;
+        padding: 0.286em 1em 0.357em;
+        text-decoration: none !important;
+    }
+
+    .enlaces {
+        text-decoration: none !important;
+    }
+
+    .ver {
+        text-decoration: none;
+        color: #212529;
+    }
+
+    .enlaces:hover {
+        color: white;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        background: #fff;
+        box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+        /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+        / -webkit-transition: all 0.2s ease-in;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        margin-top: 50px;
+    }
+
+    .detalles {
+        color: black;
+    }
+
+    .enlace {
+        text-decoration: none !important;
+        color: black;
+    }
+
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
 }

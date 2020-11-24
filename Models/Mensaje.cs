@@ -10,19 +10,20 @@ namespace puceAsk_dev1.Models
     [Table("Mensaje", Schema = "ask")]
     public class Mensaje
     {
-        [Key]
-        [Column("id_mensaje")]
+        [Key, Column(Order = 0)]
         public int MensajeId { get; set; }
-
-        public int ReceptorId { get; set; }
-        public Cuenta Receptor { get; set; }
-
-        public int EmisorId { get; set; }
-        public Cuenta Emisor { get; set; }
+        [Column(Order = 1), ForeignKey("Receptor")]
+        public string ReceptorId { get; set; }
+        public ApplicationUser Receptor { get; set; }
+        [Column(Order = 2), ForeignKey("Emisor")]
+        public string EmisorId { get; set; }
+        public ApplicationUser Emisor { get; set; }
 
         [Required]
-        [Column("mensaje")]
         public string MensajeDesc { get; set; }
+
+        [Required]
+        public DateTime FechaMensaje { get; set; }
 
     }
 }

@@ -40,8 +40,8 @@ namespace puceAsk_dev1.Controllers
                 
                 viewModel.preguntas = (from c in db.Pregunta
                                 .Include(i => i.Categoria)
-                                .Include(i => i.Respuestas.Select(c => c.Cuenta))
-                                .Include(i => i.Cuenta.Usuario)
+                                .Include(i => i.Respuestas.Select(c => c.Usuario))
+                                .Include(i => i.Usuario)
                                        where c.Categoria.NombreCategoria == categoria
                                        select c);
                 ViewData["categoria"] = categoria;
@@ -50,8 +50,8 @@ namespace puceAsk_dev1.Controllers
             {
                 viewModel.preguntas = db.Pregunta
                     .Include(i => i.Categoria)
-                    .Include(i => i.Respuestas.Select(c => c.Cuenta))
-                    .Include(i => i.Cuenta.Usuario);
+                    .Include(i => i.Respuestas.Select(c => c.Usuario))
+                    .Include(i => i.Usuario);
                 ViewData["categoria"] = "Todas";
             }
             viewModel.categorias = db.Categoria;
@@ -90,8 +90,8 @@ namespace puceAsk_dev1.Controllers
                        
             var pregunta = (from p in db.Pregunta
                 .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c => c.Cuenta))
-                .Include(i=> i.Cuenta)
+                .Include(i => i.Respuestas.Select(c => c.Usuario))
+                .Include(i=> i.Usuario)
                 where p.PreguntaId == id 
                 select p).First();
 
@@ -117,27 +117,32 @@ namespace puceAsk_dev1.Controllers
             if (ModelState.IsValid)
             {
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-                var cuenta = (from c in db.Cuentas where c.Usuario.Id == usuario.Id select c).First();
-                pregunta.CuentaId = cuenta.CuentaId;
+                var cuenta = (from c in db.Users where c.Id == usuario.Id select c).First();
+                pregunta.UsuarioId = cuenta.Id;
                 pregunta.Fechapregunta = DateTime.Now;
                 db.Pregunta.Add(pregunta);
                 db.SaveChanges();
                 int preg = db.Pregunta.Max(item => item.PreguntaId);
-                return RedirectToAction("Details",new { id = preg});
+                return RedirectToAction("Details","Preguntas",new { id = preg});
             }
 
             return View(pregunta);
         }
 
         // GET: Preguntas/Edit/5
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Pregunta pregunta = db.Pregunta.Find(id);
+            var pregunta = (from p in db.Pregunta
+               .Include(i => i.Categoria)
+               .Include(i => i.Respuestas.Select(c => c.Usuario))
+               .Include(i => i.Usuario)
+                            where p.PreguntaId == id
+                            select p).First();
             if (pregunta == null)
             {
                 return HttpNotFound();
@@ -149,17 +154,19 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PreguntaId,RowVersion,TituloPregunta,DescPregunta,Fechapregunta")] Pregunta pregunta)
+        public ActionResult Edit([Bind(Include = "PreguntaId,DescPregunta,MejorRespuesta")] Pregunta pregunta)
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(pregunta).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(pregunta);
+            Pregunta per = db.Pregunta.Single(m => m.PreguntaId == pregunta.PreguntaId);
+                Respuesta res = (from c in db.Respuesta
+                                 .Include(i => i.Pregunta)
+                                 .Include(i => i.Usuario)
+                                 where c.Usuario.Id == pregunta.MejorUsuarioRespuestaId && c.PreguntaId == pregunta.PreguntaId select c).First();
+            //per.MejorRespuesta = res.RespuestaId;
+            per.DescPregunta = pregunta.DescPregunta;
+            db.SaveChanges();
+                return RedirectToAction("Details", "Preguntas", new { id = pregunta.PreguntaId });
         }
 
         // GET: Preguntas/Delete/5
@@ -197,6 +204,23 @@ namespace puceAsk_dev1.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        [Authorize(Roles = "user")]
+        public ActionResult PreguntasRealizadas()
+        {
+
+            var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var cuenta = (from c in db.Users where c.Id == usuario.Id select c).First();
+            var preguntas = (from p in db.Pregunta
+                .Include(i => i.Categoria)
+                .Include(i => i.Respuestas.Select(c => c.Usuario))
+                .Include(i => i.Usuario)
+                            where p.UsuarioId == cuenta.Id
+                            select p).ToList();
+
+            return View(preguntas);
         }
     }
 }
