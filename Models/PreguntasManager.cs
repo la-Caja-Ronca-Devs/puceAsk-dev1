@@ -20,6 +20,7 @@ namespace puceAsk_dev1.Models
 
         public Pregunta pregunta { get; set; }
         public List<Categoria> Categorias { get; set; }
+
         public int PaginaActual { get; set; }
         public int TotalRegistro { get; set; }
         public int RegistroPorPagina { get; set; }

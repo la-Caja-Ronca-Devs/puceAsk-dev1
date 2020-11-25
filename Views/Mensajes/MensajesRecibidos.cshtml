@@ -11,9 +11,9 @@
     foreach (var item in Model)
     {
         string imgDataURL = "";
-        if (item.Emisor.Usuario.Foto != null)
+        if (item.Emisor.Foto != null)
         {
-            byte[] foto = item.Emisor.Usuario.Foto;
+            byte[] foto = item.Emisor.Foto;
             string imreBase64Data = Convert.ToBase64String(foto);
             imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
         }
@@ -22,7 +22,7 @@
 
                 <div class="card-header titulo">
                         <img alt="Foto" src="@imgDataURL" width="100" height="100" class="emisor" style="float:left; margin:10px;"/>
-                    De: @item.Emisor.Usuario.Nombre  @item.Emisor.Usuario.Apellido
+                    De: @item.Emisor.Nombre  @item.Emisor.Apellido
                     <br />
                     @Html.DisplayFor(modelItem => item.FechaMensaje)
                 </div>

@@ -25,11 +25,10 @@ namespace puceAsk_dev1.Controllers
         public ActionResult MensajesRecibidos()
         {
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            var cuenta = (from c in db.Cuentas where c.Usuario.Id == usuario.Id select c).First();
             var mensajes = from m in db.Mensajes
                            .Include(m => m.Emisor)
                            .Include(m => m.Receptor)
-                           where m.Receptor.CuentaId == cuenta.CuentaId select m;
+                           where m.Receptor.Id == usuario.Id select m;
             mensajes = mensajes.OrderByDescending(s => s.FechaMensaje);
             return View(mensajes.ToList());
         }
@@ -53,11 +52,9 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
-            ViewBag.Receptores = (from r in db.Cuentas
-                                  .Include(p=>p.Usuario)
+            ViewBag.Receptores = (from r in db.Users
                                   select r).ToList();
-            ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId");
-            ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId");
+            ViewBag.ReceptorId = new SelectList(db.Users, "Id", "UserName");
             return View();
         }
 
@@ -70,8 +67,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create([Bind(Include = "MensajeId,ReceptorId,EmisorId,MensajeDesc,FechaMensaje")] Mensaje mensaje)
         {
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            var cuenta = (from c in db.Cuentas where c.Usuario.Id == usuario.Id select c).First();
-            mensaje.EmisorId = cuenta.CuentaId;
+            mensaje.EmisorId = usuario.Id;
             mensaje.FechaMensaje = DateTime.Now;
             if (ModelState.IsValid)
             {
@@ -80,8 +76,8 @@ namespace puceAsk_dev1.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.EmisorId);
-            ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
+            //ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.EmisorId);
+            //ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
             return View(mensaje);
         }
 
@@ -97,8 +93,8 @@ namespace puceAsk_dev1.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.EmisorId);
-            ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
+            //ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.EmisorId);
+            //ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
             return View(mensaje);
         }
 
@@ -115,7 +111,7 @@ namespace puceAsk_dev1.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
+            //ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
             return View(mensaje);
         }
 

@@ -6,6 +6,7 @@
         @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
     </div>
 
+    <hr />
     <div>
         @if (Model.Count() > 0)
         {
@@ -13,9 +14,8 @@
             foreach (var item in Model)
             {
 
-                <div class="card" style="margin-top: 20px">                   
+                <div class="card carta" style="margin-top: 20px">                   
                         <div class="card-header titulo">
-                            <h4>
                                 <div class="container">
                                     <div class="row">
                                         <div class="col">
@@ -25,7 +25,7 @@
                                             <div class="row">
                                                 <span class="badge badge-pill badge-info">@item.Respuestas.Count() Respuestas.</span>
                                             </div>
-                                            @if (item.MejorRespuestaId == null)
+                                            @if (item.MejorUsuarioRespuestaId == null)
                                             {
                                                 <div class="row">
                                                     <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
@@ -53,8 +53,7 @@
                                         </div>                                     
                                     </div>
                                 </div>
-                                                        
-                            </h4>
+                                               
 
                         </div>
 
@@ -86,59 +85,7 @@
         }
 
     </div>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria.NombreCategoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Usuario.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RowVersion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TituloPregunta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DescPregunta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fechapregunta)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categoria.NombreCategoria)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RowVersion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TituloPregunta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DescPregunta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fechapregunta)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.PreguntaId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.PreguntaId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.PreguntaId })
-                </td>
-            </tr>
-        }
-
-    </table>
+    
 </div>
 
 <style>
@@ -200,7 +147,7 @@
         color: white;
     }
 
-    .card:hover {
+    .carta:hover {
         transform: scale(1.05);
         background: #fff;
         box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
