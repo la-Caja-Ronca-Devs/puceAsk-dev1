@@ -12,8 +12,6 @@ namespace puceAsk_dev1.Models
     {
         [Key, Column(Order = 0)]
         public int CategoriaId { get; set; }
-
-        
         [Required]
         public string NombreCategoria { get; set; }
 

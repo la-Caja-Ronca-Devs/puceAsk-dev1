@@ -13,7 +13,7 @@ namespace puceAsk_dev1.Models
         [Key, Column(Order = 0)]
         public int PreguntaId { get; set; }
 
-       [Required]
+        [Required]
         public string TituloPregunta { get; set; }
 
         [Required]

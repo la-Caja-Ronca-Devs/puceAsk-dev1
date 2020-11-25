@@ -1,81 +1,167 @@
 ﻿@model puceAsk_dev1.Models.Pregunta
 
 @{
-    ViewBag.Title = "Edit";
+    var mr = (puceAsk_dev1.Models.Respuesta)(from r in Model.Respuestas where r.UsuarioId == Model.MejorUsuarioRespuestaId select r).FirstOrDefault();
 }
 
-<h2>Edit</h2>
-
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Preguntas", FormMethod.Post, new { id = "EditarPregunta", enctype = "multipart/form-data", name = "Editar" }))
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Pregunta</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.PreguntaId)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.TituloPregunta, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.Label(Model.TituloPregunta, new { htmlAttributes = new { @class = "form-control"} })
-        </div>
-    </div>
+    <div class="container">
+        <h2>Pregunta</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PreguntaId)
+        @Html.HiddenFor(model => model.TituloPregunta)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.DescPregunta, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DescPregunta, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    @Html.Label("Mejor Respuesta", htmlAttributes: new { @class = "control-label col-md-2" })
-    @if (Model.MejorRespuestaId == null)
-    {
         <div class="form-group">
-            @if (Model.Respuestas.Count() > 0)
+            <div>
+                <h3>@Model.TituloPregunta</h3>
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h4>¿Por qué preguntas esto?</h4>
+            @if (DateTime.Now <= Model.Fechapregunta.AddDays(5))
             {
-                foreach (var item in Model.Respuestas)
+                <div>
+                    @Html.TextAreaFor(model => model.DescPregunta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tengo esta duda porque ... bla bla bla." } })
+                    @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
+                </div>
+            }
+            else
+            {
+                <h5>@Model.DescPregunta</h5>
+                @Html.HiddenFor(model => model.DescPregunta)
+            }
+        </div>
+        <div class="form-group">
+            <h4>Mejor Respuesta</h4>
+            @if (Model.MejorUsuarioRespuestaId == null)
+            {
+                if (Model.Respuestas.Count() > 0)
                 {
-                    <div class="col-md-10">
-                        @Html.RadioButtonFor(model => model.MejorRespuestaId, item.RespuestaId) @item.DescRespuesta
+                    foreach (var item in Model.Respuestas)
+                    {
+                        <div class="card pregunta" style="margin-top: 10px">
+                            <h5>Autor: @item.Usuario.Nombre @item.Usuario.Apellido</h5>
+                            @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId) @item.DescRespuesta
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="card">
+                        No hay respuestas de esta pregunta.
+                        @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                     </div>
                 }
             }
             else
             {
-                <div class="card pregunta">
-                    No hay respuestas de esta pregunta.
-                    @Html.HiddenFor(model => model.MejorRespuestaId)
+                <div class="card">
+                    <div class="card-horizontal">
+                        <div class="imgOver col-3">
+                            <img class="embed-responsive hover" src="https://www.flaticon.com/svg/static/icons/svg/3791/3791551.svg" alt="Mejor Respuesta">
+
+                            @if (mr.Usuario.Foto != null)
+                            {
+                                string imgDataURL = "";
+                                if (mr.Usuario.Foto != null)
+                                {
+                                    byte[] foto = mr.Usuario.Foto;
+                                    string imreBase64Data = Convert.ToBase64String(foto);
+                                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                                }
+
+                                <img src="@imgDataURL" alt="foto" class="overlay foto" />
+                            }
+                            else
+                            {
+                                <img src="https://img.icons8.com/color/user" alt="foto" class="overlay foto" />
+                            }
+                        </div>
+                        <div class="card-body col-9">
+                            <h4 class="card-title">Autor: @(mr.Usuario.Nombre + " " + mr.Usuario.Apellido)</h4>
+                            <p class="card-text">@mr.DescRespuesta</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">@mr.FechaPublicacion</small>
+                    </div>
                 </div>
+
             }
         </div>
-    }
-    else
-    {
+
+
+
         <div class="form-group">
-            <div class="col-md-10">
-                @Html.Label("test", new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-offset-2 col-md-10">
+                <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
+
+                <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
             </div>
         </div>
-    }
-
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Actualizar" class="btn btn-default" />
-        </div>
     </div>
-</div>
 }
 
-<div>
-    <a href="javascript:void(0);" onclick="history.go(-1);">Regresar</a>
-</div>
+
 
 <style>
+
+    .imgOver {
+        position: relative;
+        width: 50%;
+    }
+
+    .hover {
+        display: block;
+        position: center;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 50%;
+        height: auto;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: #008CBA;
+    }
+
+    .imgOver:hover .overlay {
+        opacity: 1;
+    }
+
+    .foto {
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        margin-top: -25px;
+        margin-left: -25px;
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .card-horizontal {
+        display: flex;
+        flex: 1 1 auto;
+    }
+
     .pregunta {
         background-color: darkcyan;
         padding: 10px !important;
@@ -134,18 +220,6 @@
         color: white;
     }
 
-    .card:hover {
-        transform: scale(1.05);
-        background: #fff;
-        box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
-        /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
-        / -webkit-transition: all 0.2s ease-in;
-        -moz-transition: all 0.2s ease-in;
-        -ms-transition: all 0.2s ease-in;
-        -o-transition: all 0.2s ease-in;
-        transition: all 0.2s ease-in;
-        margin-top: 50px;
-    }
 
     .detalles {
         color: black;
@@ -174,5 +248,35 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#enviar").click(function (e) {
+                e.preventDefault();
+
+                swal({
+                    title: '¿Seguro que deseas editar esta pregunta?',
+                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
+                    content: "input"
+                })
+                    .then((value) => {
+                        if (value === "@Model.Usuario.Email") {
+                            swal({
+                                title: "¡Excelente!",
+                                text: "¡Pregunta Actualizada!", 
+                                icon: "success",
+                            }).then((value) => {
+                                   $("#EditarPregunta").submit();
+                            });
+                        } else {
+                            swal("¡Incorrecto!", "Correo Electrónico Incorrecto", "error");
+                        }
+                    });
+                return false;
+            });
+        });
+
+    </script>
 
 }
