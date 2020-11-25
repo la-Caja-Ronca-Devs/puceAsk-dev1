@@ -55,8 +55,7 @@ namespace puceAsk_dev1.Controllers
             {
                 Pregunta id = (Pregunta)TempData["idPregunta"];
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-                var cuenta = (from c in db.Cuentas where c.Usuario.Id == usuario.Id select c).First();
-                respuesta.CuentaId = cuenta.CuentaId;
+                respuesta.UsuarioId = usuario.Id;
                 respuesta.PreguntaId = id.PreguntaId;
                 respuesta.FechaPublicacion = DateTime.Now;
                 db.Respuesta.Add(respuesta);
@@ -65,7 +64,7 @@ namespace puceAsk_dev1.Controllers
             }
             else
             {
-                respuesta.DescRespuesta = "No se ingreso";
+                respuesta.DescRespuesta = "No pudo registrar su respuesta. Intente nuevamente.";
                 return View(respuesta);
             }
             

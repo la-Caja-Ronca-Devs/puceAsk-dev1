@@ -14,7 +14,7 @@
 
             @if (ViewData["categoria"].ToString() != "Todas")
             {
-                @Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
+                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
             }
             else
             {
@@ -43,7 +43,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace" })</li> &nbsp; / &nbsp;
-                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "enlace" })</li>
+                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, new { categoria = ViewData["categoria"].ToString()}, new { @class = "enlace" })</li>
             </ol>
         </nav>
 
@@ -94,7 +94,6 @@
                             Buscar: <hr />
                             <div class="form-group">
                                 <input name="buscar" placeholder="Texto de búsqueda" type="text" />
-                                <button class="btn btn-outline-info buscador" type="submit"><img src="https://img.icons8.com/search" alt="buscar" height="20" /></button>
 
                             </div>
                         </div>
@@ -118,9 +117,9 @@
             foreach (var item in Model.preguntas)
             {
                 string imgDataURL = "";
-                if (item.Cuenta.Usuario.Foto != null)
+                if (item.Usuario.Foto != null)
                 {
-                    byte[] foto = item.Cuenta.Usuario.Foto;
+                    byte[] foto = item.Usuario.Foto;
                     string imreBase64Data = Convert.ToBase64String(foto);
                     imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                 }
@@ -154,14 +153,9 @@
                         </div>
                     </a>                    
                 </div>
-                <div class="card-header titulo">
-                    @Html.ActionLink("Responder","Create", "Respuestas", null, new { style = "color: white;" })
-                            <p class="detalles">
-                                Autor: @Html.DisplayFor(modelItem => item.Usuario.Nombre)
-                            </p>
-                        </div>
-                    </a>                    
-                </div>
+               
+                                      
+               
                 
             }
             { Html.RenderPartial("_Paginacion", Model);}
@@ -176,7 +170,7 @@
 
         <br /> <br />
     </div>
-</div>
+    </div>
 
 <style>
     .pregunta {
@@ -190,10 +184,14 @@
         color: ghostwhite;
     }
 
-    .preg, .enlaces {
+     .enlaces {
             background-color: #006666;
             color: ghostwhite;
         }
+
+    .preg {
+        color: ghostwhite;
+    }
   
     .respuesta {
             left: 5%;
@@ -285,7 +283,6 @@
         background-color: darkcyan;
         color: white;
     }
-</style>
 
     .list-group-item.list-group-item-action.active {
         background-color: darkcyan;

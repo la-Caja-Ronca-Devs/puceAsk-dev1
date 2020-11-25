@@ -30,12 +30,12 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Inicio(string categoria, string buscar, int pagina =1)
+        public ActionResult Inicio(string categoria, string buscar, string ordenar, int pagina =1)
         {
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
             
             var viewModel = new PreguntasManager();
-            if (categoria != null && pagina >= 2)
+            if (categoria != null )
             {
                 var cantidadRegistrosPorPagina = 2;
                 var preguntas = db.Pregunta.OrderBy(x => x.Fechapregunta)
@@ -50,7 +50,7 @@ namespace puceAsk_dev1.Controllers
 
 
                 var NombreCategoria = categoria;
-                
+                ViewData["categoria"] = categoria;
                 viewModel.preguntas = (from c in db.Pregunta
                                 .Include(i => i.Categoria)
 
@@ -60,17 +60,17 @@ namespace puceAsk_dev1.Controllers
                                        select c);
 
 
-                var cantidadRegistrosPorPagina = 2;
-                var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
-                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                    .Take(cantidadRegistrosPorPagina).ToList();
-                var totalRegistros = db.Pregunta.Count();
+                //var cantidadRegistrosPorPagina = 2;
+                //var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
+                //    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                //    .Take(cantidadRegistrosPorPagina).ToList();
+                //var totalRegistros = db.Pregunta.Count();
 
-                viewModel.preguntas = consulta;
-                viewModel.PaginaActual = pagina;
-                viewModel.TotalRegistro = totalRegistros;
-                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
-                ViewData["categoria"] = categoria+"?"+pagina;
+                //viewModel.preguntas = consulta;
+                //viewModel.PaginaActual = pagina;
+                //viewModel.TotalRegistro = totalRegistros;
+                //viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
+                //ViewData["categoria"] = categoria+"?"+pagina;
 
             }
             else
@@ -88,7 +88,7 @@ namespace puceAsk_dev1.Controllers
             switch (ordenar)
             {
                 case "categoria":
-                    viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.Categoria.NombreCategoria);
+                    viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.Categoria.NombreCategoria);
                     break;
                 case "antiguos":
                     viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.Fechapregunta);
@@ -97,7 +97,7 @@ namespace puceAsk_dev1.Controllers
                     viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.Fechapregunta);
                     break;
                 case "titulo":
-                    viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.TituloPregunta);
+                    viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.TituloPregunta);
                     break;
                 default:
                     viewModel.preguntas = viewModel.preguntas;
@@ -145,6 +145,7 @@ namespace puceAsk_dev1.Controllers
 
                 where p.PreguntaId == id 
                 select p).First();
+
             TempData["idPregunta"] = pregunta;
             return View(pregunta);
         }
@@ -164,7 +165,7 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
 
-        public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta
+        public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta)
         {
             if (ModelState.IsValid)
             {

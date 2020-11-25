@@ -42,9 +42,9 @@
     foreach (var resp in Model.Respuestas)
     {
         string imgDataURL = "";
-        if (resp.Cuenta.Usuario.Foto != null)
+        if (resp.Usuario.Foto != null)
         {
-            byte[] foto = resp.Cuenta.Usuario.Foto;
+            byte[] foto = resp.Usuario.Foto;
             string imreBase64Data = Convert.ToBase64String(foto);
             imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
         }
@@ -58,7 +58,7 @@
                         <p class="lead">@resp.DescRespuesta</p>
                         <hr class="my-4">
                         <p>
-                            Usuario: @resp.Cuenta.Usuario.Nombre
+                            Usuario: @resp.Usuario.Nombre
                         </p>
                     </div>
                 </div>
