@@ -12,8 +12,7 @@ namespace puceAsk_dev1.Controllers
 {
     public class RespuestasController : InfoBaseController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
+        private ApplicationDbContext db = new ApplicationDbContext();       
         // GET: Respuestas
         [Authorize(Roles = "admin")]
         public ActionResult Index()
@@ -29,7 +28,7 @@ namespace puceAsk_dev1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Respuesta respuesta = db.Respuesta.Find(id);
+            Respuesta respuesta = db.Respuesta.Find(id);            
             if (respuesta == null)
             {
                 return HttpNotFound();
@@ -39,7 +38,7 @@ namespace puceAsk_dev1.Controllers
 
         // GET: Respuestas/Create
         [Authorize(Roles = "user")]
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
             return View();
         }
@@ -48,18 +47,27 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user")]
+        //[Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
-        {
+        public ActionResult Create([Bind(Include = "DescRespuesta")] Respuesta respuesta)
+        {           
             if (ModelState.IsValid)
             {
+                Pregunta id = (Pregunta)TempData["idPregunta"];
+                var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                respuesta.UsuarioId = usuario.Id;
+                respuesta.PreguntaId = id.PreguntaId;
+                respuesta.FechaPublicacion = DateTime.Now;
                 db.Respuesta.Add(respuesta);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Preguntas", new { id = id.PreguntaId });
             }
-
-            return View(respuesta);
+            else
+            {
+                respuesta.DescRespuesta = "No pudo registrar su respuesta. Intente nuevamente.";
+                return View(respuesta);
+            }
+            
         }
 
         // GET: Respuestas/Edit/5
