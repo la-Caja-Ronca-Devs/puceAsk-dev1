@@ -30,15 +30,24 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-
-
-        public ActionResult Inicio(string categoria, string buscar, string ordenar)
+        public ActionResult Inicio(string categoria, string buscar, int pagina =1)
         {
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
             
             var viewModel = new PreguntasManager();
-            if (categoria != null)
+            if (categoria != null && pagina >= 2)
             {
+                var cantidadRegistrosPorPagina = 2;
+                var preguntas = db.Pregunta.OrderBy(x => x.Fechapregunta)
+                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                    .Take(cantidadRegistrosPorPagina).ToList();
+                var totalRegistros = db.Pregunta.Count();
+
+                viewModel.preguntas = preguntas;
+                viewModel.PaginaActual = pagina;
+                viewModel.TotalRegistro = totalRegistros;
+                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
+
 
                 var NombreCategoria = categoria;
                 ViewData["categoria"] = categoria;
@@ -136,7 +145,7 @@ namespace puceAsk_dev1.Controllers
 
                 where p.PreguntaId == id 
                 select p).First();
-
+            TempData["idPregunta"] = pregunta;
             return View(pregunta);
         }
 
@@ -249,6 +258,7 @@ namespace puceAsk_dev1.Controllers
             }
             base.Dispose(disposing);
         }
+
         [Authorize(Roles = "user")]
         public ActionResult PreguntasRealizadas()
         {

@@ -9,6 +9,7 @@
     var radio = 2;
     var cantMaxPaginas = radio * 2 + 1;
     string categoria;
+
     int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
     if(Model.PaginaActual > radio + 1)
     {
@@ -31,7 +32,6 @@
     {
         if (i == Model.PaginaActual)
         {
-
         <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i })</li>
         }
         else
@@ -40,6 +40,7 @@
         }
     }
     <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas })</li>
+
 
 </ul>
 <style>

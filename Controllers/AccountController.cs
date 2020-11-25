@@ -179,7 +179,6 @@ namespace puceAsk_dev1.Controllers
                 user.Foto = imageData;
                 user.SaldoCuenta = 20;
                 var result = await UserManager.CreateAsync(user, model.Password);
-
                 if (result.Succeeded)
                 {
                     ApplicationUser NoRolUser = await UserManager.FindByNameAsync(user.UserName);
