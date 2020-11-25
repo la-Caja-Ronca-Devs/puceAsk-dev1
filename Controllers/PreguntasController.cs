@@ -30,12 +30,12 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Inicio(string categoria, string buscar, int pagina =1)
+        public ActionResult Inicio(string categoria, string buscar, string ordenar, int pagina =1)
         {
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
             
             var viewModel = new PreguntasManager();
-            if (categoria != null && pagina >= 2)
+            if (categoria != null )
             {
                 var cantidadRegistrosPorPagina = 2;
                 var preguntas = db.Pregunta.OrderBy(x => x.Fechapregunta)
@@ -145,6 +145,7 @@ namespace puceAsk_dev1.Controllers
 
                 where p.PreguntaId == id 
                 select p).First();
+
             TempData["idPregunta"] = pregunta;
             return View(pregunta);
         }

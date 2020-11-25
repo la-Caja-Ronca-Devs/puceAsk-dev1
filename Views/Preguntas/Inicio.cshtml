@@ -153,14 +153,9 @@
                         </div>
                     </a>                    
                 </div>
-                <div class="card-header titulo">
-                    @Html.ActionLink("Responder","Create", "Respuestas", null, new { style = "color: white;" })
-                            <p class="detalles">
-                                Autor: @Html.DisplayFor(modelItem => item.Usuario.Nombre)
-                            </p>
-                        </div>
-                    </a>                    
-                </div>
+               
+                                      
+               
                 
             }
             { Html.RenderPartial("_Paginacion", Model);}
@@ -175,7 +170,7 @@
 
         <br /> <br />
     </div>
-</div>
+    </div>
 
 <style>
     .pregunta {
@@ -189,10 +184,14 @@
         color: ghostwhite;
     }
 
-    .preg, .enlaces {
+     .enlaces {
             background-color: #006666;
             color: ghostwhite;
         }
+
+    .preg {
+        color: ghostwhite;
+    }
   
     .respuesta {
             left: 5%;
