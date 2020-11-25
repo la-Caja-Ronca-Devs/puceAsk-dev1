@@ -23,6 +23,9 @@ namespace puceAsk_dev1.Models
         [Required]
         [Column("mensaje")]
         public string MensajeDesc { get; set; }
+        [Required]
+        [Column("fechaMensaje")]
+        public DateTime FechaMensaje { get; set; }
 
     }
 }

@@ -35,7 +35,15 @@ namespace puceAsk_dev1.Controllers
             var viewModel = new PreguntasManager();
             if (categoria != null)
             {
-                
+                var cantidadRegistrosPorPagina = 2;
+                var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
+                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                    .Take(cantidadRegistrosPorPagina).ToList();
+                var totalRegistros = db.Pregunta.Count();
+                viewModel.preguntas = consulta;
+                viewModel.PaginaActual = pagina;
+                viewModel.TotalRegistro = totalRegistros;
+                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
 
                 var NombreCategoria = categoria;
                 
@@ -44,20 +52,11 @@ namespace puceAsk_dev1.Controllers
                                 .Include(i => i.Respuestas.Select(c => c.Cuenta))
                                 .Include(i => i.Cuenta.Usuario)
                                        where c.Categoria.NombreCategoria == categoria
-                                       select c);
+                                       select c).Include("?"+pagina);
                 
-
-                var cantidadRegistrosPorPagina = 2;
-                var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
-                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                    .Take(cantidadRegistrosPorPagina).ToList();
-                var totalRegistros = db.Pregunta.Count();
-
-                viewModel.preguntas = consulta;
-                viewModel.PaginaActual = pagina;
-                viewModel.TotalRegistro = totalRegistros;
-                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
-                ViewData["categoria"] = categoria+"?"+pagina;
+                
+                
+                ViewData["categoria"] = categoria;
             }
             else
             {
