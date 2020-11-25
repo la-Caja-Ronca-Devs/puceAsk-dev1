@@ -14,7 +14,7 @@
 
             @if (ViewData["categoria"].ToString() != "Todas")
             {
-                @Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
+                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
             }
             else
             {
@@ -43,7 +43,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace" })</li> &nbsp; / &nbsp;
-                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "enlace" })</li>
+                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, new { categoria = ViewData["categoria"].ToString()}, new { @class = "enlace" })</li>
             </ol>
         </nav>
 
@@ -53,7 +53,6 @@
                     <button class="btn buscador" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="padding: 8px">
                         Filtrar y ordenar <img src="https://img.icons8.com/ios-filled/50/000000/filter-and-sort.png" height="20" />
                     </button>
-
             </div>
 
 
@@ -93,7 +92,6 @@
                             Buscar: <hr />
                             <div class="form-group">
                                 <input name="buscar" placeholder="Texto de búsqueda" type="text" />
-                                <button class="btn btn-outline-info buscador" type="submit"><img src="https://img.icons8.com/search" alt="buscar" height="20" /></button>
 
                             </div>
                         </div>
@@ -118,9 +116,9 @@
             foreach (var item in Model.preguntas)
             {
                 string imgDataURL = "";
-                if (item.Cuenta.Usuario.Foto != null)
+                if (item.Usuario.Foto != null)
                 {
-                    byte[] foto = item.Cuenta.Usuario.Foto;
+                    byte[] foto = item.Usuario.Foto;
                     string imreBase64Data = Convert.ToBase64String(foto);
                     imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                 }
@@ -149,7 +147,7 @@
                             <p  class="detalles">
                                 Autor: 
                                 <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
-                                @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
+                                @Html.DisplayFor(modelItem => item.Usuario.Nombre)
                             </p>
                         </div>
                     </a>                    
@@ -281,7 +279,6 @@
         background-color: darkcyan;
         color: white;
     }
-</style>
 
     .list-group-item.list-group-item-action.active {
         background-color: darkcyan;
