@@ -1,36 +1,56 @@
 ﻿@model puceAsk_dev1.Models.Respuesta
 
-@{
-    ViewBag.Title = "Create";
-}
 
-<h2>Respuesta</h2>
+<h2>@Model.Pregunta.TituloPregunta</h2>
+<h4>@Model.Pregunta.DescPregunta</h4>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Respuestas", FormMethod.Post, new { id = "NuevaRespuesta", enctype = "multipart/form-data", name = "Respuesta" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">        
-       
-        <hr />     
+
+    <div class="container">
+
+        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-       
+
         <div class="form-group">
-            @Html.LabelFor(model => model.DescRespuesta, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DescRespuesta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.DescRespuesta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Yo respondo que..." } })
                 @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
+                <input type="submit" id="enviar" value="Responder" class="btn btn-primary" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#enviar").click(function (e) {
+                e.preventDefault();
+                swal({
+                    title: "¡Gracias por responder!",
+                    text: "Espera atento, quizá seas la mejor respuesta.",
+                    icon: "success"
+                })
+                    .then((aceptar) => {                       
+                                $("#NuevaRespuesta").submit();                    
+                    });
+
+                return false;
+            });
+        });
+
+    </script>
+
+}
