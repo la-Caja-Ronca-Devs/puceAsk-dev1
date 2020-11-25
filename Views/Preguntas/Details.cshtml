@@ -23,8 +23,11 @@
         <hr class="my-4">
         <p>
             @Html.DisplayFor(model => model.Fechapregunta) |
-            @Html.DisplayFor(model => model.Categoria.NombreCategoria) 
+            @Html.DisplayFor(model => model.Categoria.NombreCategoria)
         </p>
+    </div>
+    <div class="card-header titulo">
+        @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
     </div>
 </div>
 
@@ -39,23 +42,23 @@
     foreach (var resp in Model.Respuestas)
     {
         string imgDataURL = "";
-        if (resp.Cuenta.Usuario.Foto != null)
+        if (resp.Usuario.Foto != null)
         {
-            byte[] foto = resp.Cuenta.Usuario.Foto;
+            byte[] foto = resp.Usuario.Foto;
             string imreBase64Data = Convert.ToBase64String(foto);
             imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
         }
         <div class="card respuesta">
             <div class="row">
                 <div class="col-md-2">
-                    <img alt="fotito" src="@imgDataURL" width="100" height="100" />
+                    <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
                 </div>
                 <div class="col">
                     <div class="container">
                         <p class="lead">@resp.DescRespuesta</p>
                         <hr class="my-4">
                         <p>
-                            Usuario: @resp.Cuenta.Usuario.Nombre
+                            Usuario: @resp.Usuario.Nombre
                         </p>
                     </div>
                 </div>

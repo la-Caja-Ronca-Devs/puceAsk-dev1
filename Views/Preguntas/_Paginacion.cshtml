@@ -1,3 +1,4 @@
+
 ﻿@model puceAsk_dev1.Models.PreguntasManager
 
 @{
@@ -8,6 +9,9 @@
     int inicial = 1;
     var radio = 2;
     var cantMaxPaginas = radio * 2 + 1;
+    string categoria;
+
+
     int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
     if(Model.PaginaActual > radio + 1)
     {
@@ -23,21 +27,26 @@
     }
 }
 <ul class="pagination">
+
     <li>@Html.ActionLink("Primera", null, new { pagina = 1 })</li>
+    
+
     @for (int i = inicial; i <= final; i++)
     {
         if (i == Model.PaginaActual)
         {
-            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i })</li>
+        <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i })</li>
         }
         else
         {
-            <li>@Html.ActionLink(i.ToString(), null, new { pagina = i })</li>
+        <li>@Html.ActionLink(i.ToString(), null, new { pagina = i })</li>
         }
     }
-    <li>@Html.ActionLink("Última", null, new { pagina =cantidadPaginas})</li>
+    <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas })</li>
 </ul>
 <style>
     .pagination{
     }
 </style>
+
+

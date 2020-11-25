@@ -5,24 +5,35 @@
 }
 
 <div class="row">
-    <div class="col-md-2" >
+    <div class="col-md-2">
 
         <h4>Categorías</h4>
 
-        <ul class="categorias">
 
-            <li>
-                @Html.ActionLink("Todas", "Inicio", null, null, null)
-            </li>
+        <div class="categorias list-group">
 
-            <li>
-                @foreach (var item in Model.categorias)
+            @if (ViewData["categoria"].ToString() != "Todas")
+            {
+                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action" })
+            }
+            else
+            {
+                @Html.ActionLink("Todas", "Inicio", null, null, new { @class = "list-group-item list-group-item-action active" })
+            }
+            @foreach (var item in Model.categorias)
+            {
+                if (item.NombreCategoria == ViewData["categoria"].ToString())
                 {
-                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria}, null) <br />
-
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action active" })
                 }
-            </li>
-        </ul>
+                else
+                {
+                    @Html.ActionLink(@item.NombreCategoria, "Inicio", null, new { categoria = item.NombreCategoria }, new { @class = "list-group-item list-group-item-action" })
+                }
+            }
+
+        </div>
+
     </div>
 
     <div class="col-md-10">
@@ -32,34 +43,89 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li>@Html.ActionLink("Preguntas", "Inicio", null, null, new { @class = "enlace" })</li> &nbsp; / &nbsp;
-                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, null, new { @class = "enlace" })</li>
+                <li>@Html.ActionLink(ViewData["categoria"].ToString(), "Inicio", null, new { categoria = ViewData["categoria"].ToString()}, new { @class = "enlace" })</li>
             </ol>
         </nav>
 
 
         <div class="row">
-            <div class="col-md-6">
-                <br />
-                <label for="filtrar">Filtar</label>
-                <input type="text" name="filtar" />
+
+            <div class="col-md-6"><br />
+                    <button class="btn buscador" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="padding: 8px">
+                        Filtrar y ordenar <img src="https://img.icons8.com/ios-filled/50/000000/filter-and-sort.png" height="20" />
+                    </button>
             </div>
 
 
             <div class="col" align="right">
+                <br />
                 @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "link-button" })
             </div>
 
         </div>
+        
+        <form method="get" action=@Url.Action("Inicio", "Preguntas" ) >
 
 
-        <br />
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body ">
+                    <div class="row">
+                        <div class="col-md-4">
+                            Ordenar por: <hr />
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="ordenar" id="inlineRadio1" value="titulo">
+                                <label class="form-check-label" for="inlineRadio1">Título</label>
+                            </div>
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="ordenar" id="inlineRadio2" value="categoria">
+                                <label class="form-check-label" for="inlineRadio3">Categoría</label>
+                            </div>
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="ordenar" id="inlineRadio3" value="antiguos">
+                                <label class="form-check-label" for="inlineRadio3">Más antiguos</label>
+                            </div>
+                            <div class="form-check ">
+                                <input class="form-check-input" type="radio" name="ordenar" id="inlineRadio4" value="Date">
+                                <label class="form-check-label" for="inlineRadio3">Más recientes</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            Buscar: <hr />
+                            <div class="form-group">
+                                <input name="buscar" placeholder="Texto de búsqueda" type="text" />
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card-footer">
+                    <div class="col" align="right">
+                        <button class="btn btn-outline-info boton" type="submit">Aplicar</button>
+                    </div>
+                </div>
+            </div>
+
+            
+        </form>
+      <br/>
+
         @if (Model.preguntas.Count() > 0)
         {
 
             foreach (var item in Model.preguntas)
             {
+                string imgDataURL = "";
+                if (item.Usuario.Foto != null)
+                {
+                    byte[] foto = item.Usuario.Foto;
+                    string imreBase64Data = Convert.ToBase64String(foto);
+                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                }
 
-                <div class="card" style="margin-top: 20px">
+                <div class="card carta" style="margin-top: 20px">
+
                     <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="card-block stretched-link text-decoration-none">
                         <div class="card-header titulo">
 
@@ -78,17 +144,59 @@
                                 }
 
                             </p>
-                            <p class="detalles">
-                                Autor: @Html.DisplayFor(modelItem => item.Cuenta.Usuario.Nombre)
+
+                            <p  class="detalles">
+                                Autor: 
+                                <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
+                                @Html.DisplayFor(modelItem => item.Usuario.Nombre)
                             </p>
                         </div>
-                    </a>                    
-                </div>
-                <div class="card-header titulo">
-                    @Html.ActionLink("Responder","Create", "Respuestas", null, new { style = "color: white;" })
+                    </a>
                 </div>
             }
-            { Html.RenderPartial("_Paginacion", Model);}
+            
+
+                var cantidadPaginas = (int)Math.Ceiling((double)Model.TotalRegistro / Model.RegistroPorPagina);
+          
+
+           
+                int inicial = 1;
+                var radio = 2;
+                var cantMaxPaginas = radio * 2 + 1;
+                string categoria;
+                int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+                if (Model.PaginaActual > radio + 1)
+                {
+                    inicial = Model.PaginaActual - radio;
+                    if (cantidadPaginas > Model.PaginaActual + radio)
+                    {
+                        final = Model.PaginaActual + radio;
+                    }
+                    else
+                    {
+                        final = cantidadPaginas;
+                    }
+                }
+           
+            <ul class="pagination">
+
+                <li>@Html.ActionLink("Primera", categoria = "Inicio", new { pagina = 1 })</li>
+
+                @for (int i = inicial; i <= final; i++)
+                {
+                    if (i == Model.PaginaActual)
+                    {
+
+                        <li class="active">@Html.ActionLink(i.ToString(), categoria = "Inicio", new { pagina = i });</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(i.ToString(), categoria = "Inicio", new { pagina = i })</li>
+                    }
+                }
+                <li>@Html.ActionLink("Última", categoria = "Inicio" , new { pagina = cantidadPaginas })</li>
+
+            </ul>      
 
         }
         else
@@ -100,7 +208,8 @@
 
         <br /> <br />
     </div>
-</div>
+    </div>
+
 
 <style>
     .pregunta {
@@ -109,15 +218,20 @@
         }
 
     .titulo {
-            color: white;
-            background-color: #006666;
+        color: white;
+        background-color: #006666;
         color: ghostwhite;
-        }
+    }
 
-    .preg, .enlaces {
+     .enlaces {
+            background-color: #006666;
             color: ghostwhite;
         }
 
+    .preg {
+        color: ghostwhite;
+    }
+  
     .respuesta {
             left: 5%;
             border: solid 1px;
@@ -148,38 +262,80 @@
             text-decoration: none !important;
         }
 
+
     .enlaces{
             text-decoration: none !important;
         }
+
 
     .ver {
             text-decoration: none;
             color: #212529;
     }
 
-    .enlaces:hover{
-            color: white;
-        }
+    .enlaces:hover {
+        color: white;
+    }
 
-    .card:hover {
+
+    .carta:hover {
             transform: scale(1.05);
             background: #fff;
+
         box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
         /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
         / -webkit-transition: all 0.2s ease-in;
-            -moz-transition: all 0.2s ease-in;
-            -ms-transition: all 0.2s ease-in;
-            -o-transition: all 0.2s ease-in;
-            transition: all 0.2s ease-in;
-            margin-top: 50px;
-        }
-    
-    .detalles{
-            color: black;
-        }
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+        margin-top: 50px;
+    }
+
+    .detalles {
+        color: black;
+    }
+
     .enlace {
         text-decoration: none !important;
         color: black;
     }
-</style>
+    .buscador {
+        padding-top: 2px;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-bottom: 4px;
+        border-color: darkcyan;
+    }
 
+    .fotos {
+        vertical-align: middle;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .boton{
+        background-color: darkcyan;
+        color: white;
+    }
+
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+
+    .pagination {
+    }
+</style>

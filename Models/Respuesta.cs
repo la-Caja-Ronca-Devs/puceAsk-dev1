@@ -10,26 +10,20 @@ namespace puceAsk_dev1.Models
     [Table("Respuestas", Schema = "ask")]
     public class Respuesta
     {
-        [Key]
-        [Column("id_respuesta")]
-        public int RespuestaId { get; set; }
-
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
         [Required]
-        [Column("fecha_publicacion")]
         public DateTime FechaPublicacion { get; set; }
+        [Key,Column(Order = 0), ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public ApplicationUser Usuario { get; set; }
 
-        public int CuentaId { get; set; }
-        public Cuenta Cuenta { get; set; }
 
         [Required]
-        [Column("desc_respuesta")]
         public String DescRespuesta { get; set; }
-        
-   
-
+      
+        [Key,Column(Order = 1), ForeignKey("Pregunta")]
         public int PreguntaId { get; set; }
         public Pregunta Pregunta { get; set; }
 

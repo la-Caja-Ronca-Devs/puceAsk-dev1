@@ -7,13 +7,13 @@ namespace puceAsk_dev1.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class carga1 : IMigrationMetadata
+    public sealed partial class carga5 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(carga1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(carga5));
         
         string IMigrationMetadata.Id
         {
-            get { return "202011201956245_carga1"; }
+            get { return "202011240732005_carga5"; }
         }
         
         string IMigrationMetadata.Source
