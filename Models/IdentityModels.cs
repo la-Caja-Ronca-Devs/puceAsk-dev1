@@ -36,7 +36,6 @@ namespace puceAsk_dev1.Models
     }
 
 
-
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
