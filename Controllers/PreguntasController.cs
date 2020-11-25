@@ -54,7 +54,7 @@ namespace puceAsk_dev1.Controllers
                                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                                 .Include(i => i.Usuario)
                                        where c.Categoria.NombreCategoria == categoria
-                                       select c).Include("?"+pagina);
+                                       select c);
                 
                 
                 
