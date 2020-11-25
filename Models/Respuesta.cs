@@ -10,6 +10,7 @@ namespace puceAsk_dev1.Models
     [Table("Respuestas", Schema = "ask")]
     public class Respuesta
     {
+
         [Required]
         public DateTime FechaPublicacion { get; set; }
         [Key,Column(Order = 0), ForeignKey("Usuario")]
