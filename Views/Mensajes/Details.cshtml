@@ -1,0 +1,50 @@
+﻿@model puceAsk_dev1.Models.Mensaje
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Mensaje</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Emisor.CuentaId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Emisor.CuentaId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Receptor.CuentaId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Receptor.CuentaId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MensajeDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MensajeDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaMensaje)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaMensaje)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MensajeId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
