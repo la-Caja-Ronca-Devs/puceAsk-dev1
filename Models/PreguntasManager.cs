@@ -22,7 +22,6 @@ namespace puceAsk_dev1.Models
         public int PaginaActual { get; set; }
         public int TotalRegistro { get; set; }
         public int RegistroPorPagina { get; set; }
-
     }
     
 }
