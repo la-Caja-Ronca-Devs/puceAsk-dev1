@@ -38,7 +38,7 @@ namespace puceAsk_dev1.Controllers
            
             var viewModel = new PreguntasManager();
           
-            if (categoria != null )
+            if (categoria != null )//Si escoge categoría
             {
                 var cantidadRegistrosPorPagina = 2;//Cambiar a 20
                 var totalRegistros = db.Pregunta.Count();
@@ -50,7 +50,8 @@ namespace puceAsk_dev1.Controllers
                                           where c.Categoria.NombreCategoria == categoria
                                           select c).Count();
                 viewModel.RegistrosCategoria = registrosCategoria;
-                if (registrosCategoria > cantidadRegistrosPorPagina)
+
+                if (registrosCategoria > cantidadRegistrosPorPagina)//mas de los registros para una página
                 {
                     viewModel.preguntas = (from c in db.Pregunta
                                     .Include(i => i.Categoria)
@@ -66,7 +67,7 @@ namespace puceAsk_dev1.Controllers
                     viewModel.TotalPaginas = totalpaginas;
                     viewModel.RegistrosPorPagina = cantidadRegistrosPorPagina;
                 }
-                else
+                else//Menos registros por pagina
                 {
                     viewModel.preguntas = (from c in db.Pregunta
                                     .Include(i => i.Categoria)
@@ -74,33 +75,20 @@ namespace puceAsk_dev1.Controllers
                                     .Include(i => i.Usuario)
                                            where c.Categoria.NombreCategoria == categoria
                                            select c);
-                    
                 }
-                               
-
                 ViewData["categoria"] = categoria;
-
             }
-            else
+            else//Inicio todas las categorias
             {
-                Random random = new Random();
-                int seed = random.Next(2,13);
-                Thread.Sleep(1);
-                viewModel.preguntas = db.Pregunta.OrderBy(x=>x.PreguntaId == seed)
+                viewModel.preguntas = db.Pregunta.OrderBy(x => Guid.NewGuid())
                     .Include(i => i.Categoria)
                     .Include(i => i.Respuestas.Select(c => c.Usuario))
-                    .Include(i => i.Usuario).Take(3) ;
-
-                /*viewModel.preguntas = db.Pregunta.Find(x => x.Categoria.NombreCategoria == categoria)
-                    .OrderBy(x => seed)
-                    .Take(2);*/
-
-                /*viewModel.preguntas = (from c in db.Pregunta
-                                     .Include(i => i.Categoria)
-                                     .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                     .Include(i => i.Usuario)).OrderBy(x => seed)
-                     .Take(3);*/ //Cambiar a 20
+                    .Include(i => i.Usuario).Take(3);//Cambiar a 20
                 ViewData["categoria"] = "Todas";
+                if ( buscar!=null)///caundo busca
+                {
+
+                }
             }
             viewModel.categorias = db.Categoria;
             ViewBag.categorias = (from c in db.Categoria select c).ToList();
