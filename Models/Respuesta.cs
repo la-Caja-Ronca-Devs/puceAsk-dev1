@@ -10,8 +10,6 @@ namespace puceAsk_dev1.Models
     [Table("Respuestas", Schema = "ask")]
     public class Respuesta
     {
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
 
         [Required]
         public DateTime FechaPublicacion { get; set; }

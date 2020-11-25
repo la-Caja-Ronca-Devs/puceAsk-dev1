@@ -192,6 +192,7 @@
     <Compile Include="Controllers\MensajesController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />
     <Compile Include="Controllers\RespuestasController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -463,6 +464,9 @@
     <Content Include="Views\Mensajes\Edit.cshtml" />
     <Content Include="Views\Mensajes\Index.cshtml" />
     <Content Include="Views\Mensajes\MensajesRecibidos.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Usuarios\EditIndividual.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
