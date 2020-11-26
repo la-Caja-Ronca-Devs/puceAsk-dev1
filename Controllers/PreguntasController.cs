@@ -50,7 +50,6 @@ namespace puceAsk_dev1.Controllers
                                           where c.Categoria.NombreCategoria == categoria
                                           select c).Count();
                 viewModel.RegistrosCategoria = registrosCategoria;
-
                 if (registrosCategoria > cantidadRegistrosPorPagina)//mas de los registros para una página
                 {
                     viewModel.preguntas = (from c in db.Pregunta
@@ -61,6 +60,7 @@ namespace puceAsk_dev1.Controllers
                                            select c).OrderBy(x => x.Fechapregunta)
                                      .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                                      .Take(cantidadRegistrosPorPagina);
+                    
                     var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
                     viewModel.PaginaActual = pagina;
                     viewModel.TotalRegistros = totalRegistros;
@@ -75,20 +75,82 @@ namespace puceAsk_dev1.Controllers
                                     .Include(i => i.Usuario)
                                            where c.Categoria.NombreCategoria == categoria
                                            select c);
+                    
                 }
                 ViewData["categoria"] = categoria;
             }
             else//Inicio todas las categorias
             {
-                viewModel.preguntas = db.Pregunta.OrderBy(x => Guid.NewGuid())
+
+                /*if ( buscar==null)///caundo busca
+                {
+                        viewModel.preguntas = db.Pregunta.OrderBy(x => Guid.NewGuid())
+                            .Include(i => i.Categoria)
+                            .Include(i => i.Respuestas.Select(c => c.Usuario))
+                            .Include(i => i.Usuario).Take(3);//Cambiar a 20
+                    
+                }
+               
+                if (buscar != null)
+                {
+                    viewModel.preguntas = db.Pregunta
                     .Include(i => i.Categoria)
                     .Include(i => i.Respuestas.Select(c => c.Usuario))
-                    .Include(i => i.Usuario).Take(3);//Cambiar a 20
-                ViewData["categoria"] = "Todas";
-                if ( buscar!=null)///caundo busca
-                {
+                    .Include(i => i.Usuario);//Cambiar a 20
+                    
+                
+                    switch (ordenar)
+                    {
+                        case "categoria":
+                            viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.Categoria.NombreCategoria);
+                            break;
+                        case "antiguos":
+                            viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.Fechapregunta);
+                            break;
+                        case "Date":
+                            viewModel.preguntas = viewModel.preguntas.OrderByDescending(s => s.Fechapregunta);
+                            break;
+                        case "titulo":
+                            viewModel.preguntas = viewModel.preguntas.OrderBy(s => s.TituloPregunta);
+                            break;
+                        default:
+                            viewModel.preguntas = viewModel.preguntas;
+
+                            break;
+                    }
+
+                    if (!string.IsNullOrEmpty(buscar))
+                    {
+                        foreach (var item in buscar.Split(new char[] { ' ' },
+                                     StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            viewModel.preguntas = viewModel.preguntas.Where(x => x.TituloPregunta.ToLower().Contains(item.ToLower()) ||
+                                                x.DescPregunta.ToLower().Contains(item.ToLower()) ||
+                                                x.Categoria.NombreCategoria.ToLower().Contains(item.ToLower()))
+                                                .ToList();
+
+                            //viewModel.preguntas = from p in db.Pregunta where p.TituloPregunta == like%buscar 
+                        }
+                    }
+                    return View(viewModel);
 
                 }
+                ViewData["categoria"] = "Todas";
+                viewModel.categorias = db.Categoria;
+                ViewBag.categorias = (from c in db.Categoria select c).ToList();
+            }
+            return View(viewModel);
+        }
+        */
+                viewModel.preguntas = db.Pregunta.OrderBy(x => Guid.NewGuid())
+                                    .Include(i => i.Categoria)
+                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
+                                    .Include(i => i.Usuario).Take(3);//Cambiar a 20
+                ViewData["categoria"] = "Todas";
+                /*if (buscar != null)///caundo busca
+                {
+
+                }*/
             }
             viewModel.categorias = db.Categoria;
             ViewBag.categorias = (from c in db.Categoria select c).ToList();
@@ -131,12 +193,10 @@ namespace puceAsk_dev1.Controllers
                 }
                 return View(viewModel);
             }
-           
+
         }
-
-
         // GET: Preguntas/Details/5
-        
+
         public ActionResult Details(int? id)
         {
             if (id == null)
