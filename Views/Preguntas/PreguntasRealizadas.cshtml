@@ -41,7 +41,7 @@
                                         <div class="row">
                                             <span class="badge badge-pill badge-info">@item.Respuestas.Count() Respuestas.</span>
                                         </div>
-                                        @if (item.MejorUsuarioRespuestaId == null)
+                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && item.MejorUsuarioRespuestaId == null)
                                         {
                                             <div class="row">
                                                 <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
@@ -50,20 +50,27 @@
                                         else
                                         {
                                             <div class="row">
+                                                <span class="badge badge-pill badge-light">Respondiendose</span>
+                                            </div>
+                                        }
+                                        @if (item.MejorUsuarioRespuestaId != null)
+                                        {
+                                            <div class="row">
                                                 <span class="badge badge-pill badge-success">Mejor Respuesta asignada</span>
                                             </div>
                                         }
-                                        @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
+
+                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && DateTime.Now <= item.Fechapregunta.AddDays(10))
                                         {
                                             <div class="row">
-                                                <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias.</span>
+                                                <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias para elegir la mejor respuesta.</span>
                                             </div>
                                         }
 
                                         @if (DateTime.Now <= item.Fechapregunta.AddDays(5))
                                         {
                                             <div class="row">
-                                                <span class="badge badge-primary">Abierta</span>
+                                                <span class="badge badge-primary">Abierta </span>
                                             </div>
                                         }
                                         else

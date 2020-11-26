@@ -1,32 +1,33 @@
 ﻿@using Microsoft.AspNet.Identity
 
 @if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-        @Html.AntiForgeryToken()
+            {
 
-        <ul class="navbar-nav navbar-right">
-            <li class="nav-item nav-link">
-                <h6 >Puntaje: <span class="badge badge-secondary">@ViewData["puntaje"] </span></h6>
-            </li>
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
 
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loginMenu"><asp:Literal runat="server" Text="<%$Resources:Resources, Language%>" /><img src="@ViewData["Foto"]" alt="foto" class="avatar" /><span class="caret"></span></a>
-                <div class="dropdown-menu" aria-labelledby="loginMenu">
-                    <p class="dropdown-item">Sesión iniciada como: @User.Identity.GetUserName()</p> <hr />
-                    @Html.ActionLink("Preguntas realizadas", "PreguntasRealizadas", "Preguntas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
-                    @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: new { filto = 0}, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
-                    @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
-                    @Html.ActionLink("Administrar Cuenta", "EditIndividual", "Usuarios", new { id = User.Identity.GetUserId() }, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
-                    @Html.ActionLink("Cambiar contraseña", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
+                    <ul class="navbar-nav navbar-right">
+                        <li class="nav-item nav-link">
+                            <h6>Puntaje: <span class="badge badge-secondary">@ViewData["puntaje"] </span></h6>
+                        </li>
+
+    <li class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loginMenu"><asp:Literal runat="server" Text="<%$Resources:Resources, Language%>" /><img src="@ViewData["Foto"]" alt="foto" class="avatar" /><span class="caret"></span></a>
+        <div class="dropdown-menu" aria-labelledby="loginMenu">
+            <p class="dropdown-item">Sesión iniciada como: @User.Identity.GetUserName()</p> <hr />
+            @Html.ActionLink("Preguntas realizadas", "PreguntasRealizadas", "Preguntas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
+            @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: new { filto = 0 }, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
+            @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
+            @Html.ActionLink("Administrar Cuenta", "EditIndividual", "Usuarios", new { id = User.Identity.GetUserId() }, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
+            @Html.ActionLink("Cambiar contraseña", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
 
 
-                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"> Cerrar sesión </a>
+            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()"> Cerrar sesión </a>
 
-                </div>
-            </li>
-        </ul>
+        </div>
+    </li>
+</ul>
     }
 }
 else
@@ -45,3 +46,13 @@ else
         border-radius: 50%;
     }
 </style>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
+}

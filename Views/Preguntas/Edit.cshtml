@@ -40,104 +40,115 @@
         </div>
         <div class="form-group">
             <h4>Mejor Respuesta</h4>
-            @if (Model.MejorUsuarioRespuestaId == null)
+            @if (Model.Fechapregunta.AddDays(5) <= DateTime.Now)
             {
-                if (Model.Respuestas.Count() > 0)
+                if (Model.MejorUsuarioRespuestaId == null)
                 {
-                    foreach (var item in Model.Respuestas)
+                    if (Model.Respuestas.Count() > 0)
                     {
-
-                        string imgDataURL = "";
-                        if (item.Usuario.Foto != null)
+                        foreach (var item in Model.Respuestas)
                         {
-                            byte[] foto = item.Usuario.Foto;
-                            string imreBase64Data = Convert.ToBase64String(foto);
-                            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                        }
-                        else
-                        {
-                            imgDataURL = "https://img.icons8.com/color/user";
-                        }
 
-                        <div class="card respuesta order-1">
-                            <div class="card-horizontal">
-                                <div class="col-md-auto">
-                                    @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId)
-                                    <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
-                                </div>
-                                <div class="col">
-                                    <div class="container">
-                                        <p class="lead">@item.DescRespuesta</p>
-                                        <hr class="my-4">
-                                        <p>
-                                            Usuario: @item.Usuario.Nombre
-                                        </p>
-                                        <div class="row card-footer">
-                                            <small class="text-muted">@item.FechaPublicacion</small>
+                            string imgDataURL = "";
+                            if (item.Usuario.Foto != null)
+                            {
+                                byte[] foto = item.Usuario.Foto;
+                                string imreBase64Data = Convert.ToBase64String(foto);
+                                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                            }
+                            else
+                            {
+                                imgDataURL = "https://img.icons8.com/color/user";
+                            }
+
+                            <div class="card respuesta order-1">
+                                <div class="card-horizontal">
+                                    <div class="col-md-auto">
+                                        @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId)
+                                        <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
+                                    </div>
+                                    <div class="col">
+                                        <div class="container">
+                                            <p class="lead">@item.DescRespuesta</p>
+                                            <hr class="my-4">
+                                            <p>
+                                                Usuario: @item.Usuario.Nombre
+                                            </p>
+                                            <div class="row card-footer">
+                                                <small class="text-muted">@item.FechaPublicacion</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="card">
+                            No hay respuestas de esta pregunta.
+                            @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                         </div>
                     }
                 }
                 else
                 {
-                    <div class="card">
-                        No hay respuestas de esta pregunta.
-                        @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
+                    string imgDataURL_ = "";
+                    if (mr.Usuario.Foto != null)
+                    {
+                        byte[] foto = mr.Usuario.Foto;
+                        string imreBase64Data = Convert.ToBase64String(foto);
+                        imgDataURL_ = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                    }
+                    else
+                    {
+                        imgDataURL_ = "https://img.icons8.com/color/user";
+                    }
+
+                    <div class="card respuesta order-0">
+                        <div class="card-horizontal">
+                            <div class="col-2 text-center">
+                                <div class="row text-center">
+                                    <img src="@imgDataURL_" alt="foto" width="100" height="100" class="embed-responsive fotos" />
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <hr />
+                                    </div>
+                                    <div class="col text-center">
+                                        <span class="badge badge-pill badge-success">Mejor Respuesta</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col">
+                                <div class="container">
+                                    <p class="lead">@mr.DescRespuesta</p>
+                                    <hr class="my-4">
+                                    <p>
+                                        Usuario: @mr.Usuario.Nombre
+                                    </p>
+                                    <div class="row card-footer">
+                                        <small class="text-muted">@mr.FechaPublicacion</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+
                 }
             }
             else
             {
-                string imgDataURL_ = "";
-                if (mr.Usuario.Foto != null)
-                {
-                    byte[] foto = mr.Usuario.Foto;
-                    string imreBase64Data = Convert.ToBase64String(foto);
-                    imgDataURL_ = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                }
-                else
-                {
-                    imgDataURL_ = "https://img.icons8.com/color/user";
-                }
-
-                <div class="card respuesta order-0">
-                    <div class="card-horizontal">
-                        <div class="col-2 text-center">
-                            <div class="row text-center">
-                                <img src="@imgDataURL_" alt="foto" width="100" height="100" class="embed-responsive fotos" />
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <hr />
-                                </div>
-                                <div class="col text-center">
-                                    <span class="badge badge-pill badge-success">Mejor Respuesta</span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col">
-                            <div class="container">
-                                <p class="lead">@mr.DescRespuesta</p>
-                                <hr class="my-4">
-                                <p>
-                                    Usuario: @mr.Usuario.Nombre
-                                </p>
-                                <div class="row card-footer">
-                                    <small class="text-muted">@mr.FechaPublicacion</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="card">
+                    Quedan @((Model.Fechapregunta.AddDays(5) - DateTime.Now).Days) días para poder elegir la mejor respuesta. ¿emocionante cierto?
+                    @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                 </div>
-
-
             }
+
         </div>
 
 
@@ -306,7 +317,7 @@
                 e.preventDefault();
 
                 swal({
-                    title: '¿Seguro que deseas editar esta pregunta?',
+                    title: '¿Seguro que deseas editar esta pregunta? La mejor respuesta solo puedes asignarla una vez.',
                     text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
                     content: "input"
                 })
