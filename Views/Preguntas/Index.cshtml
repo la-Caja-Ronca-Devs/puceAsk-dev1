@@ -4,16 +4,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<br/><h2>Listado de Preguntas</h2><br />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.RowVersion)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.TituloPregunta)
         </th>
@@ -23,29 +19,28 @@
         <th>
             @Html.DisplayNameFor(model => model.Fechapregunta)
         </th>
-        <th></th>
+        
+        <th>Funciones</th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RowVersion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TituloPregunta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DescPregunta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fechapregunta)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PreguntaId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PreguntaId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PreguntaId })
-        </td>
-    </tr>
+<tr>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.TituloPregunta)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DescPregunta)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Fechapregunta)
+    </td>
+   
+    <td>
+        @Html.ActionLink("Editar", "EditAdmin", new { id = item.PreguntaId })
+        @Html.ActionLink("Eliminar", "Delete", new { id = item.PreguntaId })
+    </td>
+</tr>
 }
 
 </table>
