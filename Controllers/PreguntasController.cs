@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using puceAsk_dev1.Models;
@@ -12,6 +13,7 @@ namespace puceAsk_dev1.Controllers
 {
     public class PreguntasController : InfoBaseController
     {
+
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Preguntas
@@ -34,66 +36,60 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Inicio(string categoria, string buscar, string ordenar, int pagina =1)
         {
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
-            
+
             var viewModel = new PreguntasManager();
-            if (categoria != null )
 
+            if (categoria != null )//Si escoge categoría
             {
-                var cantidadRegistrosPorPagina = 2;
-                var preguntas = db.Pregunta.OrderBy(x => x.Fechapregunta)
-                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                    .Take(cantidadRegistrosPorPagina).ToList();
+                var cantidadRegistrosPorPagina = 2;//Cambiar a 20
                 var totalRegistros = db.Pregunta.Count();
-
-                viewModel.preguntas = preguntas;
-                viewModel.PaginaActual = pagina;
-                viewModel.TotalRegistro = totalRegistros;
-                viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
-
                 var NombreCategoria = categoria;
-                ViewData["categoria"] = categoria;
-                viewModel.preguntas = (from c in db.Pregunta
-                                .Include(i => i.Categoria)
+                var registrosCategoria = (from c in db.Pregunta
+                                    .Include(i => i.Categoria)
+                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
+                                    .Include(i => i.Usuario)
+                                          where c.Categoria.NombreCategoria == categoria
+                                          select c).Count();
+                viewModel.RegistrosCategoria = registrosCategoria;
 
-                                .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                .Include(i => i.Usuario)
-                                       where c.Categoria.NombreCategoria == categoria
-                                       select c);
-
-
-                //var cantidadRegistrosPorPagina = 2;
-                //var consulta = db.Pregunta.OrderBy(x => x.Fechapregunta)
-                //    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                //    .Take(cantidadRegistrosPorPagina).ToList();
-                //var totalRegistros = db.Pregunta.Count();
-
-                //viewModel.preguntas = consulta;
-                //viewModel.PaginaActual = pagina;
-                //viewModel.TotalRegistro = totalRegistros;
-                //viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
-                //ViewData["categoria"] = categoria+"?"+pagina;
-                var NombreCategoria = categoria;
-                
-                viewModel.preguntas = (from c in db.Pregunta
-                                .Include(i => i.Categoria)
-
-                                .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                .Include(i => i.Usuario)
-                                       where c.Categoria.NombreCategoria == categoria
-                                       select c);
-                
-                
-                
+                if (registrosCategoria > cantidadRegistrosPorPagina)//mas de los registros para una página
+                {
+                    viewModel.preguntas = (from c in db.Pregunta
+                                    .Include(i => i.Categoria)
+                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
+                                    .Include(i => i.Usuario)
+                                           where c.Categoria.NombreCategoria == categoria
+                                           select c).OrderBy(x => x.Fechapregunta)
+                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+                    var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+                    viewModel.PaginaActual = pagina;
+                    viewModel.TotalRegistros = totalRegistros;
+                    viewModel.TotalPaginas = totalpaginas;
+                    viewModel.RegistrosPorPagina = cantidadRegistrosPorPagina;
+                }
+                else//Menos registros por pagina
+                {
+                    viewModel.preguntas = (from c in db.Pregunta
+                                    .Include(i => i.Categoria)
+                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
+                                    .Include(i => i.Usuario)
+                                           where c.Categoria.NombreCategoria == categoria
+                                           select c);
+                }
                 ViewData["categoria"] = categoria;
             }
-            else
+            else//Inicio todas las categorias
             {
-                viewModel.preguntas = db.Pregunta
+                viewModel.preguntas = db.Pregunta.OrderBy(x => Guid.NewGuid())
                     .Include(i => i.Categoria)
                     .Include(i => i.Respuestas.Select(c => c.Usuario))
-                    .Include(i => i.Usuario);
-
+                    .Include(i => i.Usuario).Take(3);//Cambiar a 20
                 ViewData["categoria"] = "Todas";
+                if ( buscar!=null)///caundo busca
+                {
+
+                }
             }
             viewModel.categorias = db.Categoria;
             ViewBag.categorias = (from c in db.Categoria select c).ToList();
@@ -118,8 +114,6 @@ namespace puceAsk_dev1.Controllers
                     break;
             }
 
-
-
             using (db = new ApplicationDbContext())
             {
 
@@ -133,16 +127,17 @@ namespace puceAsk_dev1.Controllers
                                                       x.Categoria.NombreCategoria.ToLower().Contains(item.ToLower()))
                                                       .ToList();
 
-                        //viewModel.preguntas = from p in db.Pregunta where p.TituloPregunta == like%buscar 
+                        //viewModel.preguntas = from p in db.Pregunta where p.TituloPregunta == like%buscar
                     }
                 }
                 return View(viewModel);
             }
+
         }
 
 
         // GET: Preguntas/Details/5
-        
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -150,13 +145,13 @@ namespace puceAsk_dev1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-                       
+
             var pregunta = (from p in db.Pregunta
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                 .Include(i=> i.Usuario)
 
-                where p.PreguntaId == id 
+                where p.PreguntaId == id
                 select p).First();
 
             TempData["idPregunta"] = pregunta;
@@ -172,7 +167,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // POST: Preguntas/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize(Roles = "user")]
@@ -218,7 +213,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // POST: Preguntas/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Authorize(Roles = "user, admin")]
