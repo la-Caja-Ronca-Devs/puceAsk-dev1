@@ -216,7 +216,7 @@ namespace puceAsk_dev1.Controllers
             {
                 var mejorRespuestas = (from p in db.Respuesta
                                   .Include(i => i.Usuario)
-                                       where p.UsuarioId == pregunta.MejorUsuarioRespuestaId
+                                       where p.UsuarioId == pregunta.MejorUsuarioRespuestaId && p.PreguntaId == id
                                        select p).First();
 
                 var respuestas = (from p in db.Respuesta
@@ -365,7 +365,7 @@ namespace puceAsk_dev1.Controllers
             base.Dispose(disposing);
         }
         [Authorize(Roles = "user")]
-        public ActionResult PreguntasRealizadas()
+        public ActionResult PreguntasRealizadas(int filtro = 0)
         {
 
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
@@ -373,9 +373,8 @@ namespace puceAsk_dev1.Controllers
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                 .Include(i => i.Usuario)
-                            where p.UsuarioId == usuario.Id
-                            select p).ToList();
-
+                             where p.UsuarioId == usuario.Id && (filtro == 1?(p.MejorUsuarioRespuestaId != null):(filtro == 2 ? (p.MejorUsuarioRespuestaId == null) :true))
+                             select p).ToList();
             return View(preguntas);
         }
 

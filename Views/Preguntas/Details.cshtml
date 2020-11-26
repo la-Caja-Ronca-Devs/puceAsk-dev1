@@ -1,6 +1,5 @@
 ﻿@model puceAsk_dev1.Models.Pregunta
 
-
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li><a class="enlace" href="~/">Preguntas</a></li>  &nbsp; /  &nbsp;
@@ -10,27 +9,56 @@
 </nav>
 <div class="container">
     <div class="card ">
-        <div class="card-header titulo">
-            <h4>@Html.DisplayFor(model => model.TituloPregunta) </h4>
+        <div class="card-horizontal">
+            <div class="col-md-auto">
+                    @{
+                        string imgDataURL_ = "";
+                        if (Model.Usuario.Foto != null)
+                        {
+                            byte[] foto = Model.Usuario.Foto;
+                            string imreBase64Data = Convert.ToBase64String(foto);
+                            imgDataURL_ = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        }
+                        else
+                        {
+                            imgDataURL_ = "https://img.icons8.com/color/user";
+                        }
+                    }
+                <div>
+                    <img alt="fotito" src="@imgDataURL_" width="100" height="100" class="embed-responsive fotos" />
+                </div>
+                <div>
+                    <h6>@Model.Usuario.Nombre</h6>
+                </div>
+                <div>
+                    <h6>@Model.Usuario.Apellido</h6>
+                </div>
+             </div>
+            <div class="col">
+                <div class="card-header titulo">
+                    <h5>@Html.DisplayFor(model => model.TituloPregunta) </h5>
+                </div>
+
+                <div class="card-body pregunta">
+                    <p class="lead preg">@Html.DisplayFor(model => model.DescPregunta)</p>
+                    <hr class="my-4">
+                    <p>
+                        @Html.DisplayFor(model => model.Fechapregunta) |
+                        @Html.DisplayFor(model => model.Categoria.NombreCategoria)
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="card-body pregunta">
-            <p class="lead preg">@Html.DisplayFor(model => model.DescPregunta)</p>
-            <hr class="my-4">
-            <p>
-                @Html.DisplayFor(model => model.Fechapregunta) |
-                @Html.DisplayFor(model => model.Categoria.NombreCategoria)
-            </p>
-        </div>
+       
         @if (User.Identity.IsAuthenticated)
         {
-            if ((bool)ViewData["Rusuario"] == true)
-            {
+
                 <div class="card-header titulo">
                     @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
                 </div>
 
-            }
+            
 
         }
     </div>
@@ -52,33 +80,50 @@
                 string imreBase64Data = Convert.ToBase64String(foto);
                 imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
             }
-            else {
-                 imgDataURL = "https://img.icons8.com/color/user";
+            else
+            {
+                imgDataURL = "https://img.icons8.com/color/user";
             }
             if (Model.MejorUsuarioRespuestaId == resp.UsuarioId)
             {
                 <div class="card respuesta order-0">
                     <div class="card-horizontal">
-                        <div class="imgOver col-3">
-                            <img class="embed-responsive hover" src="https://www.flaticon.com/svg/static/icons/svg/3791/3791551.svg" alt="Mejor Respuesta">
-                            <img src="@imgDataURL" alt="foto" class="overlay foto" />
+                        <div class="imgOver col-2 text-center">
+                            <img src="@imgDataURL" alt="foto" width="100" height="100" class="embed-responsive hover fotos" />
+                            <img class="overlay foto" src="https://www.flaticon.com/svg/static/icons/svg/3791/3791551.svg" alt="Mejor Respuesta">
+
+                            <div class="row">
+                                <div class="col">
+                                    <hr />
+                                </div>
+                                <div class="col text-center">
+                                     <span class="badge badge-pill badge-success">Mejor Respuesta</span>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div class="card-body col-9">
-                            <h4 class="card-title">Autor: @(resp.Usuario.Nombre + " " + resp.Usuario.Apellido)</h4>
-                            <p class="card-text">@resp.DescRespuesta</p>
+                        <div class="col">
+                            <div class="container">
+                                <p class="lead">@resp.DescRespuesta</p>
+                                <hr class="my-4">
+                                <p>
+                                    Usuario: @resp.Usuario.Nombre
+                                </p>
+                                <div class="row card-footer">
+                                    <small class="text-muted">@resp.FechaPublicacion</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">@resp.FechaPublicacion</small>
-                    </div>
+                    
                 </div>
 
             }
             else
             {
                 <div class="card respuesta order-1">
-                    <div class="row">
-                        <div class="col-md-2">
+                    <div class="card-horizontal">
+                        <div class="col-md-auto">
                             <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
                         </div>
                         <div class="col">
@@ -88,9 +133,13 @@
                                 <p>
                                     Usuario: @resp.Usuario.Nombre
                                 </p>
+                                <div class="row card-footer">
+                                    <small class="text-muted">@resp.FechaPublicacion</small>
+                                </div>
                             </div>
                         </div>
                     </div>
+               
                 </div>
             }
         }
@@ -104,105 +153,124 @@
     }
 </div>
 
+    @if (User.Identity.IsAuthenticated){
 <div>
-    <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
+    @if (Model.Usuario.UserName == User.Identity.Name)
+    {
+        @Html.ActionLink("Mis Preguntas", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+    }
+    else
+    {
+        @Html.ActionLink("Mis Respuestas", "RespuestasRealizadas", "Respuestas", null, new { @class = "btn btn-danger", @role = "button" })
+    }
 </div>
-
-
-<style>
-
-    .imgOver {
-        position: relative;
-        width: 50%;
     }
 
-    .hover {
-        display: block;
-        position: center;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 50%;
-        height: auto;
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100%;
-        width: 100%;
-        opacity: 0;
-        transition: .5s ease;
-        background-color: #008CBA;
-    }
-
-    .imgOver:hover .overlay {
-        opacity: 1;
-    }
-
-    .foto {
-        left: 50%;
-        top: 50%;
-        position: absolute;
-        margin-top: -25px;
-        margin-left: -25px;
-        vertical-align: middle;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-    }
-
-    .card-horizontal {
-        display: flex;
-        flex: 1 1 auto;
-    }
-
-    .pregunta {
-        background-color: darkcyan;
-        padding: 10px !important;
-    }
-
-    .titulo {
-        color: white;
-        background-color: #006666;
-    }
-
-    .preg {
-        color: ghostwhite;
-    }
-
-    .respuesta {
-        left: 5%;
-        border: solid 1px;
-        border-color: darkcyan;
-        padding: 10px !important;
-        margin-top: 15px;
-        width: 95%;
-    }
-
-    .categorias {
-        list-style: none;
-    }
-
-    .enlace {
-        text-decoration: none !important;
-        color: black;
-    }
-
-    .ver {
-        text-decoration: none;
-        color: #212529;
-    }
+        <div>
+            @Html.ActionLink("Inicio", "Inicio", "Preguntas", null, new { @class = "btn btn-warning", @role = "button" })
+        </div>
 
 
-    .fotos {
-        vertical-align: middle;
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-    }
-</style>
+
+
+
+
+        <style>
+
+            .imgOver {
+                position: relative;
+                width: 50%;
+            }
+
+            .hover {
+                display: block;
+                position: center;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 50%;
+                height: auto;
+            }
+
+            .overlay {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 100%;
+                width: 100%;
+                opacity: 0;
+                transition: .5s ease;
+                background-color: #008CBA;
+            }
+
+            .imgOver:hover .overlay {
+                opacity: 1;
+            }
+
+            .foto {
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                position: absolute;
+                margin-top: -25px;
+                margin-left: -25px;
+                vertical-align: middle;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+
+            .card-horizontal {
+                display: flex;
+                flex: 1 1 auto;
+            }
+
+            .pregunta {
+                background-color: darkcyan;
+                padding: 10px !important;
+            }
+
+            .titulo {
+                color: white;
+                background-color: #006666;
+            }
+
+            .preg {
+                color: ghostwhite;
+            }
+
+            .respuesta {
+                left: 5%;
+                border: solid 1px;
+                border-color: darkcyan;
+                padding: 10px !important;
+                margin-top: 15px;
+                width: 95%;
+            }
+
+            .categorias {
+                list-style: none;
+            }
+
+            .enlace {
+                text-decoration: none !important;
+                color: black;
+            }
+
+            .ver {
+                text-decoration: none;
+                color: #212529;
+            }
+
+
+            .fotos {
+                vertical-align: middle;
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+            }
+        </style>

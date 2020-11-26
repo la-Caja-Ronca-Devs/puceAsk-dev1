@@ -16,7 +16,7 @@
                 <div class="dropdown-menu" aria-labelledby="loginMenu">
                     <p class="dropdown-item">Sesión iniciada como: @User.Identity.GetUserName()</p> <hr />
                     @Html.ActionLink("Preguntas realizadas", "PreguntasRealizadas", "Preguntas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
-                    @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: null, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
+                    @Html.ActionLink("Respuestas realizadas", "RespuestasRealizadas", "Respuestas", routeValues: new { filto = 0}, htmlAttributes: new { title = "Preguntas realizadas", @class = "dropdown-item" })
                     @Html.ActionLink("Mensajes", "MensajesRecibidos", "Mensajes", null, htmlAttributes: new { title = "Mensajes", @class = "dropdown-item" })
                     @Html.ActionLink("Administrar Cuenta", "EditIndividual", "Usuarios", new { id = User.Identity.GetUserId() }, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
                     @Html.ActionLink("Cambiar contraseña", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })

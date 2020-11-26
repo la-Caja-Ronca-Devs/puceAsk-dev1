@@ -1,7 +1,4 @@
 ﻿@model puceAsk_dev1.Models.PreguntasManager
-@{
-    ViewBag.Title = "Inicio";
-}
 
 <div class="row">
     <div class="col-md-2">
@@ -56,19 +53,21 @@
                 </button>
             </div>
 
-            @if (User.Identity.IsAuthenticated) {
+            @if (User.Identity.IsAuthenticated)
+            {
                 if (Int32.Parse(ViewData["puntaje"].ToString()) >= 10)
                 {
-                <div class="col" align="right">
-                    <br />
-                    @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
-                </div>
+                    <div class="col" align="right">
+                        <br />
+                        @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
+                    </div>
                 }
-                else {
-                <div class="col" align="right">
-                    <br />
-                    <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
-                </div>
+                else
+                {
+                    <div class="col" align="right">
+                        <br />
+                        <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
+                    </div>
                 }
             }
 
@@ -138,7 +137,8 @@
                     imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                 }
 
-                else {
+                else
+                {
                     imgDataURL = "https://img.icons8.com/color/user";
                 }
 
@@ -162,26 +162,26 @@
                             </div>
 
 
-                            </div>
+                        </div>
 
-                            <div class="card-body pregunta">
+                        <div class="card-body pregunta">
 
-                                <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
-                                <hr>
-                                <p class="detalles">
-                                    @Html.DisplayFor(modelItem => item.Fechapregunta) |
-                                    @if (item.Categoria != null)
-                                    {
-                                        @Html.DisplayFor(motelItem => item.Categoria.NombreCategoria)
-                                    }
+                            <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
+                            <hr>
+                            <p class="detalles">
+                                @Html.DisplayFor(modelItem => item.Fechapregunta) |
+                                @if (item.Categoria != null)
+                                {
+                                    @Html.DisplayFor(motelItem => item.Categoria.NombreCategoria)
+                                }
 
-                                </p>
+                            </p>
 
-                                <p class="detalles">
-                                    Autor:
-                                    <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
-                                    @Html.DisplayFor(modelItem => item.Usuario.Nombre)
-                                </p>
+                            <p class="detalles">
+                                Autor:
+                                <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
+                                @Html.DisplayFor(modelItem => item.Usuario.Nombre) @Html.DisplayFor(modelItem => item.Usuario.Apellido)
+                            </p>
 
                         </div>
                     </a>
@@ -219,33 +219,33 @@
             }
         }
     }
-<ul class="pagination">
+    <ul class="pagination">
 
-    @if (Model.RegistrosCategoria > 2)//Cambiar a 20
-    {
-        <li>@Html.ActionLink("Primera", null, new { categoria = ViewData["categoria"].ToString(), pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
-
-
-        for (int i = inicial; i <= final; i++)
+        @if (Model.RegistrosCategoria > 2)//Cambiar a 20
         {
-            if (i == Model.PaginaActual)
-            {
+            <li>@Html.ActionLink("Primera", null, new { categoria = ViewData["categoria"].ToString(), pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
 
-                <li class="active">@Html.ActionLink(i.ToString(), null, new { categoria = ViewData["categoria"].ToString(), pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
-            }
-            else
+
+            for (int i = inicial; i <= final; i++)
             {
-                <li>@Html.ActionLink(i.ToString(), null, new { categoria = ViewData["categoria"].ToString(), pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                if (i == Model.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { categoria = ViewData["categoria"].ToString(), pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { categoria = ViewData["categoria"].ToString(), pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
             }
+            <li>@Html.ActionLink("Última", null, new { categoria = ViewData["categoria"].ToString(), pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
         }
-        <li>@Html.ActionLink("Última", null, new { categoria = ViewData["categoria"].ToString(), pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
-    }
-    else
-    {
-        int i = inicial;
-        <li class="active">@Html.ActionLink(i.ToString(), null, new { categoria = ViewData["categoria"].ToString(), pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
-    }
-</ul>
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { categoria = ViewData["categoria"].ToString(), pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
 </div>
 
 
@@ -374,6 +374,7 @@
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
     }
+
     .pagination {
         display: compact;
         margin-right: auto;

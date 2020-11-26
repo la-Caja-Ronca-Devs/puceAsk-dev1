@@ -4,29 +4,33 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h2>@Model.Pregunta.TituloPregunta</h2>
-    <h4>@Model.Pregunta.DescPregunta</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.UsuarioId)
-    @Html.HiddenFor(model => model.PreguntaId)
+    <div class="form-horizontal">
+        <h2>@Model.Pregunta.TituloPregunta</h2>
+        <h4>@Model.Pregunta.DescPregunta</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UsuarioId)
+        @Html.HiddenFor(model => model.PreguntaId)
 
-    <div class="form-group">
-        @Html.Label("Respuesta", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.DescRespuesta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mi respuesta es ...." } })
-            @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Respuesta", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.DescRespuesta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mi respuesta es ...." } })
+                @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
-            <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
-        </div>
+
+            <div class="col-md-offset-2 col-md-10">
+
+                    <div>
+                        @Html.ActionLink("Regresar", "RespuestasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+                    </div>
+                
+
+                <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
+            </div>
     </div>
-</div>
 }
 
 
