@@ -12,17 +12,18 @@ namespace puceAsk_dev1.Models
     {
         [Key, Column(Order = 0)]
         public int PreguntaId { get; set; }
-
-        [Timestamp]
-        public byte[] RowVersion { get; set; }
+        
 
         [Required]
+        [Display(Name = "Titulo de pregunta")]
         public string TituloPregunta { get; set; }
 
         [Required]
+        [Display(Name = "Texto de pregunta")]
         public string DescPregunta { get; set; }
 
         [Required]
+        [Display(Name = "Fecha de pregunta")]
         public DateTime Fechapregunta { get; set; }
       
         [Column(Order = 1),ForeignKey("Usuario")]

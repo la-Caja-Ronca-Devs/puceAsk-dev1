@@ -134,7 +134,7 @@ namespace puceAsk_dev1.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", "Código no válido.");
                     return View(model);
             }
         }
