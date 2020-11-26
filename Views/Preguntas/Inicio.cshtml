@@ -162,7 +162,6 @@
 
                             <div class="card-body pregunta">
 
-
                                 <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
                                 <hr>
                                 <p class="detalles">
@@ -182,13 +181,52 @@
 
                             </div>
 </a>                    
+
                 </div>
-               
-                                      
-               
-                
             }
-            { Html.RenderPartial("_Paginacion", Model);}
+            
+
+                var cantidadPaginas = (int)Math.Ceiling((double)Model.TotalRegistro / Model.RegistroPorPagina);
+          
+
+           
+                int inicial = 1;
+                var radio = 2;
+                var cantMaxPaginas = radio * 2 + 1;
+                string categoria;
+                int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+                if (Model.PaginaActual > radio + 1)
+                {
+                    inicial = Model.PaginaActual - radio;
+                    if (cantidadPaginas > Model.PaginaActual + radio)
+                    {
+                        final = Model.PaginaActual + radio;
+                    }
+                    else
+                    {
+                        final = cantidadPaginas;
+                    }
+                }
+           
+            <ul class="pagination">
+
+                <li>@Html.ActionLink("Primera", categoria = "Inicio", new { pagina = 1 })</li>
+
+                @for (int i = inicial; i <= final; i++)
+                {
+                    if (i == Model.PaginaActual)
+                    {
+
+                        <li class="active">@Html.ActionLink(i.ToString(), categoria = "Inicio", new { pagina = i });</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink(i.ToString(), categoria = "Inicio", new { pagina = i })</li>
+                    }
+                }
+                <li>@Html.ActionLink("Última", categoria = "Inicio" , new { pagina = cantidadPaginas })</li>
+
+            </ul>      
 
         }
         else
@@ -201,6 +239,7 @@
         <br /> <br />
     </div>
     </div>
+
 
 <style>
     .pregunta {
@@ -291,8 +330,6 @@
         text-decoration: none !important;
         color: black;
     }
-
-
     .buscador {
         padding-top: 2px;
         padding-bottom: 5px;
@@ -328,5 +365,7 @@
         -ms-transition: all 0.2s ease-in;
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
+
+    .pagination {
     }
 </style>
