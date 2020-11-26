@@ -22,9 +22,17 @@
                 @Html.DisplayFor(model => model.Categoria.NombreCategoria)
             </p>
         </div>
-        <div class="card-header titulo">
-            @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
-        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            if ((bool)ViewData["Rusuario"] == true)
+            {
+                <div class="card-header titulo">
+                    @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
+                </div>
+
+            }
+
+        }
     </div>
 
     <br />

@@ -142,7 +142,7 @@ namespace puceAsk_dev1.Controllers
 
 
         // GET: Preguntas/Details/5
-        
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -150,14 +150,12 @@ namespace puceAsk_dev1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-                       
             var pregunta = (from p in db.Pregunta
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
-                .Include(i=> i.Usuario)
-                where p.PreguntaId == id 
-                select p).First();
-
+                .Include(i => i.Usuario)
+                            where p.PreguntaId == id
+                            select p).First();
             if (pregunta.MejorUsuarioRespuestaId != null)
             {
                 var mejorRespuestas = (from p in db.Respuesta
@@ -176,8 +174,12 @@ namespace puceAsk_dev1.Controllers
             else {
                 pregunta.Respuestas = pregunta.Respuestas.OrderBy(m => m.FechaPublicacion).ToList();
             }
-            
+
             TempData["idPregunta"] = pregunta;
+            bool rusua = (from p in db.Respuesta.Include(i => i.Usuario)
+                          where p.PreguntaId == id && p.Usuario.Nombre != User.Identity.Name.ToString()
+                           select p.Usuario).Equals(User.Identity.Name.ToString());
+            ViewData["Rusuario"] = rusua;            
             return View(pregunta);
         }
 
@@ -320,5 +322,6 @@ namespace puceAsk_dev1.Controllers
 
             return View(preguntas);
         }
+
     }
 }
