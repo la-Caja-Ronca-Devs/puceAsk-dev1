@@ -26,7 +26,7 @@ namespace puceAsk_dev1.Controllers
             var respuestas = (from p in db.Respuesta
                 .Include(i => i.Usuario)
                 .Include(i => i.Pregunta.Categoria)
-                .Include(i => i.Pregunta.Usuario)
+                .Include(i => i.Pregunta.Usuario) 
                               where p.UsuarioId == usuario.Id
                              select p).ToList();
 

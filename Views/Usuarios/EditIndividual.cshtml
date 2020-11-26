@@ -4,100 +4,106 @@
     ViewBag.Title = "EditIndividual";
 }
 
-<h2>Editar</h2>
+    <div class="d-flex justify-content-center align-items-center " style="margin: 35px;">
+        <div class="card" style=" width: 40rem;">
+            <div class="card-header datos">
+            <h2>Editar información de usuario</h2>
 
-@using (Html.BeginForm("EditIndividual", "Usuarios", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
-{
-   
-    @Html.AntiForgeryToken()
+            @using (Html.BeginForm("EditIndividual", "Usuarios", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            {
 
-    <div class="form-horizontal">
-        <h4>Hola @Model.UserName!</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.Nombre)
-        @Html.HiddenFor(model => model.Apellido)
-        @Html.HiddenFor(model => model.Sexo)
-        @Html.HiddenFor(model => model.EmailConfirmed)
-        @Html.HiddenFor(model => model.PasswordHash)
-        @Html.HiddenFor(model => model.SecurityStamp)
-        @Html.HiddenFor(model => model.PhoneNumber)
-        @Html.HiddenFor(model => model.PhoneNumberConfirmed)
-        @Html.HiddenFor(model => model.TwoFactorEnabled)
-        @Html.HiddenFor(model => model.LockoutEndDateUtc)
-        @Html.HiddenFor(model => model.LockoutEnabled)
-        @Html.HiddenFor(model => model.AccessFailedCount)
-        @Html.HiddenFor(model => model.UserName)
-        @Html.HiddenFor(model => model.SaldoCuenta)
-        @Html.HiddenFor(model => model.FechaNacimiento)
+                @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Nombre)
+                @Html.HiddenFor(model => model.Apellido)
+                @Html.HiddenFor(model => model.Sexo)
+                @Html.HiddenFor(model => model.EmailConfirmed)
+                @Html.HiddenFor(model => model.PasswordHash)
+                @Html.HiddenFor(model => model.SecurityStamp)
+                @Html.HiddenFor(model => model.PhoneNumber)
+                @Html.HiddenFor(model => model.PhoneNumberConfirmed)
+                @Html.HiddenFor(model => model.TwoFactorEnabled)
+                @Html.HiddenFor(model => model.LockoutEndDateUtc)
+                @Html.HiddenFor(model => model.LockoutEnabled)
+                @Html.HiddenFor(model => model.AccessFailedCount)
+                @Html.HiddenFor(model => model.UserName)
+                @Html.HiddenFor(model => model.SaldoCuenta)
+                @Html.HiddenFor(model => model.FechaNacimiento)
 
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Foto, htmlAttributes: new { @class = "col-md-5 control-label" })
 
-                
-                @*<input id="file" type="file" name="img" accept=".png,.jpg,.jpeg,.gif,.tif" onchange="showimagepreview(this)" style="color: transparent" />*@
 
-                <div class="input-group"  id="divFileUpload">
-                    <img src="@ViewBag.fotografia" alt="" class="imgSeleccionada" name="Foto" /> <br /> <br />
-                    @Html.TextBoxFor(m => m.Foto, new { @id = "file", @type = "file", @name = "img", @accept = ".png,.jpg,.jpeg,.gif,.tif", @onchange = "showimagepreview(this)" })
+                    <div class="input-group col-md-5 " id="divFileUpload">
+                        <img src="@ViewBag.fotografia" alt="" class="imgSeleccionada" name="Foto" /> <br /><br /><br /><br /><br /><br /><br />
+                        @Html.TextBoxFor(m => m.Foto, new { @id = "file", @type = "file", @name = "img", @accept = ".png,.jpg,.jpeg,.gif,.tif", @onchange = "showimagepreview(this)", @style="color: transparent;" })
+                    </div>
+
+
+                </div>
+
+                <br /><hr /><br />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <br />
+                        <br />
+                        @Html.ActionLink("Cancelar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger btn-large" })
+                        <input type="submit" value="Guardar" class="btn btn-primary" style="background-color:darkcyan; border-color:darkcyan" />
+
+                    </div>
                 </div>
             </div>
-           
-        </div>
+            }
 
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <div>
+                
             </div>
-        </div>
-
-      
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
-}
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+                <script type="text/javascript">
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+                    function showimagepreview(input) {
 
-<script type="text/javascript">
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
 
-     function showimagepreview(input) {
+                                document.getElementsByName("Foto")[0].setAttribute("src", e.target.result);
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
 
-         if (input.files && input.files[0]) {
-             var reader = new FileReader();
-             reader.onload = function (e) {
+                </script>
+            }
 
-                 document.getElementsByName("Foto")[0].setAttribute("src", e.target.result);
-             }
-             reader.readAsDataURL(input.files[0]);
-         }
-     }
+            <style>
 
-</script>
-    }
 
-<style>
-    
-
-    .imgSeleccionada {
-        vertical-align: middle;
-        width: 150px;
-        height: 150px;
-        border-radius: 70%;
-    }
-</style>
+                .imgSeleccionada {
+                    vertical-align: middle;
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 70%;
+                }
+            </style>

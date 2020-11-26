@@ -115,7 +115,10 @@
                 dateFormat: "dd/mm/yy",
                 changeMonth: true,
                 changeYear: true
-            });
+            }).datepicker(
+                
+                'setDate', new Date('01/01/1900')
+            );;
 
 
             $(".selector").datepicker({

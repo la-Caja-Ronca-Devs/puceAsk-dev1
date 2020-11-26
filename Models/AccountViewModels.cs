@@ -57,7 +57,6 @@ public class ExternalLoginConfirmationViewModel
     {
         [Required]
         [Display(Name = "Nombre de Usuario")]
-
         public string Nickname { get; set; }
 
         
@@ -70,6 +69,7 @@ public class ExternalLoginConfirmationViewModel
         [Display(Name = "Recordarme")]
         public bool RememberMe { get; set; }
 
+        [Display(Name = "Usuario")]
         public ApplicationUser Usuario { get; set; }
     }
 
@@ -80,11 +80,12 @@ public class ExternalLoginConfirmationViewModel
 
         [Required]
         [Display(Name = "Nombre de Usuario")]
-        [RegularExpression(@"^[A-Za-z\.\-_]+[A-Za-z0-9\.\-_]*", ErrorMessage = "No se permiten caracteres especiales (A excepción de guion (-), underscore(_) o punto (.)")]
+        [RegularExpression(@"^[A-Za-z\.\-_]+[A-Za-z0-9\.\-_]*", ErrorMessage = "El nombre de usuario no puede empezar con un número ni contener caracteres especiales (A excepción de guion (-), underscore(_) o punto (.)")]
         public string Nickname { get; set; }
 
         [Required]
         [EmailAddress]
+        [RegularExpression("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9+-]+\\.[a-zA-Z]+(\\.[a-zA-Z])*$", ErrorMessage = "El correo electrónico no es correcto")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

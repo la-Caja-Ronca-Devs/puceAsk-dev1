@@ -2,28 +2,37 @@
 @{
     ViewBag.Title = "Cambio de contraseña";
 }
-
+<br />
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-    <h4>Pincha el link de abajo para establecer tu contraseña</h4>
+    
     <hr />
     <dl class="dl-horizontal">
         <bh>
-            <dd>
-                [
-                @if (Model.HasPassword)
-                {
-                    @Html.ActionLink("Cambia tu contraseña", "ChangePassword")
-                }
-                else
-                {
-                    @Html.ActionLink("Crear contraseña", "SetPassword")
-                }
-                ]
-            </dd>
+            <p>Ya cuentas con una contraseña, por lo que puedes proceder a cambiarla con el siguiente botón, recuerda que debes ingresar tu contraseña actual para poder cambiarla con éxito</p>
+            <br />
+            <br />
+            @Html.ActionLink("Regresar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger btn-large" })
 
-    </dl>
-        @Html.ActionLink("Regresar", "Inicio","Preguntas")
+
+            @if (Model.HasPassword)
+            {
+
+
+                @Html.ActionLink("Cambia tu contraseña", "ChangePassword", null, new { @class = "btn btn-primary btn-large", @style = "background-color:darkcyan; border-color:darkcyan" })
+
+            }
+            else
+            {
+                @Html.ActionLink("Crear contraseña", "SetPassword", null, new { @class = "btn btn-primary btn-large", @style = "background-color:darkcyan; border-color:darkcyan" })
+
+            }
+
+
+
+</dl>
+
 </div>
+

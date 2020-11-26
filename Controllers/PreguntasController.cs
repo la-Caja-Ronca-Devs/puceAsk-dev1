@@ -277,6 +277,7 @@ namespace puceAsk_dev1.Controllers
             return View(pregunta);
         }
 
+
         // GET: Preguntas/Edit/5
         [Authorize(Roles = "user, admin")]
         public ActionResult Edit(int? id)
