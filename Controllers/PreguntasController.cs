@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -71,7 +72,15 @@ namespace puceAsk_dev1.Controllers
                 //viewModel.PaginaActual = pagina;
                 //viewModel.TotalRegistro = totalRegistros;
                 //viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
-                //ViewData["categoria"] = categoria+"?"+pagina;
+                //ViewData["categoria"] = categoria+"?"+pagina;   
+                viewModel.preguntas = (from c in db.Pregunta
+                                .Include(i => i.Categoria)
+
+                                .Include(i => i.Respuestas.Select(c => c.Usuario))
+                                .Include(i => i.Usuario)
+                                       where c.Categoria.NombreCategoria == categoria
+                                       select c);
+
                 
                 
                 
@@ -146,10 +155,28 @@ namespace puceAsk_dev1.Controllers
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                 .Include(i=> i.Usuario)
-
                 where p.PreguntaId == id 
                 select p).First();
 
+            if (pregunta.MejorUsuarioRespuestaId != null)
+            {
+                var mejorRespuestas = (from p in db.Respuesta
+                                  .Include(i => i.Usuario)
+                                       where p.UsuarioId == pregunta.MejorUsuarioRespuestaId
+                                       select p).First();
+
+                var respuestas = (from p in db.Respuesta
+                                  .Include(i => i.Usuario)
+                                  where p.PreguntaId == id && p.UsuarioId != pregunta.MejorUsuarioRespuestaId
+                                  orderby p.FechaPublicacion
+                                  select p).ToList();
+                respuestas.Insert(0, mejorRespuestas);
+                pregunta.Respuestas = respuestas;
+            }
+            else {
+                pregunta.Respuestas = pregunta.Respuestas.OrderBy(m => m.FechaPublicacion).ToList();
+            }
+            
             TempData["idPregunta"] = pregunta;
             return View(pregunta);
         }
@@ -159,7 +186,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create()
         {
             ViewBag.categorias = (from c in db.Categoria select c).ToList();
-            return View(new PreguntasManager());
+            return View();
         }
 
         // POST: Preguntas/Create
@@ -183,7 +210,12 @@ namespace puceAsk_dev1.Controllers
                 int preg = db.Pregunta.Max(item => item.PreguntaId);
                 return RedirectToAction("Details","Preguntas",new { id = preg});
             }
-
+            pregunta = pregunta = (from p in db.Pregunta
+                .Include(i => i.Categoria)
+                .Include(i => i.Respuestas.Select(c => c.Usuario))
+                .Include(i => i.Usuario)
+                where p.PreguntaId == pregunta.PreguntaId
+                select p).First();
             return View(pregunta);
         }
 
@@ -200,31 +232,42 @@ namespace puceAsk_dev1.Controllers
                .Include(i => i.Respuestas.Select(c => c.Usuario))
                .Include(i => i.Usuario)
                             where p.PreguntaId == id
+                            orderby p.Fechapregunta
                             select p).First();
             if (pregunta == null)
             {
                 return HttpNotFound();
             }
             return View(pregunta);
+            
         }
+
 
         // POST: Preguntas/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PreguntaId,DescPregunta,MejorRespuesta")] Pregunta pregunta)
+        public ActionResult Edit([Bind(Include = "PreguntaId,TituloPregunta,DescPregunta,MejorUsuarioRespuestaId")] Pregunta pregunta)
         {
-            Pregunta per = db.Pregunta.Single(m => m.PreguntaId == pregunta.PreguntaId);
-                Respuesta res = (from c in db.Respuesta
-                                 .Include(i => i.Pregunta)
-                                 .Include(i => i.Usuario)
-                                 where c.Usuario.Id == pregunta.MejorUsuarioRespuestaId && c.PreguntaId == pregunta.PreguntaId select c).First();
-            //per.MejorRespuesta = res.RespuestaId;
-            per.DescPregunta = pregunta.DescPregunta;
-            db.SaveChanges();
-                return RedirectToAction("Details", "Preguntas", new { id = pregunta.PreguntaId });
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        Pregunta pr = db.Pregunta.Find(pregunta.PreguntaId);
+                        pr.DescPregunta = pregunta.DescPregunta;
+                        pr.MejorUsuarioRespuestaId = pregunta.MejorUsuarioRespuestaId;
+                        //db.Entry(pregunta).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                    }
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "No se pudo actualizar, intentalo de nuevo.");
+                }
+            return RedirectToAction("Details", "Preguntas", new { id = pregunta.PreguntaId }); ;
         }
 
         // GET: Preguntas/Delete/5
@@ -268,12 +311,11 @@ namespace puceAsk_dev1.Controllers
         {
 
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            var cuenta = (from c in db.Users where c.Id == usuario.Id select c).First();
             var preguntas = (from p in db.Pregunta
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                 .Include(i => i.Usuario)
-                            where p.UsuarioId == cuenta.Id
+                            where p.UsuarioId == usuario.Id
                             select p).ToList();
 
             return View(preguntas);
