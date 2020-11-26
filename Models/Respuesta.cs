@@ -10,7 +10,6 @@ namespace puceAsk_dev1.Models
     [Table("Respuestas", Schema = "ask")]
     public class Respuesta
     {
-        
 
         [Required]
         public DateTime FechaPublicacion { get; set; }
@@ -20,8 +19,9 @@ namespace puceAsk_dev1.Models
 
 
         [Required]
+        [Display(Name = "Texto de respuesta")]
         public String DescRespuesta { get; set; }
-      
+
         [Key,Column(Order = 1), ForeignKey("Pregunta")]
         public int PreguntaId { get; set; }
         public Pregunta Pregunta { get; set; }

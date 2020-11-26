@@ -36,7 +36,6 @@ namespace puceAsk_dev1.Models
     }
 
 
-
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -67,7 +66,9 @@ namespace puceAsk_dev1.Models
             modelBuilder.Entity<ApplicationUser>().HasMany<Mensaje>(s => s.Recibidos)
                .WithRequired(s => s.Receptor)
                .HasForeignKey<string>(s => s.ReceptorId);
+
             base.OnModelCreating(modelBuilder);
+         
         }
 
         public static ApplicationDbContext Create()

@@ -1,20 +1,11 @@
-﻿@model IEnumerable<puceAsk_dev1.Models.Pregunta>
+﻿@model IEnumerable<puceAsk_dev1.Models.Respuesta>
 
 
 <div class="container">
-    @if (Int32.Parse(ViewData["puntaje"].ToString()) >= 10)
-    {
-    <div class="col" align="right">
-        <br />
-        @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
-    </div>
-    }
-    else {
-    <div class="col" align="right">
-        <br />
-        <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
-    </div>
-    }
+        <div class="col" align="right">
+            <br />
+            @Html.ActionLink("Responder Alguna Pregunta", "Inicio","Preguntas", null, new { @class = "btn btn-warning", @role = "button" })
+        </div>
 
     <hr />
     <div>
@@ -29,29 +20,21 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    @Html.DisplayFor(modelItem => item.TituloPregunta)
+                                    @Html.DisplayFor(modelItem => item.Pregunta.TituloPregunta)
                                 </div>
                                 <div class="col">
-                                    <div class="row">
-                                        <span class="badge badge-pill badge-info">@item.Respuestas.Count() Respuestas.</span>
-                                    </div>
-                                    @if (item.MejorUsuarioRespuestaId == null)
+                                   
+                                    @if (item.Pregunta.MejorUsuarioRespuestaId == item.UsuarioId)
                                     {
                                         <div class="row">
-                                            <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
-                                        </div>
-                                    }
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias.</span>
+                                            <span class="badge badge-pill badge-info">Mejor Respuesta</span>
                                         </div>
                                     }
 
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(5))
+                                    @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
                                     {
                                         <div class="row">
-                                            <span class="badge badge-primary">Abierta</span>
+                                            <span class="badge badge-primary">Abierta por @((item.Pregunta.Fechapregunta.AddDays(5) - DateTime.Now).Days) días más.</span>
                                         </div>
                                     }
                                     else
@@ -62,16 +45,16 @@
                                     }
                                 </div>
                                 <div class="col">
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                    @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
                                     {
                                         <div class="row">
-                                            <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
+                                            <a href="@Url.Action("Edit", "Respuestas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
                                         </div>
                                     }
-                                        <div class="row">
-                                            <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
-                                        </div>
+                                    <div class="row">
+                                        <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
                                     </div>
+                                </div>
                             </div>
                         </div>
 
@@ -79,18 +62,18 @@
                     </div>
 
                     <div class="card-body pregunta">
-                        <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
+                        <p class="lead preg">@Html.DisplayFor(modelItem => item.Pregunta.DescPregunta)</p>
                         <hr>
                         <p class="detalles">
-                            @Html.DisplayFor(modelItem => item.Fechapregunta) |
-                            @if (item.Categoria != null)
+                            @Html.DisplayFor(modelItem => item.Pregunta.Fechapregunta) |
+                            @if (item.Pregunta.Categoria != null)
                             {
-                                @Html.DisplayFor(motelItem => item.Categoria.NombreCategoria)
+                                @Html.DisplayFor(motelItem => item.Pregunta.Categoria.NombreCategoria)
                             }
 
                         </p>
                         <p class="detalles">
-                            Autor: @Html.DisplayFor(modelItem => item.Usuario.Nombre)
+                            Autor: @Html.DisplayFor(modelItem => item.Pregunta.Usuario.Nombre)
                         </p>
 
                     </div>

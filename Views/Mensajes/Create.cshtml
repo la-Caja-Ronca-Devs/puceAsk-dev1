@@ -4,44 +4,52 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
-
+<h2>Redactar mensaje</h2>
+<br />
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Mensaje</h4>
-        <hr />
+        
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReceptorId, "ReceptorId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ReceptorId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+
+        <div class="card-header">
+            
+            <div class="form-group ">
+                <b>De: </b> @ViewBag.actual.UserName <hr />
+                <b>@Html.LabelFor(model => model.ReceptorId, "Para: ", htmlAttributes: new { @class = "control-label " })</b>
+                    @Html.HiddenFor(model => model.ReceptorId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DisplayFor(model => model.Receptor.UserName)
+                    @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
             </div>
+
         </div>
 
-        
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MensajeDesc, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control" } })
+        <div class="card card-body " style="padding: 0">
+            <div class="form-group" style="margin:0">
+                @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control"  } })
                 @Html.ValidationMessageFor(model => model.MensajeDesc, "", new { @class = "text-danger" })
             </div>
         </div>
 
-      
+        <div class="card-footer">
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="col" align="right">
+                    @Html.ActionLink("Cancelar", "Index", new {@class= "btn btn-default" })
+                    <input type="submit" value="Enviar" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+
+<style>
+    
+    textarea {
+        max-width: 100%;
+        width: 100%;
+        height: 250px;
+    }
+</style>
