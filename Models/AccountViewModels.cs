@@ -15,11 +15,13 @@ public class ExternalLoginConfirmationViewModel
 
     public class ExternalLoginListViewModel
     {
+        [Display(Name = "URL de retorno")]
         public string ReturnUrl { get; set; }
     }
 
     public class SendCodeViewModel
     {
+
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
         public string ReturnUrl { get; set; }
@@ -29,16 +31,18 @@ public class ExternalLoginConfirmationViewModel
     public class VerifyCodeViewModel
     {
         [Required]
+        [Display(Name = "Proveedor")]
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+        [Display(Name = "Codigo")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "¿Recordar este navegador?")]
         public bool RememberBrowser { get; set; }
 
+        [Display(Name = "Recuérdame")]
         public bool RememberMe { get; set; }
     }
 
@@ -60,10 +64,10 @@ public class ExternalLoginConfirmationViewModel
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Recordarme")]
         public bool RememberMe { get; set; }
 
         public ApplicationUser Usuario { get; set; }
@@ -100,14 +104,14 @@ public class ExternalLoginConfirmationViewModel
         
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} debe contener almenos {2} carácteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirmación de contraseña")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "La contraseña nueva y de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -119,14 +123,14 @@ public class ExternalLoginConfirmationViewModel
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} debe contener almenos {2} carácteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "La contraseña nueva y de confirmación no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

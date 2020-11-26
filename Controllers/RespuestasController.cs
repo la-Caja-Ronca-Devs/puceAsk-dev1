@@ -20,6 +20,19 @@ namespace puceAsk_dev1.Controllers
             return View(db.Respuesta.ToList());
         }
 
+
+        public ActionResult RespuestasRealizadas() {
+            var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var respuestas = (from p in db.Respuesta
+                .Include(i => i.Usuario)
+                .Include(i => i.Pregunta.Categoria)
+                .Include(i => i.Pregunta.Usuario)
+                              where p.UsuarioId == usuario.Id
+                             select p).ToList();
+
+            return View(respuestas);
+        }
+
         // GET: Respuestas/Details/5
         [Authorize(Roles = "admin,user")]
         public ActionResult Details(int? id)
@@ -40,7 +53,9 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "user")]
         public ActionResult Create(int id)
         {
-            return View();
+            var pr = (from c in db.Pregunta.Include(i => i.Usuario) where c.PreguntaId == id select c).First();
+            Respuesta respuesta = new Respuesta { Pregunta = pr };
+            return View(respuesta);
         }
 
         // POST: Respuestas/Create
@@ -52,7 +67,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create([Bind(Include = "DescRespuesta")] Respuesta respuesta)
         {           
             if (ModelState.IsValid)
-            {
+            {                
                 Pregunta id = (Pregunta)TempData["idPregunta"];
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
                 respuesta.UsuarioId = usuario.Id;
@@ -78,7 +93,11 @@ namespace puceAsk_dev1.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Respuesta respuesta = db.Respuesta.Find(id);
+            var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            Respuesta respuesta = (from r in db.Respuesta
+                                   .Include(i => i.Usuario)
+                                   .Include(i => i.Pregunta)
+                                   where r.PreguntaId == id && r.UsuarioId == usuario.Id select r).First();
             if (respuesta == null)
             {
                 return HttpNotFound();
@@ -92,13 +111,16 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [Authorize(Roles = "user, admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RespuestaId,RowVersion,FechaPublicacion,DescRespuesta")] Respuesta respuesta)
+        public ActionResult Edit([Bind(Include = "PreguntaId,usuarioId,DescRespuesta")] Respuesta respuesta)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(respuesta).State = EntityState.Modified;
+                var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                Respuesta pr = (from r in db.Respuesta where r.PreguntaId == respuesta.PreguntaId && r.UsuarioId == usuario.Id select r).First();
+                pr.DescRespuesta = respuesta.DescRespuesta;
+                pr.FechaPublicacion = DateTime.Now;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Preguntas", new { id = respuesta.PreguntaId });
             }
             return View(respuesta);
         }

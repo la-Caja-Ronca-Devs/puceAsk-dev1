@@ -192,12 +192,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
+    <Compile Include="Controllers\ErroresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InfoBaseController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MensajesController.cs" />
     <Compile Include="Controllers\PreguntasController.cs" />
     <Compile Include="Controllers\RespuestasController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -205,17 +207,13 @@
     <Compile Include="Migrations\202011242201245_load1.Designer.cs">
       <DependentUpon>202011242201245_load1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202011230710061_carga3.cs" />
-    <Compile Include="Migrations\202011230710061_carga3.designer.cs">
-      <DependentUpon>202011230710061_carga3.cs</DependentUpon>
+    <Compile Include="Migrations\202011250446138_load2.cs" />
+    <Compile Include="Migrations\202011250446138_load2.Designer.cs">
+      <DependentUpon>202011250446138_load2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202011230714446_carga4.cs" />
-    <Compile Include="Migrations\202011230714446_carga4.designer.cs">
-      <DependentUpon>202011230714446_carga4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202011240732005_carga5.cs" />
-    <Compile Include="Migrations\202011240732005_carga5.designer.cs">
-      <DependentUpon>202011240732005_carga5.cs</DependentUpon>
+    <Compile Include="Migrations\202011250652343_load4.cs" />
+    <Compile Include="Migrations\202011250652343_load4.designer.cs">
+      <DependentUpon>202011250652343_load4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -394,13 +392,10 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
-    <Content Include="Scripts\sweetalert-dev.js" />
-    <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Styles\sweetalert.css" />
     <Content Include="Style\estilos.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -469,6 +464,12 @@
     <Content Include="Views\Mensajes\Edit.cshtml" />
     <Content Include="Views\Mensajes\Index.cshtml" />
     <Content Include="Views\Mensajes\MensajesRecibidos.cshtml" />
+    <Content Include="Views\Errores\Error404.cshtml" />
+    <Content Include="Views\Respuestas\RespuestasRealizadas.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
+    <Content Include="Views\Usuarios\EditIndividual.cshtml" />
+    <Content Include="Views\Usuarios\Details.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -489,14 +490,11 @@
     <EmbeddedResource Include="Migrations\202011242201245_load1.resx">
       <DependentUpon>202011242201245_load1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011230710061_carga3.resx">
-      <DependentUpon>202011230710061_carga3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202011250446138_load2.resx">
+      <DependentUpon>202011250446138_load2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011230714446_carga4.resx">
-      <DependentUpon>202011230714446_carga4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202011240732005_carga5.resx">
-      <DependentUpon>202011240732005_carga5.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202011250652343_load4.resx">
+      <DependentUpon>202011250652343_load4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
