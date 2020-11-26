@@ -26,12 +26,13 @@
         {
             if ((bool)ViewData["Rusuario"] == true)
             {
-                <div class="card-header titulo">
-                    @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
-                </div>
-
+                if (DateTime.Now <= Model.Fechapregunta.AddDays(5))
+                {
+                    <div class="card-header titulo">
+                        @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
+                    </div>
+                }
             }
-
         }
     </div>
 

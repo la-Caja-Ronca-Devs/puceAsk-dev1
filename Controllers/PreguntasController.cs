@@ -232,10 +232,16 @@ namespace puceAsk_dev1.Controllers
             }
 
             TempData["idPregunta"] = pregunta;
-            bool rusua = (from p in db.Respuesta.Include(i => i.Usuario)
-                          where p.PreguntaId == id && p.Usuario.Nombre != User.Identity.Name.ToString()
-                           select p.Usuario).Equals(User.Identity.Name.ToString());
-            ViewData["Rusuario"] = rusua;
+            //Control de acceso a responder
+            ViewData["Rusuario"] = true;
+            var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);            
+            var respuestas1 = (from r in db.Respuesta
+                               where r.PreguntaId == id && r.UsuarioId == usuario.Id
+                               select r).ToList();
+            if (respuestas1.Count() > 0)
+                //No tiene boton de responder
+                ViewData["Rusuario"] = false;
+
             return View(pregunta);
         }
 
