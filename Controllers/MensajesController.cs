@@ -21,7 +21,7 @@ namespace puceAsk_dev1.Controllers
             return View(mensajes.ToList());
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user, admin")]
         public ActionResult MensajesRecibidos()
         {
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);

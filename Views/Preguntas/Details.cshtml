@@ -24,7 +24,7 @@
         </div>
         @if (User.Identity.IsAuthenticated)
         {
-            if ((bool)ViewData["Rusuario"] == true)
+            if (true)
             {
                 <div class="card-header titulo">
                     @Html.ActionLink("Responder", "Create", "Respuestas", new { id = Model.PreguntaId }, new { style = "color: white;" })
