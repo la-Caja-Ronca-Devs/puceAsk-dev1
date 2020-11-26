@@ -50,12 +50,17 @@ namespace puceAsk_dev1.Controllers
 
         // GET: Mensajes/Create
         [Authorize(Roles = "admin")]
-        public ActionResult Create()
-        {
+        public ActionResult Create(string id)
+        {        
             ViewBag.Receptores = (from r in db.Users
                                   select r).ToList();
-            ViewBag.ReceptorId = new SelectList(db.Users, "Id", "UserName");
-            return View();
+            var receptor = (from u in db.Users where u.Id == id select u).First();
+            Mensaje mensaje = new Mensaje();
+            mensaje.Receptor = receptor;
+            mensaje.ReceptorId = id;
+            ViewBag.actual = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+         
+            return View(mensaje);
         }
 
         // POST: Mensajes/Create
@@ -63,16 +68,18 @@ namespace puceAsk_dev1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")] 
         public ActionResult Create([Bind(Include = "MensajeId,ReceptorId,EmisorId,MensajeDesc,FechaMensaje")] Mensaje mensaje)
         {
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+            var receptor = db.Users.Find(mensaje.ReceptorId);
             mensaje.EmisorId = usuario.Id;
             mensaje.FechaMensaje = DateTime.Now;
             if (ModelState.IsValid)
             {
                 db.Mensajes.Add(mensaje);
                 db.SaveChanges();
+                Encerar(receptor);
                 return RedirectToAction("Index");
             }
 
@@ -97,6 +104,22 @@ namespace puceAsk_dev1.Controllers
             //ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
             return View(mensaje);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Encerar(ApplicationUser usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                usuario.SaldoCuenta = 0;
+                db.Entry(usuario).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Usuarios");
+            }
+
+            return RedirectToAction("Index", "Usuarios");
+        }
+
 
         // POST: Mensajes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

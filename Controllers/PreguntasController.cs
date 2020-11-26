@@ -37,7 +37,7 @@ namespace puceAsk_dev1.Controllers
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
             
             var viewModel = new PreguntasManager();
-            if (categoria != null )
+            if (categoria != null  )
 
             {
                 var cantidadRegistrosPorPagina = 2;
@@ -72,6 +72,7 @@ namespace puceAsk_dev1.Controllers
                 //viewModel.PaginaActual = pagina;
                 //viewModel.TotalRegistro = totalRegistros;
                 //viewModel.RegistroPorPagina = cantidadRegistrosPorPagina;
+                //ViewData["categoria"] = categoria+"?"+pagina;
                 //ViewData["categoria"] = categoria+"?"+pagina;   
                 viewModel.preguntas = (from c in db.Pregunta
                                 .Include(i => i.Categoria)
@@ -80,9 +81,6 @@ namespace puceAsk_dev1.Controllers
                                 .Include(i => i.Usuario)
                                        where c.Categoria.NombreCategoria == categoria
                                        select c);
-
-                
-                
                 
                 ViewData["categoria"] = categoria;
             }

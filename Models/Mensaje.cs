@@ -25,7 +25,5 @@ namespace puceAsk_dev1.Models
         [Column("fechaMensaje")]
         public DateTime FechaMensaje { get; set; }
 
-
-
     }
 }

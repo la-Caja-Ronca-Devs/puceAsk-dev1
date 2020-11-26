@@ -53,32 +53,19 @@
     @Html.ActionLink("Back to List", "Index")
 </p>
 
-<form method="get" action=@Url.Action("Inicio", "Preguntas" )>
+
 
 
     <div class="collapse" id="collapseExample">
-        <div class="card-header">
-            <b>De: </b> @ViewBag.actual <hr />
-            <b>Para: </b> @Model.UserName <hr />
-        </div>
-        <div class="card card-body ">
-            <div class="row">
-               <label for="mensaje">Mensaje</label> <br />
-               <textarea class="form-control" name="mensaje" rows="5" id="mensaje" ></textarea>
-            </div>
+        
+        Usted tiene la opción de bajar el puntaje al usuario: @Model.UserName a 0. <br /> Para hacerlo debe enviar un mensaje con los motivos por los cuales lo hace. 
+        <hr />
+        Para continuar presione el botón. 
 
-        </div>
-        <div class="card-footer">
-            <div class="col" align="right">
-                <button class="btn btn-outline-info boton" type="submit">
-                    Enviar
-                </button>
-            </div>
-        </div>
+
+        @Html.ActionLink("Continuar", "Create", "Mensajes", new { id = @Model.Id }, new {@class = "btn btn-info" } )
     </div>
 
-
-</form>
 <br />
 
 <style>
