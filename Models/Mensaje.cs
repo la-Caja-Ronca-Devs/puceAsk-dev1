@@ -24,9 +24,7 @@ namespace puceAsk_dev1.Models
         [Required]
         [Column("fechaMensaje")]
         public DateTime FechaMensaje { get; set; }
-
-        [Required]
-        public DateTime FechaMensaje { get; set; }
+        
 
     }
 }

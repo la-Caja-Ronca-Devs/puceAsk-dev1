@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace puceAsk_dev1.Controllers
 {
@@ -37,9 +38,6 @@ namespace puceAsk_dev1.Controllers
             {
                 return HttpNotFound();
             }
-
-            var usuarioActual = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            ViewBag.actual = usuarioActual.UserName;
 
             return View(usuario);
         }
@@ -80,12 +78,20 @@ namespace puceAsk_dev1.Controllers
             {
                 return HttpNotFound();
             }
+            string imgDataURL = null;
+            if (usuario.Foto != null)
+            {
+                byte[] foto = usuario.Foto;
+                string imreBase64Data = Convert.ToBase64String(foto);
+                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            }
+            ViewBag.fotografia = imgDataURL;
             return View(usuario);
         }
 
         // POST: Usuarios/Edit/5
         [HttpPost]
-        public ActionResult EditIndividual([Bind(Include = "Foto,Email")] ApplicationUser usuario)
+        public ActionResult EditIndividual([Bind(Exclude = "img", Include = "Id,FechaNacimiento,Nombre,Apellido,Sexo, Email, SaldoCuenta, EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] ApplicationUser usuario)
         {
             try
             {
@@ -105,11 +111,15 @@ namespace puceAsk_dev1.Controllers
                         }
                         else
                         {
-                            imageData = null;
+                            var imagen = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                            
+                            imageData = imagen.Foto;
                         }
                     }
-                    usuario.Foto = imageData;
-                    db.Entry(usuario).State = EntityState.Modified;
+                    var usuario2 = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
+                    usuario2.Foto = imageData;
+                    //db.Entry(usuario).State = EntityState.Modified;
+                    usuario2.Email = usuario.Email;
                     db.SaveChanges();
                     return RedirectToAction("Inicio", "Preguntas");
                 }
