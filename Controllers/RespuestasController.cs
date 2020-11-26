@@ -53,7 +53,9 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "user")]
         public ActionResult Create(int id)
         {
-            return View();
+            var pr = (from c in db.Pregunta.Include(i => i.Usuario) where c.PreguntaId == id select c).First();
+            Respuesta respuesta = new Respuesta { Pregunta = pr };
+            return View(respuesta);
         }
 
         // POST: Respuestas/Create
@@ -65,7 +67,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create([Bind(Include = "DescRespuesta")] Respuesta respuesta)
         {           
             if (ModelState.IsValid)
-            {
+            {                
                 Pregunta id = (Pregunta)TempData["idPregunta"];
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
                 respuesta.UsuarioId = usuario.Id;
