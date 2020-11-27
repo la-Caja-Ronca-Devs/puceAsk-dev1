@@ -22,15 +22,31 @@ namespace puceAsk_dev1.Controllers
         }
 
         [Authorize(Roles = "user")]
-        public ActionResult MensajesRecibidos()
+        public ActionResult MensajesRecibidos(int pagina =1)
         {
+            var cantidadRegistrosPorPagina = 4;
+            
+            
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
             var mensajes = from m in db.Mensajes
                            .Include(m => m.Emisor)
                            .Include(m => m.Receptor)
                            where m.Receptor.Id == usuario.Id select m;
-            mensajes = mensajes.OrderByDescending(s => s.FechaMensaje);
-            return View(mensajes.ToList());
+            mensajes = mensajes.OrderByDescending(s => s.FechaMensaje)
+                                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+            var contar = (from m in db.Mensajes
+                           .Include(m => m.Emisor)
+                           .Include(m => m.Receptor)
+                          where m.Receptor.Id == usuario.Id
+                          select m).Count();
+            var totalRegistros = contar;
+            var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalpaginas;
+            ViewBag.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            return View(mensajes);
         }
 
         // GET: Mensajes/Details/5
@@ -75,16 +91,15 @@ namespace puceAsk_dev1.Controllers
             var receptor = db.Users.Find(mensaje.ReceptorId);
             mensaje.EmisorId = usuario.Id;
             mensaje.FechaMensaje = DateTime.Now;
+            
             if (ModelState.IsValid)
             {
                 db.Mensajes.Add(mensaje);
                 db.SaveChanges();
                 Encerar(receptor);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Usuarios");
             }
-
-            //ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.EmisorId);
-            //ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
+            
             return View(mensaje);
         }
 

@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<puceAsk_dev1.Models.Respuesta>
 
-
 <div class="container">
+
+
         <div class="col" align="right">
             <br />
-            @Html.ActionLink("Responder Alguna Pregunta", "Inicio","Preguntas", null, new { @class = "btn btn-warning", @role = "button" })
+            <a href="@Url.Action("Inicio", "Preguntas")" class="btn btn-warning"> <img src="https://img.icons8.com/ios-filled/100/000000/faq.png" height="20" />&nbsp; Responder alguna pregunta</a>
+
         </div>
 
     <hr />
@@ -19,43 +21,46 @@
                     <div class="card-header titulo">
                         <div class="container">
                             <div class="row">
-                                <div class="col">
-                                    @Html.DisplayFor(modelItem => item.Pregunta.TituloPregunta)
-                                </div>
-                                <div class="col">
-                                   
-                                    @if (item.Pregunta.MejorUsuarioRespuestaId == item.UsuarioId)
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-pill badge-info">Mejor Respuesta</span>
-                                        </div>
-                                    }
-
-                                    @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-primary">Abierta por @((item.Pregunta.Fechapregunta.AddDays(5) - DateTime.Now).Days) días más.</span>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-secondary">Cerrada</span>
-                                        </div>
-                                    }
-                                </div>
-                                <div class="col">
-                                    @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
-                                    {
-                                        <div class="row">
-                                            <a href="@Url.Action("Edit", "Respuestas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
-                                        </div>
-                                    }
-                                    <div class="row">
-                                        <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
+                               
+                                    <div class="col-7">
+                                        @Html.DisplayFor(modelItem => item.Pregunta.TituloPregunta)
                                     </div>
+                                    <div class="col-3">
+
+                                        @if (item.Pregunta.MejorUsuarioRespuestaId == item.UsuarioId)
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-pill badge-info">Mejor Respuesta</span>
+                                            </div>
+                                        }
+
+                                        @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-primary">Abierta por @((item.Pregunta.Fechapregunta.AddDays(5) - DateTime.Now).Days) días más.</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-secondary">Cerrada</span>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-2">
+                                        @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
+                                        {
+                                            <div class="row">
+                                                <a href="@Url.Action("Edit", "Respuestas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
+                                            </div>
+                                        }
+                                        <div class="row">
+                                            <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
+                                        </div>
+                                    </div>
+
                                 </div>
-                            </div>
+
                         </div>
 
 
@@ -73,9 +78,28 @@
 
                         </p>
                         <p class="detalles">
-                            Autor: @Html.DisplayFor(modelItem => item.Pregunta.Usuario.Nombre)
+
+                            @{ string imgDataURL = "";
+                                if (item.Pregunta.Usuario.Foto != null)
+                                {
+                                    byte[] foto = item.Pregunta.Usuario.Foto;
+                                    string imreBase64Data = Convert.ToBase64String(foto);
+                                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                                }
+                                else
+                                {
+                                    imgDataURL = "https://img.icons8.com/color/user";
+                                }
+                            }
+
+
+                            Autor: <img src="@imgDataURL" alt="foto" width="100" height="100" class="fotos" /> @Html.DisplayFor(modelItem => item.Pregunta.Usuario.Nombre) @Html.DisplayFor(modelItem => item.Pregunta.Usuario.Apellido)
                         </p>
 
+                    </div>
+                    <div class="card-footer">
+                        <h5>Mi Respuesta:</h5>
+                        <h6>@item.DescRespuesta</h6>
                     </div>
 
                 </div>
@@ -89,10 +113,69 @@
         }
 
     </div>
+    <div>
+        @Html.ActionLink("Regresar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+    </div>
 
 </div>
+@{
+    var cantidadPaginas = ViewBag.TotalPaginas;
+    int inicial = 1;
+    var radio = 2;
+    var cantMaxPaginas = radio * 2 + 1;
+    int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+    if (ViewBag.PaginaActual > radio + 1)
+    {
+        inicial = ViewBag.PaginaActual - radio;
+        if (cantidadPaginas > ViewBag.PaginaActual + radio)
+        {
+            final = ViewBag.PaginaActual + radio;
+        }
+        else
+        {
+            final = cantidadPaginas;
+        }
+    }
+}
+<br />
+<div class="pagination">
+    <ul class="pagination">
 
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
+
+
+            for (int i = inicial; i <= final; i++)
+            {
+                if (i == ViewBag.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
+            }
+            <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
+        }
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
+</div>
 <style>
+
+    .fotos {
+        vertical-align: middle;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
     .pregunta {
         background-color: darkcyan;
         padding: 10px !important;
@@ -187,6 +270,12 @@
         -ms-transition: all 0.2s ease-in;
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
+    }
+    
+    .pagination {
+        display: compact !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
     }
 </style>
 

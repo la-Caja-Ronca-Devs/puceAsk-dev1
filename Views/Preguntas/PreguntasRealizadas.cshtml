@@ -1,114 +1,183 @@
 ﻿@model IEnumerable<puceAsk_dev1.Models.Pregunta>
 
-
 <div class="container">
-    @if (Int32.Parse(ViewData["puntaje"].ToString()) >= 10)
-    {
-    <div class="col" align="right">
-        <br />
-        @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
+    <div class="row">
+        <div class="col" align="left">
+            <h5>Tipos de Preguntas:</h5>
+            <div class="btn-group" role="group" aria-label="Filtro">
+                <a role="button" class="btn btn-success" href="@Url.Action("PreguntasRealizadas", "Preguntas", new { filtro = 1 })">Con Mejor Respuesta</a>
+                <a role="button" class="btn btn-danger" href="@Url.Action("PreguntasRealizadas", "Preguntas", new { filtro = 2 })">Sin Mejor Respuesta</a>
+                <a role="button" class="btn btn-primary" href="@Url.Action("PreguntasRealizadas", "Preguntas", new { filtro = 0 })">Todas</a>
+            </div>
+        </div>
+        <div class="col" align="right">
+            <br />
+            @if (Int32.Parse(ViewData["puntaje"].ToString()) >= 10)
+            {
+                @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
+            }
+            else
+            {
+                <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
+            }
+        </div>
     </div>
-    }
-    else {
-    <div class="col" align="right">
-        <br />
-        <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
-    </div>
-    }
-
-    <hr />
-    <div>
-        @if (Model.Count() > 0)
-        {
-
-            foreach (var item in Model)
+        <hr />
+        <div>
+            @if (Model.Count() > 0)
             {
 
-                <div class="card carta" style="margin-top: 20px">
-                    <div class="card-header titulo">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    @Html.DisplayFor(modelItem => item.TituloPregunta)
-                                </div>
-                                <div class="col">
-                                    <div class="row">
-                                        <span class="badge badge-pill badge-info">@item.Respuestas.Count() Respuestas.</span>
+                foreach (var item in Model)
+                {
+                    <div class="card carta" style="margin-top: 20px">
+                        <div class="card-header titulo">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-7">
+                                        @Html.DisplayFor(modelItem => item.TituloPregunta)
                                     </div>
-                                    @if (item.MejorUsuarioRespuestaId == null)
-                                    {
+                                    <div class="col-3">
                                         <div class="row">
-                                            <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
+                                            <span class="badge badge-pill badge-info">@item.Respuestas.Count() Respuestas.</span>
                                         </div>
-                                    }
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias.</span>
-                                        </div>
-                                    }
+                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && item.MejorUsuarioRespuestaId == null)
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-pill badge-light">Respondiendose</span>
+                                            </div>
+                                        }
+                                        @if (item.MejorUsuarioRespuestaId != null)
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-pill badge-success">Mejor Respuesta asignada</span>
+                                            </div>
+                                        }
 
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(5))
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-primary">Abierta</span>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="row">
-                                            <span class="badge badge-secondary">Cerrada</span>
-                                        </div>
-                                    }
-                                </div>
-                                <div class="col">
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
-                                    {
-                                        <div class="row">
-                                            <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
-                                        </div>
-                                    }
+                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias para elegir la mejor respuesta.</span>
+                                            </div>
+                                        }
+
+                                        @if (DateTime.Now <= item.Fechapregunta.AddDays(5))
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-primary">Abierta </span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row">
+                                                <span class="badge badge-secondary">Cerrada</span>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-2">
+                                        @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                        {
+                                            <div class="row">
+                                                <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
+                                            </div>
+                                        }
                                         <div class="row">
                                             <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
                                         </div>
                                     </div>
+                                </div>
                             </div>
+
+
                         </div>
 
+                        <div class="card-body pregunta">
+                            <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
+                            <hr>
+                            <p class="detalles">
+                                @Html.DisplayFor(modelItem => item.Fechapregunta) |
+                                @if (item.Categoria != null)
+                                {
+                                    @Html.DisplayFor(motelItem => item.Categoria.NombreCategoria)
+                                }
+
+                            </p>
+                        </div>
 
                     </div>
-
-                    <div class="card-body pregunta">
-                        <p class="lead preg">@Html.DisplayFor(modelItem => item.DescPregunta)</p>
-                        <hr>
-                        <p class="detalles">
-                            @Html.DisplayFor(modelItem => item.Fechapregunta) |
-                            @if (item.Categoria != null)
-                            {
-                                @Html.DisplayFor(motelItem => item.Categoria.NombreCategoria)
-                            }
-
-                        </p>
-                        <p class="detalles">
-                            Autor: @Html.DisplayFor(modelItem => item.Usuario.Nombre)
-                        </p>
-
-                    </div>
+                }
+            }
+            else
+            {
+                <div class="card pregunta">
+                    No se han encontrado preguntas.
 
                 </div>
             }
+
+        </div>
+
+        <div>
+            @Html.ActionLink("Regresar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+        </div>
+
+
+    </div>
+</div>
+@{
+    var cantidadPaginas = ViewBag.TotalPaginas;
+    int inicial = 1;
+    var radio = 2;
+    var cantMaxPaginas = radio * 2 + 1;
+    int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+    if (ViewBag.PaginaActual > radio + 1)
+    {
+        inicial = ViewBag.PaginaActual - radio;
+        if (cantidadPaginas > ViewBag.PaginaActual + radio)
+        {
+            final = ViewBag.PaginaActual + radio;
         }
         else
         {
-            <div class="card pregunta">
-                No se han encontrado preguntas.
-            </div>
+            final = cantidadPaginas;
         }
+    }
+}
+<br />
+<div class="pagination">
+    <ul class="pagination">
 
-    </div>
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
 
+
+            for (int i = inicial; i <= final; i++)
+            {
+                if (i == ViewBag.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
+            }
+            <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
+        }
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
 </div>
-
 <style>
     .pregunta {
         background-color: darkcyan;
@@ -205,5 +274,106 @@
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
     }
+    .pagination {
+        display: compact !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
+  
+        .pregunta {
+            background-color: darkcyan;
+            padding: 10px !important;
+        }
+
+        .titulo {
+            color: white;
+            background-color: #006666;
+            color: ghostwhite;
+        }
+
+        .preg, .enlaces {
+            color: ghostwhite;
+        }
+
+        .respuesta {
+            left: 5%;
+            border: solid 1px;
+            border-color: darkcyan;
+            padding: 10px !important;
+            margin-top: 15px;
+            width: 95%;
+        }
+
+        .categorias {
+            list-style: none;
+        }
+
+        .link-button {
+            -moz-border-radius: 0.333em 0.333em 0.333em 0.333em;
+            -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            background-color: #FFBB33;
+            border-color: #FFBB33;
+            border-style: solid;
+            border-width: 1px;
+            color: white;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 1.167em;
+            font-weight: bold;
+            line-height: 1.429em;
+            padding: 0.286em 1em 0.357em;
+            text-decoration: none !important;
+        }
+        .enlaces {
+            text-decoration: none !important;
+        }
+
+        .ver {
+            text-decoration: none;
+            color: #212529;
+        }
+
+        .enlaces:hover {
+            color: white;
+        }
+
+        .carta:hover {
+            transform: scale(1.05);
+            background: #fff;
+            box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+            /box-shadow: 0px 15px 26px rgba(0, 0, 0, 0.50);
+            / -webkit-transition: all 0.2s ease-in;
+            -moz-transition: all 0.2s ease-in;
+            -ms-transition: all 0.2s ease-in;
+            -o-transition: all 0.2s ease-in;
+            transition: all 0.2s ease-in;
+            margin-top: 50px;
+        }
+
+        .detalles {
+            color: black;
+        }
+
+        .enlace {
+            text-decoration: none !important;
+            color: black;
+        }
+
+        .list-group-item.list-group-item-action.active {
+            background-color: darkcyan;
+            border-color: cyan;
+        }
+
+        .list-group-item:hover {
+            transform: scale(1.05);
+            background-color: darkcyan;
+            color: white;
+            border-color: cyan;
+            -moz-transition: all 0.2s ease-in;
+            -ms-transition: all 0.2s ease-in;
+            -o-transition: all 0.2s ease-in;
+            transition: all 0.2s ease-in;
+        }
+
 </style>
 

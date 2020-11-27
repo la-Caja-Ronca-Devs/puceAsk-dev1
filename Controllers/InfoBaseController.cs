@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,7 +23,16 @@ namespace puceAsk_dev1.Controllers
                     var user = context.Users.SingleOrDefault(u => u.UserName == username);
                     int cuenta = user.SaldoCuenta;
 
-                    if(user.Foto != null)
+                    //int preguntasOJO = (from p 
+                    //                    in context.Pregunta 
+                    //                    where p.UsuarioId == user.Id 
+                    //                    && p.MejorUsuarioRespuestaId == null
+                    //                    && DateTime.Now <= DbFunctions.AddDays(p.Fechapregunta,10)
+                    //                    && DateTime.Now >= DbFunctions.AddDays(p.Fechapregunta, 5)
+                    //                    select p).Count();
+                
+
+                    if (user.Foto != null)
                     {
                         byte[] foto = user.Foto;
                         string imreBase64Data = Convert.ToBase64String(foto);
@@ -39,6 +49,7 @@ namespace puceAsk_dev1.Controllers
 
 
                     ViewData.Add("Puntaje", cuenta);
+
 
                 }
             }

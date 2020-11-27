@@ -80,5 +80,6 @@ namespace puceAsk_dev1.Models
         }
 
         public System.Data.Entity.DbSet<puceAsk_dev1.Models.Mensaje> Mensajes { get; set; }
+        
     }
 }
