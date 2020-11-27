@@ -4,7 +4,8 @@
     ViewBag.Title = "MensajesRecibidos";
 }
 
-<h2>Mensajes Recibidos <span class="badge badge-info">@Model.Count()</span></h2><hr />
+<h2>Mensajes Recibidos <span class="badge badge-info">@Model.Count()</span></h2>
+<hr />
 
 @if (Model.Count() > 0)
 {
@@ -35,18 +36,18 @@
 
         <div class="card mensaje " style="margin-top: 20px">
 
-                <div class="card-header titulo">
-                        <img alt="Foto" src="@imgDataURL" width="100" height="100" class="emisor" style="float:left; margin:10px;"/>
-                    De: @item.Emisor.Nombre  @item.Emisor.Apellido
-                    <br />
-                    @Html.DisplayFor(modelItem => item.FechaMensaje)
-                </div>
+            <div class="card-header titulo">
+                <img alt="Foto" src="@imgDataURL" width="100" height="100" class="emisor" style="float:left; margin:10px;" />
+                De: @item.Emisor.Nombre  @item.Emisor.Apellido
+                <br />
+                @Html.DisplayFor(modelItem => item.FechaMensaje)
+            </div>
 
-                    <div class="card-body ">
-                        <h6 class="lead preg">@Html.DisplayFor(modelItem => item.MensajeDesc)</h6>
-                        <hr>
-                            
-                    </div>
+            <div class="card-body ">
+                <h6 class="lead preg">@Html.DisplayFor(modelItem => item.MensajeDesc)</h6>
+                <hr>
+
+            </div>
 
         </div>
     }
@@ -57,6 +58,55 @@ else
         No tiene mensajes
     </div>
 }
+@{
+        var cantidadPaginas = ViewBag.TotalPaginas;
+        int inicial = 1;
+        var radio = 2;
+        var cantMaxPaginas = radio * 2 + 1;
+        int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+        if (ViewBag.PaginaActual > radio + 1)
+        {
+            inicial = ViewBag.PaginaActual - radio;
+            if (cantidadPaginas > ViewBag.PaginaActual + radio)
+            {
+                final = ViewBag.PaginaActual + radio;
+            }
+            else
+            {
+                final = cantidadPaginas;
+            }
+        }
+    }
+<br/>
+<div class="pagination">
+    <ul class="pagination">
+
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
+
+
+            for (int i = inicial; i <= final; i++)
+            {
+                if (i == ViewBag.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
+            }
+            <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
+        }
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
+</div>
 
 <style>
     .emisor {
@@ -65,8 +115,6 @@ else
         height: 40px;
         border-radius: 30%;
     }
-
-   
 
     .mensaje {
         border: 3px solid;
@@ -77,5 +125,24 @@ else
     .titulo {
         background: linear-gradient(to bottom left, #007991, #78ffd6);
     }
-    
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+    }
+    .pagination {
+        display: compact !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
 </style>

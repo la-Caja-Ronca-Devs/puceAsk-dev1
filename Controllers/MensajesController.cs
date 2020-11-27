@@ -21,16 +21,32 @@ namespace puceAsk_dev1.Controllers
             return View(mensajes.ToList());
         }
 
-        [Authorize(Roles = "user, admin")]
-        public ActionResult MensajesRecibidos()
+        [Authorize(Roles = "user")]
+        public ActionResult MensajesRecibidos(int pagina =1)
         {
+            var cantidadRegistrosPorPagina = 4;
+            
+            
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
             var mensajes = from m in db.Mensajes
                            .Include(m => m.Emisor)
                            .Include(m => m.Receptor)
                            where m.Receptor.Id == usuario.Id select m;
-            mensajes = mensajes.OrderByDescending(s => s.FechaMensaje);
-            return View(mensajes.ToList());
+            mensajes = mensajes.OrderByDescending(s => s.FechaMensaje)
+                                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+            var contar = (from m in db.Mensajes
+                           .Include(m => m.Emisor)
+                           .Include(m => m.Receptor)
+                          where m.Receptor.Id == usuario.Id
+                          select m).Count();
+            var totalRegistros = contar;
+            var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalpaginas;
+            ViewBag.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            return View(mensajes);
         }
 
         // GET: Mensajes/Details/5

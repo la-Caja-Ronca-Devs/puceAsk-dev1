@@ -15,10 +15,24 @@ namespace puceAsk_dev1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Usuarios
+
         [Authorize(Roles ="admin")]
         public ActionResult Index()
         {
-            var usuarios = (from u in db.Users select u).ToList();
+            var cantidadRegistrosPorPagina = 7;
+            var totalRegistros = db.Users.Count();
+            var usuarios = (from c in db.Users
+                            select c).OrderBy(x => x.Id)
+                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+
+            var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalpaginas;
+            ViewBag.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            var mensajes = db.Mensajes.Include(m => m.Emisor).Include(m => m.Receptor);
+          
             return View(usuarios);
         }
 

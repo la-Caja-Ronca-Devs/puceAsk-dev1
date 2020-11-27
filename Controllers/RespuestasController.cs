@@ -124,16 +124,18 @@ namespace puceAsk_dev1.Controllers
             }
             return View(respuesta);
         }
-
-        // GET: Respuestas/Delete/5
+        //GET
+        [HttpGet]
         [Authorize(Roles = "admin")]
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int? idp, string idu)
         {
-            if (id == null)
+            if (idp == 0 || idu == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Respuesta respuesta = db.Respuesta.Find(id);
+            Respuesta respuesta = (from r in db.Respuesta
+                                  where r.PreguntaId == idp && r.UsuarioId == idu
+                                  select r).First();
             if (respuesta == null)
             {
                 return HttpNotFound();
@@ -141,16 +143,49 @@ namespace puceAsk_dev1.Controllers
             return View(respuesta);
         }
 
-        // POST: Respuestas/Delete/5
+        // POST
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int idp, string idu)
         {
-            Respuesta respuesta = db.Respuesta.Find(id);
+            Respuesta respuesta = (from r in db.Respuesta
+                                   where r.PreguntaId == idp && r.UsuarioId == idu
+                                   select r).First();
             db.Respuesta.Remove(respuesta);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: Respuestas/Edit/5
+        [HttpGet]
+        public ActionResult EditAdmin( int? idp, string idu)
+        {            
+            TempData["idp"] = idp;
+            TempData["idu"] = idu;
+            var desc = (from r in db.Respuesta
+                        where r.PreguntaId == idp && r.UsuarioId == idu select r).First();
+            TempData["desc"] = desc.DescRespuesta;
+            return View();
+        }
+
+        // POST: Respuestas/Edit/5        
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAdmin([Bind(Include = "DescRespuesta")] Respuesta respuesta)
+        {
+            if (ModelState.IsValid)
+            {
+                int idp = Convert.ToInt32(TempData["idp"].ToString());
+                string idu = TempData["idu"].ToString();
+                Respuesta pr = (from r in db.Respuesta where r.PreguntaId == idp && r.UsuarioId == idu select r).First();
+                pr.DescRespuesta = respuesta.DescRespuesta;
+                pr.FechaPublicacion = DateTime.Now;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Respuestas");
+            }
+            return RedirectToAction("Index", "Respuestas");
         }
 
         protected override void Dispose(bool disposing)

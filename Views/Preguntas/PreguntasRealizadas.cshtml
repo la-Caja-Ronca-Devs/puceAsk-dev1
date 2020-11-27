@@ -4,16 +4,18 @@
 <div class="container">
     @if (Int32.Parse(ViewData["puntaje"].ToString()) >= 10)
     {
+
     <div class="col" align="right">
         <br />
         <a href="@Url.Action("Create")" class="btn btn-warning"> <img src="https://img.icons8.com/ios-glyphs/30/000000/add--v2.png" />&nbsp; Agregar Pregunta</a>
     </div>
     }
-    else {
-    <div class="col" align="right">
-        <br />
-        <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
-    </div>
+    else
+    {
+        <div class="col" align="right">
+            <br />
+            <a class="btn btn-secondary btn-lg disabled" role="button" aria-disabled="true"> @(ViewData["puntaje"] +"/10") para preguntar </a>
+        </div>
     }
 
     <hr />
@@ -62,6 +64,7 @@
                                     }
                                 </div>
                                 <div class="col">
+
                                     <div class="col-md-offset-2 col-md-10">
                                         @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
                                         {
@@ -72,8 +75,8 @@
 
                                         <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> <img src="https://img.icons8.com/ios-filled/50/000000/visible.png"  height="20"/> Ver</a>
                                     </div>
-
                                     </div>
+                                </div>
                             </div>
                         </div>
 
@@ -111,7 +114,55 @@
     </div>
 
 </div>
+@{
+    var cantidadPaginas = ViewBag.TotalPaginas;
+    int inicial = 1;
+    var radio = 2;
+    var cantMaxPaginas = radio * 2 + 1;
+    int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+    if (ViewBag.PaginaActual > radio + 1)
+    {
+        inicial = ViewBag.PaginaActual - radio;
+        if (cantidadPaginas > ViewBag.PaginaActual + radio)
+        {
+            final = ViewBag.PaginaActual + radio;
+        }
+        else
+        {
+            final = cantidadPaginas;
+        }
+    }
+}
+<br />
+<div class="pagination">
+    <ul class="pagination">
 
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
+
+
+            for (int i = inicial; i <= final; i++)
+            {
+                if (i == ViewBag.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
+            }
+            <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
+        }
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
+</div>
 <style>
     .pregunta {
         background-color: darkcyan;
@@ -207,6 +258,11 @@
         -ms-transition: all 0.2s ease-in;
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
+    }
+    .pagination {
+        display: compact !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
     }
 </style>
 

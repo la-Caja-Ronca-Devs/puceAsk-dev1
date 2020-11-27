@@ -6,9 +6,7 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -16,7 +14,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DescRespuesta)
-        </th>
+        </th>        
         <th></th>
     </tr>
 
@@ -26,12 +24,11 @@
             @Html.DisplayFor(modelItem => item.FechaPublicacion)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DescRespuesta)
+            @Html.DisplayFor(modelItem => item.DescRespuesta)            
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit" )|
-            @Html.ActionLink("Details", "Details") |
-            @Html.ActionLink("Delete", "Delete")
+            @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId}) |
+            @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId })
         </td>
     </tr>
 }

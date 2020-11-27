@@ -1,0 +1,77 @@
+﻿@model puceAsk_dev1.Models.Pregunta
+
+@{
+    ViewBag.Title = "EditAdmin";
+}
+
+
+<br />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="card">
+                <div class="card-header" align="center">
+                    <h4>Pregunta</h4>
+                    @Html.HiddenFor(model => model.PreguntaId)
+
+                </div>
+                <div class="card card-body" align="center" style="padding: 0 ;width: 500px;">
+                    <div class="form-group" style="padding: 0">
+                       <br/> @Html.LabelFor(model => model.TituloPregunta, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.TituloPregunta, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TituloPregunta, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding: 0">
+                        @Html.LabelFor(model => model.DescPregunta, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DescPregunta, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group" style="padding: 0">
+                        @Html.LabelFor(model => model.CategoriaId, "Categoría", htmlAttributes: new { @class = "control-label" })
+                        <div class="col-sm-9">
+                            @*@Html.DropDownList("CategoriaId", null, htmlAttributes: new { @class = "form-control" })*@
+                            @Html.DropDownListFor(model => model.CategoriaId, new SelectList(ViewBag.categorias, "CategoriaId", "NombreCategoria", "Seleccionar"), new { htmlAttributes = new { @class = "form-control" } })
+
+                            @*@Html.ValidationMessageFor(model => model.CategoriaId, "", new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <div class="card-footer">
+
+                    <div class="col" align="right">
+                        @Html.ActionLink("Cancelar", "Index", new { @class = "btn btn-default" })
+                        <input type="submit" value="Enviar" class="btn btn-default" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<style>
+   .col{
+       width: 100%;
+       max-width: 100%;
+   }
+</style>
