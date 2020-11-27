@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 
 @if (Request.IsAuthenticated)
+
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
@@ -16,7 +17,7 @@
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="loginMenu"><asp:Literal runat="server" Text="<%$Resources:Resources, Language%>" /><img src="@ViewData["Foto"]" alt="foto" class="avatar" /><span class="caret"></span></a>
                 <div class="dropdown-menu" aria-labelledby="loginMenu">
                     <p class="dropdown-item"><img src="https://img.icons8.com/fluent-systems-filled/24/000000/user-male-circle.png" height="20" />&nbsp;Iniciado como: <b> @User.Identity.GetUserName()</b></p> <hr />
-                    <a href="@Url.Action("PreguntasRealizadas", "Preguntas")" class="dropdown-item"> <img src="https://img.icons8.com/ios-glyphs/30/000000/question-mark.png" height="20" />&nbsp; Preguntas realizadas</a>
+                    <a href="@Url.Action("PreguntasRealizadas", "Preguntas", new { filto = 0 })" class="dropdown-item"> <img src="https://img.icons8.com/ios-glyphs/30/000000/question-mark.png" height="20" />&nbsp; Preguntas realizadas</a>
                     <a href="@Url.Action("RespuestasRealizadas", "Respuestas")" class="dropdown-item"> <img src="https://img.icons8.com/ios-filled/100/000000/faq.png" height="20"/> &nbsp; Respuestas realizadas</a>
                     <a href="@Url.Action("MensajesRecibidos", "Mensajes")" class="dropdown-item"> <img src="https://img.icons8.com/ios-filled/24/000000/message-group.png" height="20" /> &nbsp; Mensajes recibidos</a>
                     <a href="@Url.Action("EditIndividual", "Usuarios", new { id = User.Identity.GetUserId() })" class="dropdown-item"> <img src="https://img.icons8.com/ios-filled/50/000000/services.png" height="20"/> &nbsp; Administrar cuenta </a>
@@ -70,3 +71,11 @@ else
         border-radius: 50%;
     }
 </style>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+ 
+</script>
+}

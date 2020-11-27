@@ -2,6 +2,7 @@
 
 @{
     var mr = (puceAsk_dev1.Models.Respuesta)(from r in Model.Respuestas where r.UsuarioId == Model.MejorUsuarioRespuestaId select r).FirstOrDefault();
+
 }
 
 @using (Html.BeginForm("Edit", "Preguntas", FormMethod.Post, new { id = "EditarPregunta", enctype = "multipart/form-data", name = "Editar" }))
@@ -18,7 +19,7 @@
         <div class="form-group">
             <div>
                 <h3>@Model.TituloPregunta</h3>
-                
+
             </div>
         </div>
 
@@ -39,69 +40,122 @@
         </div>
         <div class="form-group">
             <h4>Mejor Respuesta</h4>
-            @if (Model.MejorUsuarioRespuestaId == null)
+            @if (Model.Fechapregunta.AddDays(5) <= DateTime.Now)
             {
-                if (Model.Respuestas.Count() > 0)
+                if (Model.MejorUsuarioRespuestaId == null)
                 {
-                    foreach (var item in Model.Respuestas)
+                    if (Model.Respuestas.Count() > 0)
                     {
-                        <div class="card pregunta" style="margin-top: 10px">
-                            <h5>Autor: @item.Usuario.Nombre @item.Usuario.Apellido</h5>
-                            @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId) @item.DescRespuesta
+                        foreach (var item in Model.Respuestas)
+                        {
+
+                            string imgDataURL = "";
+                            if (item.Usuario.Foto != null)
+                            {
+                                byte[] foto = item.Usuario.Foto;
+                                string imreBase64Data = Convert.ToBase64String(foto);
+                                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                            }
+                            else
+                            {
+                                imgDataURL = "https://img.icons8.com/color/user";
+                            }
+
+                            <div class="card respuesta order-1">
+                                <div class="card-horizontal">
+                                    <div class="col-md-auto">
+                                        @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId)
+                                        <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
+                                    </div>
+                                    <div class="col">
+                                        <div class="container">
+                                            <p class="lead">@item.DescRespuesta</p>
+                                            <hr class="my-4">
+                                            <p>
+                                                Usuario: @item.Usuario.Nombre
+                                            </p>
+                                            <div class="row card-footer">
+                                                <small class="text-muted">@item.FechaPublicacion</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="card">
+                            No hay respuestas de esta pregunta.
+                            @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                         </div>
                     }
                 }
                 else
                 {
-                    <div class="card">
-                        No hay respuestas de esta pregunta.
-                        @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
+                    string imgDataURL_ = "";
+                    if (mr.Usuario.Foto != null)
+                    {
+                        byte[] foto = mr.Usuario.Foto;
+                        string imreBase64Data = Convert.ToBase64String(foto);
+                        imgDataURL_ = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                    }
+                    else
+                    {
+                        imgDataURL_ = "https://img.icons8.com/color/user";
+                    }
+
+                    <div class="card respuesta order-0">
+                        <div class="card-horizontal">
+                            <div class="col-2 text-center">
+                                <div class="row text-center">
+                                    <img src="@imgDataURL_" alt="foto" width="100" height="100" class="embed-responsive fotos" />
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <hr />
+                                    </div>
+                                    <div class="col text-center">
+                                        <span class="badge badge-pill badge-success">Mejor Respuesta</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col">
+                                <div class="container">
+                                    <p class="lead">@mr.DescRespuesta</p>
+                                    <hr class="my-4">
+                                    <p>
+                                        Usuario: @mr.Usuario.Nombre
+                                    </p>
+                                    <div class="row card-footer">
+                                        <small class="text-muted">@mr.FechaPublicacion</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+
+
                 }
             }
             else
             {
                 <div class="card">
-                    <div class="card-horizontal">
-                        <div class="imgOver col-3">
-                            <img class="embed-responsive hover" src="https://www.flaticon.com/svg/static/icons/svg/3791/3791551.svg" alt="Mejor Respuesta">
-
-                            @if (mr.Usuario.Foto != null)
-                            {
-                                string imgDataURL = "";
-                                if (mr.Usuario.Foto != null)
-                                {
-                                    byte[] foto = mr.Usuario.Foto;
-                                    string imreBase64Data = Convert.ToBase64String(foto);
-                                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                                }
-
-                                <img src="@imgDataURL" alt="foto" class="overlay foto" />
-                            }
-                            else
-                            {
-                                <img src="https://img.icons8.com/color/user" alt="foto" class="overlay foto" />
-                            }
-                        </div>
-                        <div class="card-body col-9">
-                            <h4 class="card-title">Autor: @(mr.Usuario.Nombre + " " + mr.Usuario.Apellido)</h4>
-                            <p class="card-text">@mr.DescRespuesta</p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">@mr.FechaPublicacion</small>
-                    </div>
+                    Quedan @((Model.Fechapregunta.AddDays(5) - DateTime.Now).Days) días para poder elegir la mejor respuesta. ¿emocionante cierto?
+                    @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                 </div>
-
             }
+
         </div>
 
 
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
-
+                @Html.ActionLink("Regresar", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
                 <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
             </div>
         </div>
@@ -111,6 +165,13 @@
 
 
 <style>
+
+    .fotos {
+        vertical-align: middle;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+    }
 
     .imgOver {
         position: relative;
@@ -256,7 +317,7 @@
                 e.preventDefault();
 
                 swal({
-                    title: '¿Seguro que deseas editar esta pregunta?',
+                    title: '¿Seguro que deseas editar esta pregunta? La mejor respuesta solo puedes asignarla una vez.',
                     text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
                     content: "input"
                 })
@@ -264,7 +325,7 @@
                         if (value === "@Model.Usuario.Email") {
                             swal({
                                 title: "¡Excelente!",
-                                text: "¡Pregunta Actualizada!", 
+                                text: "¡Pregunta Actualizada!",
                                 icon: "success",
                             }).then((value) => {
                                    $("#EditarPregunta").submit();
