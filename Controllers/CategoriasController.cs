@@ -16,9 +16,23 @@ namespace puceAsk_dev1.Controllers
 
         // GET: Categorias
         [Authorize(Roles = "admin,user")]
-        public ActionResult Index()
+        public ActionResult Index(int pagina = 1)
         {
-            return View(db.Categoria.ToList());
+            
+            var cantidadRegistrosPorPagina = 10;
+            var totalRegistros = db.Categoria.Count();
+            var categorias = (from c in db.Categoria
+                                   select c).OrderBy(x=> x.NombreCategoria)
+                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+
+            var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalpaginas;
+            ViewBag.RegistrosPorPagina = cantidadRegistrosPorPagina;
+           
+            return View(categorias);
         }
 
         // GET: Categorias/Details/5
@@ -41,6 +55,7 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
+            ViewBag.categorias = (from c in db.Categoria select c).ToList();
             return View();
         }
 

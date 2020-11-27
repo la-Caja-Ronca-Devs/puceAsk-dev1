@@ -1,0 +1,112 @@
+﻿@model puceAsk_dev1.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<div class="d-flex justify-content-center align-items-center " style="margin: 35px;">
+    <div class="card" style=" width: 40rem;">
+        <div class="card-header datos">
+
+            <h3>¿Está seguro que desea eliminar el siguiente usuario?</h3>
+         </div>
+        <div class="card-body" align="center">
+            <div>
+    <hr />
+                <div class="form-group col-md-5">
+                        <img src="@ViewBag.fotografia" alt="Foto" class="imgSeleccionada" />
+                </div>
+                <div class="col-md-7">
+
+
+                    <dl class="dl-horizontal">
+
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.FechaNacimiento)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FechaNacimiento)
+                        </dd>
+
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Nombre)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Apellido)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Apellido)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Sexo)
+                        </dt>
+                            @if (Model.Sexo)
+                            {
+                            <dd>Masculino</dd>
+                            }
+                            else
+                            {
+                                <dd>Femenino</dd>
+                            }
+
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.SaldoCuenta)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.SaldoCuenta)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UserName)
+                        </dd>
+
+                    </dl>
+                </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="card-footer">
+            <div class="justify-content-center links">
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = " btn btn-secondary" })
+                <input type="submit" value="Eliminar" class="btn btn-danger" /> 
+            </div>
+        </div>
+            }
+        </div>
+        </div>
+        </div>
+    </div>
+
+
+<style>
+    .imgSeleccionada {
+        vertical-align: middle;
+        width: 150px;
+        height: 150px;
+        border-radius: 70%;
+    }
+</style>

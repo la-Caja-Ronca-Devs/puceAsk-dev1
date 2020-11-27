@@ -30,65 +30,121 @@
         <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
-       
+
         <th>
             @Html.DisplayNameFor(model => model.UserName)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    string imgDataURL = "";
-    if (item.Foto != null)
+    @foreach (var item in Model)
     {
-        byte[] foto = item.Foto;
-        string imreBase64Data = Convert.ToBase64String(foto);
-        imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-    }
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaNacimiento)
-        </td>
-        <td>
-             <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Apellido)
-        </td>
-        @if (item.Sexo)
+        string imgDataURL = "";
+        if (item.Foto != null)
         {
-        <td>
-            Masculino
-        </td>
+            byte[] foto = item.Foto;
+            string imreBase64Data = Convert.ToBase64String(foto);
+            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+        }
+           else
+          {
+              imgDataURL = "https://img.icons8.com/color/user";
+          }
+  
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaNacimiento)
+            </td>
+            <td>
+                <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            @if (item.Sexo)
+            {
+                <td>
+                    Masculino
+                </td>
+            }
+            else
+            {
+                <td>
+                    Femenino
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.SaldoCuenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Gestionar", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+@{
+    var cantidadPaginas = ViewBag.TotalPaginas;
+    int inicial = 1;
+    var radio = 2;
+    var cantMaxPaginas = radio * 2 + 1;
+    int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+    if (ViewBag.PaginaActual > radio + 1)
+    {
+        inicial = ViewBag.PaginaActual - radio;
+        if (cantidadPaginas > ViewBag.PaginaActual + radio)
+        {
+            final = ViewBag.PaginaActual + radio;
         }
         else
         {
-            <td>
-                Femenino
-            </td>
+            final = cantidadPaginas;
         }
-
-
-        <td>
-            @Html.DisplayFor(modelItem => item.SaldoCuenta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Gestionar", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+    }
 }
+<br />
+<div class="pagination">
+    <ul class="pagination">
 
-</table>
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
+            for (int i = inicial; i <= final; i++)
+            {
+                if (i == ViewBag.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
+            }
+            <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
+        }
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
+</div>
+<style>
+    .pagination {
+        display: compact !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
+</style>
