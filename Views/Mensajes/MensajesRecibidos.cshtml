@@ -12,11 +12,26 @@
     foreach (var item in Model)
     {
         string imgDataURL = "";
+        
+
         if (item.Emisor.Foto != null)
         {
-            byte[] foto = item.Emisor.Foto;
-            string imreBase64Data = Convert.ToBase64String(foto);
-            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            if (item.EmisorId != item.ReceptorId)
+            {
+                byte[] foto = item.Emisor.Foto;
+                string imreBase64Data = Convert.ToBase64String(foto);
+                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            }
+            else
+            {
+                imgDataURL = "https://s.gravatar.com/avatar/2ad520845878d36234a4472cd39300a1?s=80";
+                item.Emisor.Nombre = "Equipo";
+                item.Emisor.Apellido = "PUCE ASK";
+            }
+        }
+        else
+        {
+            imgDataURL = "https://img.icons8.com/color/user";
         }
 
         <div class="card mensaje " style="margin-top: 20px">
