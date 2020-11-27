@@ -46,6 +46,11 @@
             string imreBase64Data = Convert.ToBase64String(foto);
             imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
         }
+           else
+          {
+              imgDataURL = "https://img.icons8.com/color/user";
+          }
+  
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FechaNacimiento)
@@ -71,16 +76,12 @@
                     Femenino
                 </td>
             }
-
-
             <td>
                 @Html.DisplayFor(modelItem => item.SaldoCuenta)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-
-
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
@@ -91,7 +92,6 @@
             </td>
         </tr>
     }
-
 </table>
 
 @{
@@ -120,8 +120,6 @@
         @if (ViewBag.TotalPaginas > 1)
         {
             <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
-
-
             for (int i = inicial; i <= final; i++)
             {
                 if (i == ViewBag.PaginaActual)

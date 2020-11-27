@@ -91,7 +91,7 @@ namespace puceAsk_dev1.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "No se pudo iniciar sesión.");
+                    ModelState.AddModelError("", "Nombre de usuario y/o contraseña incorrectos");
                     return View(model);
             }
         }

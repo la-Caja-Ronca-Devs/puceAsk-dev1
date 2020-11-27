@@ -56,14 +56,14 @@
                 </button>
             </div>
 
-            @if (User.Identity.IsAuthenticated)
-            {
+
+            @if (User.IsInRole("user")) {
                 if (Int32.Parse(ViewData["puntaje"].ToString()) >= 10)
                 {
-                    <div class="col" align="right">
-                        <br />
-                        @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
-                    </div>
+                <div class="col" align="right">
+                    <br />
+                    <a href="@Url.Action("Create")" class="btn btn-warning"> <img src="https://img.icons8.com/ios-glyphs/30/000000/add--v2.png" />&nbsp; Agregar Pregunta</a>
+                </div>
                 }
                 else
                 {
