@@ -4,12 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
+<h2>Listado de categorías</h2>
+<br />
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear nueva categoría", "Create", null, new { @class="btn btn-warning", @style="color:white"} )
 </p>
 <table class="table">
+    
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.NombreCategoria)
@@ -20,22 +21,22 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NombreCategoria)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DescCategoria)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.CategoriaId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.CategoriaId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.CategoriaId })
-            </td>
-        </tr>
-    }
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombreCategoria)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DescCategoria)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit",null,new  {id=item.CategoriaId }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
+            @Html.ActionLink("Eliminar", "Delete", null, new { id = item.CategoriaId }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
+        </td>
+    </tr>
+}
+
 
 </table>
 @{

@@ -65,7 +65,7 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoriaId,RowVersion,NombreCategoria,DescCategoria")] Categoria categoria)
+        public ActionResult Create([Bind(Include = "CategoriaId,NombreCategoria,DescCategoria")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {
@@ -76,6 +76,7 @@ namespace puceAsk_dev1.Controllers
 
             return View(categoria);
         }
+
 
         // GET: Categorias/Edit/5
         [Authorize(Roles = "admin")]
@@ -99,7 +100,7 @@ namespace puceAsk_dev1.Controllers
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CategoriaId,RowVersion,NombreCategoria,DescCategoria")] Categoria categoria)
+        public ActionResult Edit([Bind(Include = "CategoriaId,NombreCategoria,DescCategoria")] Categoria categoria)
         {
             if (ModelState.IsValid)
             {

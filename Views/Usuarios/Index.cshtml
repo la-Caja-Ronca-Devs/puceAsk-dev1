@@ -92,6 +92,50 @@
             </td>
         </tr>
     }
+    <tr>
+        <td style="width:10%">
+            @Html.DisplayFor(modelItem => item.FechaNacimiento)
+        </td>
+        <td style="width:10%">
+             <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
+        </td>
+        <td style="width:10%">
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td style="width:10%">
+            @Html.DisplayFor(modelItem => item.Apellido)
+        </td style="width:10%">
+        @if (item.Sexo)
+        {
+        <td style="width:10%">
+            Masculino
+        </td>
+        }
+        else
+        {
+            <td style="width:10%">
+                Femenino
+            </td>
+        }
+
+
+        <td style="width:5%">
+            @Html.DisplayFor(modelItem => item.SaldoCuenta)
+        </td>
+        <td style="width:10%">
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        
+        
+        <td style="width:10%">
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td style="width:10%">
+            @Html.ActionLink("Editar", "Edit", null, new { id = item.Id }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
+            @Html.ActionLink("Gestionar", "Details", null, new { id = item.Id }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("Eliminar", "Delete", null, new { id = item.Id }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
+        </td>
+    </tr>
 </table>
 
 @{
@@ -112,6 +156,7 @@
             final = cantidadPaginas;
         }
     }
+
 }
 <br />
 <div class="pagination">

@@ -1,42 +1,46 @@
 ﻿@model puceAsk_dev1.Models.Categoria
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles de categoría";
 }
 
-<h2>Details</h2>
+<div class="d-flex justify-content-center align-items-center " style="margin: 35px;">
+    <div class="card" style=" width: 40rem;">
+        <div class="card-header datos">
 
-<div>
-    <h4>Categoria</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RowVersion)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.RowVersion)
-        </dd>
+            <div>
+                <h4>Categoria</h4>
+                <hr />
+                <dl class="dl-horizontal">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.NombreCategoria)
-        </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.NombreCategoria)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.NombreCategoria)
-        </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.NombreCategoria)
+                    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DescCategoria)
-        </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.DescCategoria)
+                    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.DescCategoria)
-        </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.DescCategoria)
+                    </dd>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CategoriaId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                </dl>
+            </div>
+            <br />
+            <br />
+            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-danger btn-large" })
+            @Html.ActionLink("Editar", "Edit", new { id = Model.CategoriaId }, new { @class = "btn btn-primary btn-large", @style = "background-color:darkcyan; border-color:darkcyan" })
+
+
+        </div>
+        </div>
+    </div>
+            
+                
+           

@@ -14,6 +14,7 @@ namespace puceAsk_dev1.Models
     public class ApplicationUser : IdentityUser
     {
         [Required]
+        [Display(Name = "Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
         public byte[] Foto { get; set; }
         [Required]
@@ -21,6 +22,8 @@ namespace puceAsk_dev1.Models
         [Required]
         public string Apellido { get; set; }
         public bool Sexo { get; set; }
+
+        [Display(Name = "Puntos")]
         public int SaldoCuenta { get; set; }
         public ICollection<Pregunta> Preguntas { get; set; }
         public ICollection<Respuesta> Respuestas { get; set; }

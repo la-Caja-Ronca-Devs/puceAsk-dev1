@@ -3,48 +3,29 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<br />
-<h2>Listado de Preguntas</h2>
+<h2>Listado de preguntas</h2>
 <br />
 
+<table class="table row">
 
-<table class="table">
     <tr>
-        <th>
+
+        <th style="width:25%">
+
             @Html.DisplayNameFor(model => model.TituloPregunta)
         </th>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.DescPregunta)
         </th>
-        <th>
+        <th style="width:20%">
             @Html.DisplayNameFor(model => model.Fechapregunta)
         </th>
-
-
-@foreach (var item in Model) {
-    <tr>
-        
-        <td>
-            @Html.DisplayFor(modelItem => item.TituloPregunta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DescPregunta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Fechapregunta)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PreguntaId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PreguntaId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PreguntaId })
-        </td>
+        <th style="width:30%"></th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
-
             <td>
                 @Html.DisplayFor(modelItem => item.TituloPregunta)
             </td>
@@ -54,10 +35,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Fechapregunta)
             </td>
-
             <td>
-                @Html.ActionLink("Editar", "EditAdmin", new { id = item.PreguntaId })
-                @Html.ActionLink("Eliminar", "Delete", new { id = item.PreguntaId })
+                @Html.ActionLink("Editar", "Edit", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
+                @Html.ActionLink("Eliminar", "Delete", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
             </td>
         </tr>
     }
