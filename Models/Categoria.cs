@@ -22,5 +22,8 @@ namespace puceAsk_dev1.Models
         public string DescCategoria { get; set; }
 
         public ICollection<Pregunta> Preguntas { get; set; }
+        
+        
+        
     }
 }
