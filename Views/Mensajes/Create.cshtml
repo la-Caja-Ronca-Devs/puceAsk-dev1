@@ -6,29 +6,29 @@
 
 <h2>Redactar mensaje</h2>
 <br />
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        
+
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="card-header">
-            
+
             <div class="form-group ">
                 <b>De: </b> @ViewBag.actual.UserName <hr />
                 <b>@Html.LabelFor(model => model.ReceptorId, "Para: ", htmlAttributes: new { @class = "control-label " })</b>
-                    @Html.HiddenFor(model => model.ReceptorId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.DisplayFor(model => model.Receptor.UserName)
-                    @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ReceptorId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DisplayFor(model => model.Receptor.UserName)
+                @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
             </div>
 
         </div>
 
         <div class="card card-body " style="padding: 0">
             <div class="form-group" style="margin:0">
-                @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control"  } })
+                @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.MensajeDesc, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,17 +36,14 @@
         <div class="card-footer">
 
             <div class="col" align="right">
-                    @Html.ActionLink("Cancelar", "Index", new {@class= "btn btn-default" })
-                    <input type="submit" value="Enviar" class="btn btn-default" />
+                @Html.ActionLink("Cancelar", "Index", new { @class = "btn btn-default" })
+                <input type="submit" value="Enviar" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
-
-
-
 <style>
-    
+
     textarea {
         max-width: 100%;
         width: 100%;
