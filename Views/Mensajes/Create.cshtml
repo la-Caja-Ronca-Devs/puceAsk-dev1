@@ -4,52 +4,111 @@
     ViewBag.Title = "Create";
 }
 
+
 <h2>Redactar mensaje</h2>
 <br />
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+<div class="d-flex justify-content-center align-items-center " style="margin: 35px;">
+    <div class="card border-info mensaje" style=" width: 60rem;">
         
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @using (Html.BeginForm("Create", "Mensajes", FormMethod.Post, new { id = "NuevoMensaje", enctype = "multipart/form-data", name = "Crear" }))
+        {
+            @Html.AntiForgeryToken()
 
-        <div class="card-header">
-            
-            <div class="form-group ">
-                <b>De: </b> @ViewBag.actual.UserName <hr />
-                <b>@Html.LabelFor(model => model.ReceptorId, "Para: ", htmlAttributes: new { @class = "control-label " })</b>
-                    @Html.HiddenFor(model => model.ReceptorId, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.DisplayFor(model => model.Receptor.UserName)
-                    @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="card-header titulo">
+
+                    <div class="form-group ">
+                        <img src="https://img.icons8.com/color/48/000000/filled-sent.png" />&nbsp;<b>De: </b> @ViewBag.actual.UserName <hr />
+                        <img src="https://img.icons8.com/color/48/000000/circled-envelope.png" />&nbsp;<b>@Html.LabelFor(model => model.ReceptorId, "Para: ", htmlAttributes: new { @class = "control-label " })</b>
+                        @Html.HiddenFor(model => model.ReceptorId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DisplayFor(model => model.Receptor.UserName)
+                        @Html.ValidationMessageFor(model => model.ReceptorId, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
+                <div class="card card-body " style="padding: 0">
+                    <div class="form-group" style="margin:0">
+                        @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MensajeDesc, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="card-footer pie">
+
+                    <div class="col" align="right">
+                        @Html.ActionLink("Cancelar", "Details", "Usuarios",new {id = Model.ReceptorId }, new { @class = "btn btn-light" })
+                        <input id="enviar" type="submit" value="Enviar" class="btn btn-info" /> 
+                    </div>
+                </div>
             </div>
+        }
 
-        </div>
-
-        <div class="card card-body " style="padding: 0">
-            <div class="form-group" style="margin:0">
-                @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control"  } })
-                @Html.ValidationMessageFor(model => model.MensajeDesc, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="card-footer">
-
-            <div class="col" align="right">
-                    @Html.ActionLink("Cancelar", "Index", new {@class= "btn btn-default" })
-                    <input type="submit" value="Enviar" class="btn btn-default" />
-            </div>
         </div>
     </div>
+
+        <style>
+            textarea {
+                max-width: 100%;
+                width: 100%;
+                height: 250px;
+            }
+
+            .mensaje {
+                border: 3px solid;
+                border-image-source: linear-gradient(45deg, #007991, #78ffd6);
+                border-image-slice: 1;
+            }
+
+            .titulo, .pie {
+                background: linear-gradient(to bottom left, #007991, #78ffd6);
+            }
+
+            .pie {
+                background: linear-gradient(to bottom right, #007991, #78ffd6);
+            }
+
+            
+        </style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#enviar").click(function (e) {
+                e.preventDefault();
+                swal({
+                    title: "¿Seguro que deseas enviar el mensaje?",
+                    text: "Una vez lo envíes, el puntaje del usuario será de 0.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((aceptar) => {
+                        if (aceptar) {
+                            swal("Mensaje enviado!", {
+                                icon: "success",
+                            }).then((value) => {
+                                    $("#NuevoMensaje").submit();
+
+                            });
+
+                        } else {
+                            swal("El usuario mantiene su puntaje.", {
+                                icon: "info",
+                            });
+                        }
+                    });
+
+                return false;
+            });
+        });
+
+    </script>
+
 }
-
-
-
-<style>
-    
-    textarea {
-        max-width: 100%;
-        width: 100%;
-        height: 250px;
-    }
-</style>

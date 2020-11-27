@@ -6,7 +6,7 @@
     {
     <div class="col" align="right">
         <br />
-        @Html.ActionLink("Agregar pregunta", "Create", null, new { @class = "btn btn-warning", @role = "button" })
+        <a href="@Url.Action("Create")" class="btn btn-warning"> <img src="https://img.icons8.com/ios-glyphs/30/000000/add--v2.png" />&nbsp; Agregar Pregunta</a>
     </div>
     }
     else {
@@ -62,15 +62,17 @@
                                     }
                                 </div>
                                 <div class="col">
-                                    @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
-                                    {
-                                        <div class="row">
-                                            <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
-                                        </div>
-                                    }
-                                        <div class="row">
-                                            <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
-                                        </div>
+                                    <div class="col-md-offset-2 col-md-10">
+                                        @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                        {
+
+                                            <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"><img src="https://img.icons8.com/android/24/000000/edit.png" height="20" /> Editar</a>
+
+                                        }
+
+                                        <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> <img src="https://img.icons8.com/ios-filled/50/000000/visible.png"  height="20"/> Ver</a>
+                                    </div>
+
                                     </div>
                             </div>
                         </div>
@@ -94,6 +96,7 @@
                         </p>
 
                     </div>
+                   
 
                 </div>
             }

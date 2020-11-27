@@ -45,6 +45,10 @@
         string imreBase64Data = Convert.ToBase64String(foto);
         imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
     }
+    else
+    {
+        imgDataURL = "https://img.icons8.com/color/user";
+    }
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.FechaNacimiento)
@@ -84,9 +88,9 @@
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Gestionar", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

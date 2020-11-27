@@ -75,16 +75,15 @@ namespace puceAsk_dev1.Controllers
             var receptor = db.Users.Find(mensaje.ReceptorId);
             mensaje.EmisorId = usuario.Id;
             mensaje.FechaMensaje = DateTime.Now;
+            
             if (ModelState.IsValid)
             {
                 db.Mensajes.Add(mensaje);
                 db.SaveChanges();
                 Encerar(receptor);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Usuarios");
             }
-
-            //ViewBag.EmisorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.EmisorId);
-            //ViewBag.ReceptorId = new SelectList(db.Cuentas, "CuentaId", "CuentaId", mensaje.ReceptorId);
+            
             return View(mensaje);
         }
 
