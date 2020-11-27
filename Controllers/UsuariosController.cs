@@ -17,7 +17,7 @@ namespace puceAsk_dev1.Controllers
         // GET: Usuarios
         public ActionResult Index(int pagina =1)
         {
-            var cantidadRegistrosPorPagina = 7;
+            var cantidadRegistrosPorPagina = 10;
             var totalRegistros = db.Users.Count();
             var usuarios = (from c in db.Users
                             select c).OrderBy(x => x.Id)
