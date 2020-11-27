@@ -19,7 +19,7 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles ="admin")]
         public ActionResult Index()
         {
-            var cantidadRegistrosPorPagina = 7;
+            var cantidadRegistrosPorPagina = 10;
             var totalRegistros = db.Users.Count();
             var usuarios = (from c in db.Users
                             select c).OrderBy(x => x.Id)

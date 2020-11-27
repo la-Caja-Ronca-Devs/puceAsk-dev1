@@ -19,7 +19,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Index(int pagina = 1)
         {
             
-            var cantidadRegistrosPorPagina = 7;
+            var cantidadRegistrosPorPagina = 10;
             var totalRegistros = db.Categoria.Count();
             var categorias = (from c in db.Categoria
                                    select c).OrderBy(x=> x.NombreCategoria)

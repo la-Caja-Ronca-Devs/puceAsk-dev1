@@ -15,20 +15,51 @@ namespace puceAsk_dev1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();       
         // GET: Respuestas
         [Authorize(Roles = "admin")]
-        public ActionResult Index()
+        public ActionResult Index(int pagina=1)
         {
-            return View(db.Respuesta.ToList());
+            var cantidadRegistrosPorPagina = 10;
+            var preguntas = (from p in db.Respuesta select p)
+                .OrderByDescending(s => s.FechaPublicacion)
+                .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                .Take(cantidadRegistrosPorPagina);
+            var contar = (from p in db.Respuesta select p).Count();
+            var totalRegistros = contar;
+            var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalpaginas;
+            ViewBag.RegistrosPorPagina = cantidadRegistrosPorPagina;
+
+            return View(preguntas);
         }
 
 
-        public ActionResult RespuestasRealizadas() {
+        public ActionResult RespuestasRealizadas(int pagina =1) {
+           
+            var cantidadRegistrosPorPagina = 4;
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            var respuestas = (from p in db.Respuesta
+
+           var respuestas = (from p in db.Respuesta
                 .Include(i => i.Usuario)
                 .Include(i => i.Pregunta.Categoria)
                 .Include(i => i.Pregunta.Usuario)
                               where p.UsuarioId == usuario.Id
-                             select p).ToList();
+                             select p);
+            respuestas = respuestas.OrderByDescending(s => s.FechaPublicacion)
+                .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                .Take(cantidadRegistrosPorPagina);
+            var contar = (from p in db.Respuesta
+                .Include(i => i.Usuario)
+                .Include(i => i.Pregunta.Categoria)
+                .Include(i => i.Pregunta.Usuario)
+                          where p.UsuarioId == usuario.Id
+                          select p).Count();
+            var totalRegistros = contar;
+            var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalpaginas;
+            ViewBag.RegistrosPorPagina = cantidadRegistrosPorPagina;
 
             return View(respuestas);
         }

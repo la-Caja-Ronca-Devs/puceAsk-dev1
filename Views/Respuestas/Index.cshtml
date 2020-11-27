@@ -14,9 +14,10 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DescRespuesta)
-        </th>        
+        </th>
         <th></th>
     </tr>
+
 
 @foreach (var item in Model) {
     <tr>
@@ -34,3 +35,59 @@
 }
 
 </table>
+@{
+    var cantidadPaginas = ViewBag.TotalPaginas;
+    int inicial = 1;
+    var radio = 2;
+    var cantMaxPaginas = radio * 2 + 1;
+    int final = (cantidadPaginas > cantMaxPaginas) ? cantMaxPaginas : cantidadPaginas;
+    if (ViewBag.PaginaActual > radio + 1)
+    {
+        inicial = ViewBag.PaginaActual - radio;
+        if (cantidadPaginas > ViewBag.PaginaActual + radio)
+        {
+            final = ViewBag.PaginaActual + radio;
+        }
+        else
+        {
+            final = cantidadPaginas;
+        }
+    }
+}
+<br />
+<div class="pagination">
+    <ul class="pagination">
+
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            <li>@Html.ActionLink("Primera", null, new { pagina = 1 }, new { @class = "list-group-item list-group-item-action" })</li>
+
+
+            for (int i = inicial; i <= final; i++)
+            {
+                if (i == ViewBag.PaginaActual)
+                {
+
+                    <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action" })</li>
+                }
+            }
+            <li>@Html.ActionLink("Última", null, new { pagina = cantidadPaginas }, new { @class = "list-group-item list-group-item-action" })</li>
+        }
+        else
+        {
+            int i = inicial;
+            <li class="active">@Html.ActionLink(i.ToString(), null, new { pagina = i }, new { @class = "list-group-item list-group-item-action active" })</li>
+        }
+    </ul>
+</div>
+<style>
+    .pagination {
+        display: compact !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
+</style>

@@ -21,7 +21,7 @@ namespace puceAsk_dev1.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Index(int pagina =1)
         {
-            var cantidadRegistrosPorPagina = 7;
+            var cantidadRegistrosPorPagina = 10;
             var preguntas = (from p in db.Pregunta select p)
                 .OrderByDescending(s => s.PreguntaId)
                 .Skip((pagina - 1) * cantidadRegistrosPorPagina)
@@ -55,7 +55,7 @@ namespace puceAsk_dev1.Controllers
 
             if (categoria != null )//Si escoge categoría
             {
-                var cantidadRegistrosPorPagina = 7;
+                var cantidadRegistrosPorPagina = 10;
                 var totalRegistros = db.Pregunta.Count();
                 var NombreCategoria = categoria;
                 var registrosCategoria = (from c in db.Pregunta
