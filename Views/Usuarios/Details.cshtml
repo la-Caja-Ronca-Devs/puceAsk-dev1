@@ -4,7 +4,6 @@
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles</h2>
 
 @{string imgDataURL = ""; }
 @if (Model.Foto != null)
@@ -47,7 +46,7 @@
             <button class="btn btn-info buscador" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="padding: 8px">
                 Bajar puntaje
             </button>
-            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-secondary " })
+            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-danger" })
         </div>
     </div>
 

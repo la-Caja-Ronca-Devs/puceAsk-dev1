@@ -4,21 +4,21 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Respuestas</h2>
 
 
 <table class="table">
     <tr>
-        <th>
+        <th style="width:32%">
             @Html.DisplayNameFor(model => model.Pregunta.TituloPregunta)
         </th>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.FechaPublicacion)
         </th>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.DescRespuesta)
         </th>
-        <th></th>
+        <th style="width:30%"></th>
     </tr>
 
 
@@ -34,8 +34,8 @@
         @Html.DisplayFor(modelItem => item.DescRespuesta)
     </td>
     <td>
-        @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId }) |
-        @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId })
+        @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId }, new { @class = "btn btn-success" })
+        @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId }, new { @class = "btn btn-danger"})
     </td>
 </tr>
 }

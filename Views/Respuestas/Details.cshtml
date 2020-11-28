@@ -1,36 +1,38 @@
 ﻿@model puceAsk_dev1.Models.Respuesta
-
 @{
     ViewBag.Title = "Details";
 }
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card">
+        <div class="card-header" style="text-align:center; width:inherit">
+            <h2>Details</h2>
+        </div>
+        <div class="card-body" align="center">
+            <dl class="dl-horizontal">
 
-<h2>Details</h2>
-
-<div>
-    <h4>Respuesta</h4>
-    <hr />
-    <dl class="dl-horizontal">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FechaPublicacion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FechaPublicacion)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DescRespuesta)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DescRespuesta)
-        </dd>
-
-    </dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FechaPublicacion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FechaPublicacion)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DescRespuesta)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DescRespuesta)
+                </dd>
+            </dl>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @Html.ActionLink("Edit", "Edit", null, new { id = Model.PreguntaId }, new { @class = "btn btn-success" })
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex links align-content-center" align="right">
+                @Html.ActionLink("Regresar", "Index", null, null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
 </div>
-<br/>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PreguntaId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -9,29 +9,29 @@
 
 <table class="table">
     <tr>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.FechaNacimiento)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Foto)
         </th>
-        <th>
+        <th style="width:20%">
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.Apellido)
         </th>
-        <th>
+        <th style="width:15%">
             @Html.DisplayNameFor(model => model.Sexo)
         </th>
-        <th>
+        <th style="width:20%">
             @Html.DisplayNameFor(model => model.SaldoCuenta)
         </th>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.Email)
         </th>
 
-        <th>
+        <th style="width:20%">
             @Html.DisplayNameFor(model => model.UserName)
         </th>
         <th></th>
@@ -46,53 +46,53 @@
             string imreBase64Data = Convert.ToBase64String(foto);
             imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
         }
-           else
-          {
-              imgDataURL = "https://img.icons8.com/color/user";
-          }
+        else
+        {
+            imgDataURL = "https://img.icons8.com/color/user";
+        }
   
-<tr>
-    <td style="width:10%">
-        @Html.DisplayFor(modelItem => item.FechaNacimiento)
-    </td>
-    <td style="width:10%">
-        <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
-    </td>
-    <td style="width:10%">
-        @Html.DisplayFor(modelItem => item.Nombre)
-    </td>
-    <td style="width:10%">
-        @Html.DisplayFor(modelItem => item.Apellido)
-    </td>
-    @if (item.Sexo)
-    {
-<td style="width:10%">
-    Masculino
-</td> }
-                else
-                {
-<td style="width:10%">
-    Femenino
-</td>}
+        <tr>
+            <td >
+                @Html.DisplayFor(modelItem => item.FechaNacimiento)
+            </td>
+            <td style="width:5%">
+                <img alt="Foto" src="@imgDataURL" width="100" height="100" class="fotos" />
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            @if (item.Sexo)
+            {
+                <td>
+                    Masculino
+                </td>
+            }
+            else
+            {
+                <td>
+                    Femenino
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.SaldoCuenta)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
 
 
-    <td style="width:5%">
-        @Html.DisplayFor(modelItem => item.SaldoCuenta)
-    </td>
-    <td style="width:10%">
-        @Html.DisplayFor(modelItem => item.Email)
-    </td>
-
-
-    <td style="width:10%">
-        @Html.DisplayFor(modelItem => item.UserName)
-    </td>
-    <td style="width:10%">
-        @Html.ActionLink("Editar", "Edit", null, new { id = item.Id }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
-        @Html.ActionLink("Gestionar", "Details", null, new { id = item.Id }, new { @class = "btn btn-secondary" })
-        @Html.ActionLink("Eliminar", "Delete", null, new { id = item.Id }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
-    </td>
-</tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td style="width:40%">
+                @Html.ActionLink("Editar", "Edit", null, new { id = item.Id }, new { @class = "btn btn-success"})
+                @Html.ActionLink("Gestionar", "Details", null, new { id = item.Id }, new { @class = "btn btn-secondary" })
+                @Html.ActionLink("Eliminar", "Delete", null, new { id = item.Id }, new { @class = "btn btn-danger"})
+            </td>
+        </tr>
     }
 </table>
 

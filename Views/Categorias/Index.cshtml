@@ -31,8 +31,8 @@
             @Html.DisplayFor(modelItem => item.DescCategoria)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit",null,new  {id=item.CategoriaId }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
-            @Html.ActionLink("Eliminar", "Delete", null, new { id = item.CategoriaId }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
+            @Html.ActionLink("Editar", "Edit",null,new  {id=item.CategoriaId }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Eliminar", "Delete", null, new { id = item.CategoriaId }, new { @class = "btn btn-danger" })
         </td>
     </tr>
 }
