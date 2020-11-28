@@ -24,7 +24,7 @@
             <div class="col-md-offset-2 col-md-10">
 
                     <div>
-                        @Html.ActionLink("Regresar", "RespuestasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+                        @Html.ActionLink("Regresar", "RespuestasRealizadas", "Respuestas", null, new { @class = "btn btn-danger", @role = "button" })
                     </div>
                 
 
@@ -45,11 +45,11 @@
 
                 swal({
                     title: '¿Seguro que deseas editar esta respuesta?',
-                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
+                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de usuario.',
                     content: "input"
                 })
                     .then((value) => {
-                        if (value === "@Model.Usuario.Email") {
+                        if (value === "@User.Identity.Name") {
                             swal({
                                 title: "¡Excelente!",
                                 text: "¡Respuesta Actualizada!",
@@ -58,7 +58,7 @@
                                 $("#EditarRespuesta").submit();
                             });
                         } else {
-                            swal("¡Incorrecto!", "Correo Electrónico Incorrecto", "error");
+                            swal("¡Incorrecto!", " Nombre de Usuario Incorrecto", "error");
                         }
                     });
                 return false;

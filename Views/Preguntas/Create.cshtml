@@ -1,42 +1,53 @@
 ﻿@model puceAsk_dev1.Models.PreguntasManager
 
 
-<h2>Tu Pregunta</h2>
+<div class="d-flex justify-content-center align-items-center " style="margin: 35px;">
+    <div class="card" style=" width: 40rem;">
+        <div class="card-header datos">
+            <h2>Tu Pregunta</h2>
 
-@using (Html.BeginForm("Create", "Preguntas", FormMethod.Post, new { id = "NuevaPregunta", enctype = "multipart/form-data", name = "Crear" }))
-{
-    @Html.AntiForgeryToken()
+            @using (Html.BeginForm("Create", "Preguntas", FormMethod.Post, new { id = "NuevaPregunta", enctype = "multipart/form-data", name = "Crear" }))
+            {
+                @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Asegurate de ser cortez y objetivo.</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.Label("Dinos tu Pregunta", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.pregunta.TituloPregunta, new { htmlAttributes = new { @class = "form-control", @placeholder = "¿Qué preguntaré hoy?" } })
-            @Html.ValidationMessageFor(model => model.pregunta.TituloPregunta, "", new { @class = "text-danger" })
-        </div>
-            }
-            </div>
+                <div class="form-horizontal">
+                    <h4>Asegurate de ser cortés y objetivo.</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("¿Cuál es tu pregunta?", htmlAttributes: new { @class = "control-label col-md-10" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.pregunta.TituloPregunta, new { htmlAttributes = new { @class = "form-control ", @placeholder = "¿Qué preguntaré hoy?" } })
+                            @Html.ValidationMessageFor(model => model.pregunta.TituloPregunta, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Detalles de tu pregunta    ", htmlAttributes: new { @class = "control-label col-md-10" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.pregunta.DescPregunta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tengo esta duda porque ..." } })
+                            @Html.ValidationMessageFor(model => model.pregunta.DescPregunta, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("¿A que categoría pertenece tu pregunta?", htmlAttributes: new { @class = "control-label col-md-10" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.pregunta.CategoriaId, new SelectList(ViewBag.categorias, "CategoriaId", "NombreCategoria", "Seleccionar"), new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
+                            <input id="enviar" type="submit" value="Agregar pregunta" class="btn btn-primary" />
+                        </div>
+                    </div>
+                </div>            }
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.Label("¿Esta pregunta de qué es?", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.pregunta.CategoriaId, new SelectList(ViewBag.categorias, "CategoriaId", "NombreCategoria", "Seleccionar"), new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-    </div>
-
-
-        <div class="col-md-offset-2 col-md-10">
-            <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
-            <input id="enviar" type="submit" value="Agregar pregunta" class="btn btn-primary" />
-        </div>
 </div>
-}
-
 
 
 @section Scripts {
@@ -59,10 +70,10 @@
                             swal("Pregunta Publicada!", {
                                 icon: "success",
                             }).then((value) => {
-                                    $("#NuevaPregunta").submit();
+                                $("#NuevaPregunta").submit();
 
                             });
-                           
+
                         } else {
                             swal("Ahorrar puntos siempre es una buena idea.", {
                                 icon: "info",
@@ -70,7 +81,8 @@
                         }
 
                     });
+            });
+    });
+    </script>
 
-                </script>
-
-            }
+}

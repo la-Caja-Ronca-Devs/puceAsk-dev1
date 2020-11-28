@@ -28,16 +28,17 @@ namespace puceAsk_dev1.Controllers
             
             
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            var mensajes = from m in db.Mensajes
+
+            var msm = (from m in db.Mensajes
                            .Include(m => m.Emisor)
                            .Include(m => m.Receptor)
-                           where m.Receptor.Id == usuario.Id select m;
-            mensajes = mensajes.OrderByDescending(s => s.FechaMensaje)
+                      where m.Receptor.Id == usuario.Id
+                      select m).ToList();
+     
+            var mensajes = msm.OrderByDescending(s => s.FechaMensaje)
                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                                      .Take(cantidadRegistrosPorPagina);
-            var contar = (from m in db.Mensajes
-                           .Include(m => m.Emisor)
-                           .Include(m => m.Receptor)
+            var contar = (from m in msm                        
                           where m.Receptor.Id == usuario.Id
                           select m).Count();
             var totalRegistros = contar;

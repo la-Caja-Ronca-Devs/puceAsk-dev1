@@ -10,6 +10,9 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.Pregunta.TituloPregunta)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.FechaPublicacion)
         </th>
         <th>
@@ -20,18 +23,21 @@
 
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaPublicacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DescRespuesta)            
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId}) |
-            @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Pregunta.TituloPregunta)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FechaPublicacion)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DescRespuesta)
+    </td>
+    <td>
+        @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId }) |
+        @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId })
+    </td>
+</tr>
 }
 
 </table>

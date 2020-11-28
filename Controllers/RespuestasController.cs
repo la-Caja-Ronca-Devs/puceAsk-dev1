@@ -18,7 +18,9 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Index(int pagina=1)
         {
             var cantidadRegistrosPorPagina = 10;
-            var preguntas = (from p in db.Respuesta select p)
+            var preguntas = (from p in db.Respuesta
+                             .Include(i => i.Pregunta)
+                             select p)
                 .OrderByDescending(s => s.FechaPublicacion)
                 .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                 .Take(cantidadRegistrosPorPagina);

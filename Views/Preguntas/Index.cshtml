@@ -36,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.Fechapregunta)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
+                @Html.ActionLink("Editar", "EditAdmin", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
                 @Html.ActionLink("Eliminar", "Delete", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
             </td>
         </tr>

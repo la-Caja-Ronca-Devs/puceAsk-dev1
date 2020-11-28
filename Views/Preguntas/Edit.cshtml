@@ -1,8 +1,7 @@
 ﻿@model puceAsk_dev1.Models.Pregunta
 
 @{
-    var mr = (puceAsk_dev1.Models.Respuesta)(from r in Model.Respuestas where r.UsuarioId == Model.MejorUsuarioRespuestaId select r).FirstOrDefault();
-
+    var mr = (puceAsk_dev1.Models.Respuesta)(from r in Model.Respuestas where r.UsuarioId == Model.MejorUsuarioRespuestaId select r).FirstOrDefault(); 
 }
 
 @using (Html.BeginForm("Edit", "Preguntas", FormMethod.Post, new { id = "EditarPregunta", enctype = "multipart/form-data", name = "Editar" }))
@@ -318,11 +317,11 @@
 
                 swal({
                     title: '¿Seguro que deseas editar esta pregunta? La mejor respuesta solo puedes asignarla una vez.',
-                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
+                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de usuario.',
                     content: "input"
                 })
                     .then((value) => {
-                        if (value === "@Model.Usuario.Email") {
+                        if (value === "@User.Identity.Name") {
                             swal({
                                 title: "¡Excelente!",
                                 text: "¡Pregunta Actualizada!",
@@ -331,7 +330,7 @@
                                    $("#EditarPregunta").submit();
                             });
                         } else {
-                            swal("¡Incorrecto!", "Correo Electrónico Incorrecto", "error");
+                            swal("¡Incorrecto!", "Nombre de usuario incorrecto.", "error");
                         }
                     });
                 return false;

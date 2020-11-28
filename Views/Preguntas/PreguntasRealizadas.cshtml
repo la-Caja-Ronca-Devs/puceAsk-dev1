@@ -59,7 +59,7 @@
                                             </div>
                                         }
 
-                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && DateTime.Now <= item.Fechapregunta.AddDays(10) && item.MejorUsuarioRespuestaId == null)
                                         {
                                             <div class="row">
                                                 <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias para elegir la mejor respuesta.</span>
@@ -122,13 +122,14 @@
 
         </div>
 
+        <br />
         <div>
             @Html.ActionLink("Regresar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
         </div>
 
 
     </div>
-</div>
+
 @{
     var cantidadPaginas = ViewBag.TotalPaginas;
     int inicial = 1;
