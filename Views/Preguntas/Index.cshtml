@@ -3,24 +3,24 @@
 @{
     ViewBag.Title = "Index";
 }
-<h2>Listado de preguntas</h2>
-<br />
+<h2><br />Listado de preguntas</h2><br />
+
 
 <table class="table row">
 
     <tr>
 
-        <th style="width:25%">
+        <th style="width:30%">
 
             @Html.DisplayNameFor(model => model.TituloPregunta)
         </th>
-        <th style="width:25%">
+        <th style="width:33%">
             @Html.DisplayNameFor(model => model.DescPregunta)
         </th>
         <th style="width:20%">
             @Html.DisplayNameFor(model => model.Fechapregunta)
         </th>
-        <th style="width:30%"></th>
+        <th style="width:17%"></th>
     </tr>
 
     @foreach (var item in Model)
@@ -36,8 +36,8 @@
                 @Html.DisplayFor(modelItem => item.Fechapregunta)
             </td>
             <td>
-                @Html.ActionLink("Editar", "EditAdmin", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkcyan; border-color:darkcyan" })
-                @Html.ActionLink("Eliminar", "Delete", null, new { id = item.PreguntaId }, new { @class = "btn btn-primary", @style = "background-color:darkred;border-color:darkred" })
+                @Html.ActionLink("Editar", "EditAdmin", null, new { id = item.PreguntaId }, new { @class = "btn btn-success" })
+                @Html.ActionLink("Eliminar", "Delete", null, new { id = item.PreguntaId }, new { @class = "btn btn-danger" })
             </td>
         </tr>
     }
@@ -93,6 +93,21 @@
     </ul>
 </div>
 <style>
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+    }
     .pagination {
         display: compact !important;
         margin-right: auto !important;

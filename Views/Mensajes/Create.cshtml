@@ -32,7 +32,7 @@
 
                 <div class="card card-body " style="padding: 0">
                     <div class="form-group" style="margin:0">
-                        @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextAreaFor(model => model.MensajeDesc, new { htmlAttributes = new { @class ="form-control col-md-12" } })
                         @Html.ValidationMessageFor(model => model.MensajeDesc, "", new { @class = "text-danger" })
                     </div>
                 </div>

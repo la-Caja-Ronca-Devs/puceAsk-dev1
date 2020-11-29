@@ -4,17 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/png" href="https://s.gravatar.com/avatar/2ad520845878d36234a4472cd39300a1?s=80" />
-    <title>@ViewBag.Title - PUCE ASK </title>
+    <title>PUCE ASK </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <div class="navbar fixed-top  navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            @*@Html.ActionLink("Inicio", "Preguntas", new { area = "" }, new { @class = "navbar-brand classname" })*@
+        <div class="container" style="padding-right:8%" >
             <a href="@Url.Action("Inicio", "Preguntas", new { area = "" })"> <img src="https://s.gravatar.com/avatar/2ad520845878d36234a4472cd39300a1?s=80" alt="logo" class="avatar" /></a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="navbar-toggler-icon"></span>
+            <button type="button" class="navbar-toggler"  data-toggle="collapse" data-target=".navbar-collapse" >
+                <span class="navbar-toggler-icon" ></span>
             </button>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">

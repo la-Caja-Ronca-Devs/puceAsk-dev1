@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Listado de categorías</h2>
+<h2><br />Listado de categorías</h2>
 <br />
 <p>
     @Html.ActionLink("Crear nueva categoría", "Create", null, new { @class="btn btn-warning", @style="color:white"} )
@@ -88,6 +88,21 @@
     </ul>
 </div>
 <style>
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+    }
     .pagination {
         display: compact !important;
         margin-right: auto !important;

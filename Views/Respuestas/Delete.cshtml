@@ -8,10 +8,9 @@
     <div class="card">
         <div class="card-header" style="text-align:center; width:inherit">
             <h3>Eliminar Respuesta</</h3>
-            <hr />
-            <h4>¿Desea eliminar esta respuesta?</h4>
         </div>
         <div class="card-body" align="center">
+            <h4>¿Está seguro de eliminar esta respuesta?</h4><hr />
             <dl class="dl-horizontal">
 
                 <dt>
@@ -31,20 +30,18 @@
                 </dd>
 
             </dl>
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Eliminar" class="btn btn-danger" />
-                    </div>                   
-                </div>
-            }
+           
         </div>
         <div class="card-footer">
-            <div class="d-flex links align-content-center">
-                @Html.ActionLink("Regresar", "Index", null, null, new { @class = "btn btn-secondary" })
+            <div class="" align="left">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ActionLink("Regresar", "Index", null, null, new { @class = "btn btn-danger" })
+
+                    <input type="submit" value="Eliminar" class="btn btn-primary" style="background-color:darkred; border-color:darkred" />
+
+                }
             </div>
         </div>        
     </div>
