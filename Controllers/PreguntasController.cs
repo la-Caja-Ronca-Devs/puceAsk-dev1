@@ -46,7 +46,7 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-
+        [AllowAnonymous]
         public ActionResult Inicio(string categoria, string buscar, string ordenar, int pagina =1)
         {
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
@@ -147,7 +147,7 @@ namespace puceAsk_dev1.Controllers
 
         }
         // GET: Preguntas/Details/5
-
+        [AllowAnonymous]
         public ActionResult Details(int? id, int pagina = 1)
         {
             if (id == null)
@@ -224,7 +224,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta)
         {
             if (ModelState.IsValid)
-            {
+            {            
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
                 var cuenta = (from c in db.Users where c.Id == usuario.Id select c).First();
                 pregunta.UsuarioId = cuenta.Id;
@@ -246,7 +246,7 @@ namespace puceAsk_dev1.Controllers
 
 
         // GET: Preguntas/Edit/5
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -382,8 +382,8 @@ namespace puceAsk_dev1.Controllers
             }
             base.Dispose(disposing);
         }
+        
         [Authorize(Roles = "user")]
-
         public ActionResult PreguntasRealizadas(int pagina =1, int filtro = 0)
         {
             var cantidadRegistrosPorPagina = 4;

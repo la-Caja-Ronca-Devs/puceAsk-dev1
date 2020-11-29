@@ -40,56 +40,61 @@
                                         <div class="row">
                                             <span class="badge badge-pill badge-info">@item.Respuestas.Count() Respuestas.</span>
                                         </div>
-                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && item.MejorUsuarioRespuestaId == null)
-                                        {
-                                            <div class="row">
-                                                <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="row">
-                                                <span class="badge badge-pill badge-light">Respondiendose</span>
-                                            </div>
-                                        }
-                                        @if (item.MejorUsuarioRespuestaId != null)
+                                        @if (DateTime.Now > item.Fechapregunta.AddDays(5) && item.MejorUsuarioRespuestaId != null)
                                         {
                                             <div class="row">
                                                 <span class="badge badge-pill badge-success">Mejor Respuesta asignada</span>
                                             </div>
                                         }
-
-                                        @if (DateTime.Now >= item.Fechapregunta.AddDays(5) && DateTime.Now <= item.Fechapregunta.AddDays(10) && item.MejorUsuarioRespuestaId == null)
+                                        else
                                         {
                                             <div class="row">
-                                                <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias para elegir la mejor respuesta.</span>
+                                                <span class="badge badge-pill badge-danger">Mejor Respuesta no asignada</span>
                                             </div>
                                         }
 
                                         @if (DateTime.Now <= item.Fechapregunta.AddDays(5))
                                         {
                                             <div class="row">
-                                                <span class="badge badge-primary">Abierta </span>
+                                                <span class="badge badge-pill badge-light">Respondiendose</span>
                                             </div>
+                                        }
+                                        else if (DateTime.Now > item.Fechapregunta.AddDays(5) && DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                        {
+
+                                            <div class="row">
+                                                <span class="badge badge-light">Ya no acepta respuestas.</span>
+                                            </div>
+
+                                            if (item.MejorUsuarioRespuestaId == null)
+                                            {
+                                                <div class="row">
+                                                    <span class="badge badge-pill badge-warning">Te quedan @((item.Fechapregunta.AddDays(10) - DateTime.Now).Days) dias para elegir la mejor respuesta.</span>
+                                                </div>
+                                            }
+
                                         }
                                         else
                                         {
                                             <div class="row">
-                                                <span class="badge badge-secondary">Cerrada</span>
+                                                <span class="badge badge-light">Pregunta Cerrada.</span>
                                             </div>
                                         }
+
+
                                     </div>
                                     <div class="col-2">
-                                        @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
-                                        {
-                                            <div class="row">
-                                                <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
-                                            </div>
-                                        }
                                         <div class="row">
+                                            @if (DateTime.Now <= item.Fechapregunta.AddDays(10))
+                                            {
+
+                                                <a href="@Url.Action("Edit", "Preguntas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
+                                            }
+
                                             <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
+
                                         </div>
-                                    </div>
+                                        </div>
                                 </div>
                             </div>
 

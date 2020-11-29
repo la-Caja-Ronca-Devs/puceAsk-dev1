@@ -15,7 +15,7 @@ namespace puceAsk_dev1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Categorias
-        [Authorize(Roles = "admin,user")]
+        [Authorize(Roles = "admin")]
         public ActionResult Index(int pagina = 1)
         {
             
@@ -36,7 +36,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Categorias/Details/5
-        [Authorize(Roles = "admin,user")]
+        [Authorize(Roles = "admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
