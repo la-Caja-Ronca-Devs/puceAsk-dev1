@@ -1,38 +1,51 @@
 ﻿@model puceAsk_dev1.Models.Respuesta
 
-@using (Html.BeginForm("Edit", "Respuestas", FormMethod.Post, new { id = "EditarRespuesta", enctype = "multipart/form-data", name = "Crear" }))
-{
-    @Html.AntiForgeryToken()
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card" style="width: 700px;">
+        <div class="card-header" style="text-align:center; background-color:darkcyan;">
+            <h4>Respuesta</h4>
+        </div>
+        <div class="card-body" align="center">
+            @using (Html.BeginForm("Edit", "Respuestas", FormMethod.Post, new { id = "EditarRespuesta", enctype = "multipart/form-data", name = "Crear" }))
+            {
+                @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h2>@Model.Pregunta.TituloPregunta</h2>
-        <h4>@Model.Pregunta.DescPregunta</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UsuarioId)
-        @Html.HiddenFor(model => model.PreguntaId)
+            <div class="form-horizontal">
+                <h4><b>Título:</b> @Model.Pregunta.TituloPregunta</h4>
+               
+                <h5><b>Descripción:</b>@Model.Pregunta.DescPregunta</h5>
+                
+                
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.UsuarioId)
+                @Html.HiddenFor(model => model.PreguntaId)
 
-        <div class="form-group">
-            @Html.Label("Respuesta", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.DescRespuesta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mi respuesta es ...." } })
-                @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("Respuesta:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.DescRespuesta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Mi respuesta es ...." } })
+                        @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        <div class="card-footer">
+            <div class="" align="left">
+                @Html.ActionLink("Regresar", "RespuestasRealizadas", "Respuestas", null, new { @class = "btn btn-danger" })
+                <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" style="background-color:darkcyan; border-color:darkcyan" />
             </div>
         </div>
-
-
-            <div class="col-md-offset-2 col-md-10">
-
-                    <div>
-                        @Html.ActionLink("Regresar", "RespuestasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
-                    </div>
-                
-
-                <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
-            </div>
     </div>
-}
-
+</div>
+<style>
+    textarea {
+        max-width: 100%;
+        width: 100%;
+        height: 250px;
+    }
+</style>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -45,11 +58,11 @@
 
                 swal({
                     title: '¿Seguro que deseas editar esta respuesta?',
-                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
+                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de usuario.',
                     content: "input"
                 })
                     .then((value) => {
-                        if (value === "@Model.Usuario.Email") {
+                        if (value === "@User.Identity.Name") {
                             swal({
                                 title: "¡Excelente!",
                                 text: "¡Respuesta Actualizada!",
@@ -58,7 +71,7 @@
                                 $("#EditarRespuesta").submit();
                             });
                         } else {
-                            swal("¡Incorrecto!", "Correo Electrónico Incorrecto", "error");
+                            swal("¡Incorrecto!", " Nombre de Usuario Incorrecto", "error");
                         }
                     });
                 return false;

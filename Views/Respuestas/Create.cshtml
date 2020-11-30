@@ -1,42 +1,55 @@
 ﻿@model puceAsk_dev1.Models.Respuesta
 
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card">
+        <div class="card-header" style="text-align:center; width:inherit">
+            <h2>@Model.Pregunta.TituloPregunta</h2>
+            <h4>@Model.Pregunta.DescPregunta</h4>
+        </div>
+        <div class="card-body" align="center">
+            @using (Html.BeginForm("Create", "Respuestas", FormMethod.Post, new { id = "NuevaRespuesta", enctype = "multipart/form-data", name = "Respuesta" }))
+            {
+                @Html.AntiForgeryToken()
 
-<h2>@Model.Pregunta.TituloPregunta</h2>
-<h4>@Model.Pregunta.DescPregunta</h4>
-
-@using (Html.BeginForm("Create", "Respuestas", FormMethod.Post, new { id = "NuevaRespuesta", enctype = "multipart/form-data", name = "Respuesta" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="container">
-
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.DescRespuesta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Yo respondo que..." } })
-                @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
+                <div class="container">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(model => model.DescRespuesta,  new { htmlAttributes = new { @class = "form-control", @placeholder = "Yo respondo que..." } })
+                            @Html.ValidationMessageFor(model => model.DescRespuesta, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                  
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <div class="d-flex links align-content-center">
+                <div class="col-md-offset-2 col-md-10" align ="right">
+                    <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
+                    <input type="submit" id="enviar" value="Responder" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-
-
-            <div class="col-md-offset-2 col-md-10">
-                <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-danger">Regresar</a>
-                <input type="submit" id="enviar" value="Responder" class="btn btn-primary" />
-            </div>
     </div>
-}
+</div>
 
-
-@section Scripts {
+<style>
+    textarea {
+        max-width: 100%;
+        width: 100%;
+        height: 250px;
+    }
+</style>
+@section Scripts
+{
     @Scripts.Render("~/bundles/jqueryval")
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#enviar").click(function (e) {
-                e.preventDefault();                
+                e.preventDefault();
                 swal({
                     title: "¡Gracias por responder!",
                     text: "Espera atento, quizá seas la mejor respuesta.",

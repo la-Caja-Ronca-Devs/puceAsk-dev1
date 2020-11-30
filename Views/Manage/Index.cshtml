@@ -3,17 +3,20 @@
     ViewBag.Title = "Cambio de contraseña";
 }
 <br />
-<h2>@ViewBag.Title.</h2>
+<div class="d-flex justify-content-center align-items-center">
+    <div class="card" style="width: 500px;">
+        <div class="card-header" align="center" style="background-color:darkcyan;">
+            <h4>@ViewBag.Title</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-success">@ViewBag.StatusMessage</p>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    
-    <hr />
-    <dl class="dl-horizontal">
-        <bh>
-            <p>Ya cuentas con una contraseña, por lo que puedes proceder a cambiarla con el siguiente botón, recuerda que debes ingresar tu contraseña actual para poder cambiarla con éxito</p>
-            <br />
-            <br />
+            <dl class="dl-horizontal">
+                <bh>
+                    <p>Ya cuentas con una contraseña, por lo que puedes proceder a cambiarla con el siguiente botón, recuerda que debes ingresar tu contraseña actual para poder cambiarla con éxito</p>
+
+        </div>
+        <div class="card-footer">
             @Html.ActionLink("Regresar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger btn-large" })
 
 
@@ -30,9 +33,10 @@
 
             }
 
+        </div>
+
+        </dl>
 
 
-</dl>
-
+    </div>
 </div>
-

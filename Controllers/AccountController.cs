@@ -57,7 +57,6 @@ namespace puceAsk_dev1.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        [Authorize(Roles = "admin,user")]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -68,7 +67,6 @@ namespace puceAsk_dev1.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(Roles = "admin,user")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
@@ -86,9 +84,9 @@ namespace puceAsk_dev1.Controllers
                     Session["puntaje"] = 20;
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return RedirectToAction("Error404","Errores", null);
                 case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    return RedirectToAction("Error404", "Errores", null);
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Nombre de usuario y/o contraseña incorrectos");
@@ -142,7 +140,6 @@ namespace puceAsk_dev1.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        [Authorize(Roles = "user")]
         public ActionResult Register()
         {
             return View();
@@ -152,7 +149,6 @@ namespace puceAsk_dev1.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register([Bind(Exclude = "Foto")]RegisterViewModel model)
         {

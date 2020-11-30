@@ -46,65 +46,58 @@ namespace puceAsk_dev1.Controllers
             return View(viewModel);
         }
 
-
+        [AllowAnonymous]
         public ActionResult Inicio(string categoria, string buscar, string ordenar, int pagina =1)
         {
             ViewBag.NameSortParam = String.IsNullOrEmpty(ordenar);
 
             var viewModel = new PreguntasManager();
+            var pregBase = (from c in db.Pregunta
+                                  .Include(i => i.Categoria)
+                                  .Include(i => i.Usuario)
+                                  .Include(i => i.Respuestas)
+                            select c).ToList();
 
             if (categoria != null )//Si escoge categoría
             {
                 var cantidadRegistrosPorPagina = 10;
                 var totalRegistros = db.Pregunta.Count();
-                var NombreCategoria = categoria;
-                var registrosCategoria = (from c in db.Pregunta
-                                    .Include(i => i.Categoria)
-                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                    .Include(i => i.Usuario)
-                                          where c.Categoria.NombreCategoria == categoria
-                                          select c).Count();
+                var NombreCategoria = categoria;           
+                var registros = (from c in pregBase                                   
+                                 where c.Categoria.NombreCategoria == categoria
+                                 select c).ToList();
+                var registrosCategoria = registros.Count();
                 viewModel.RegistrosCategoria = registrosCategoria;
-                if (registrosCategoria > cantidadRegistrosPorPagina)//mas de los registros para una página
-                {
-                    viewModel.preguntas = (from c in db.Pregunta
-                                    .Include(i => i.Categoria)
-                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                    .Include(i => i.Usuario)
-                                           where c.Categoria.NombreCategoria == categoria
-                                           select c).OrderBy(x => x.Fechapregunta)
+                viewModel.preguntas = registros.OrderBy(x => x.Fechapregunta)
                                      .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                                      .Take(cantidadRegistrosPorPagina);
                     
                     var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
                     viewModel.PaginaActual = pagina;
-                    viewModel.TotalRegistros = totalRegistros;
+                    viewModel.TotalRegistros = registrosCategoria;
                     viewModel.TotalPaginas = totalpaginas;
                     viewModel.RegistrosPorPagina = cantidadRegistrosPorPagina;
-                }
-                else//Menos registros por pagina
-                {
-                    viewModel.preguntas = (from c in db.Pregunta
-                                    .Include(i => i.Categoria)
-                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                    .Include(i => i.Usuario)
-                                           where c.Categoria.NombreCategoria == categoria
-                                           select c);
-                    
-                }
+                
                 ViewData["categoria"] = categoria;
             }
             else//Inicio todas las categorias
             {
-                viewModel.preguntas = db.Pregunta.OrderBy(x => Guid.NewGuid())
-                                    .Include(i => i.Categoria)
-                                    .Include(i => i.Respuestas.Select(c => c.Usuario))
-                                    .Include(i => i.Usuario).Take(20);
-                ViewData["categoria"] = "Todas";
-                
+                var cantidadRegistrosPorPagina = 20;
+                var totalRegistros = db.Pregunta.Count();
+                var NombreCategoria = categoria;
+                viewModel.preguntas = pregBase.OrderBy(x => Guid.NewGuid())
+                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+
+                var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+                viewModel.PaginaActual = pagina;
+                viewModel.TotalRegistros = totalRegistros;
+                viewModel.TotalPaginas = totalpaginas;
+                viewModel.RegistrosPorPagina = cantidadRegistrosPorPagina;
+                ViewData["categoria"] = "Todas";                
             }
-            viewModel.categorias = db.Categoria;
-            ViewBag.categorias = (from c in db.Categoria select c).ToList();
+            viewModel.categorias = db.Categoria.ToList();
+            //ViewBag.categorias = (from c in db.Categoria select c).ToList();
 
             switch (ordenar)
             {
@@ -126,7 +119,7 @@ namespace puceAsk_dev1.Controllers
                     break;
             }
 
-            using (db = new ApplicationDbContext())
+            using (db)
             {
 
                 if (!string.IsNullOrEmpty(buscar) )
@@ -158,30 +151,29 @@ namespace puceAsk_dev1.Controllers
 
         }
         // GET: Preguntas/Details/5
-
-        public ActionResult Details(int? id, int pagina =1)
+        [AllowAnonymous]
+        public ActionResult Details(int? id, int pagina = 1)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             var pregunta = (from p in db.Pregunta
                 .Include(i => i.Categoria)
                 .Include(i => i.Respuestas.Select(c => c.Usuario))
                 .Include(i => i.Usuario)
                             where p.PreguntaId == id
                             select p).First();
+
             if (pregunta.MejorUsuarioRespuestaId != null)
             {
-                var mejorRespuestas = (from p in db.Respuesta
-                                  .Include(i => i.Usuario)
-                                       where p.UsuarioId == pregunta.MejorUsuarioRespuestaId && p.PreguntaId == id
+                var mejorRespuestas = (from p in pregunta.Respuestas
+                                       where p.UsuarioId == pregunta.MejorUsuarioRespuestaId
                                        select p).First();
 
-                var respuestas = (from p in db.Respuesta
-                                  .Include(i => i.Usuario)
-                                  where p.PreguntaId == id && p.UsuarioId != pregunta.MejorUsuarioRespuestaId
+                var respuestas = (from p in pregunta.Respuestas
+                                  where p.UsuarioId != pregunta.MejorUsuarioRespuestaId
                                   orderby p.FechaPublicacion
                                   select p).ToList();
                 respuestas.Insert(0, mejorRespuestas);
@@ -192,20 +184,20 @@ namespace puceAsk_dev1.Controllers
             }
 
             TempData["idPregunta"] = pregunta;
-
-            //Control de acceso a responder
-            ViewData["Rusuario"] = true;
-            var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);            
-            var respuestas1 = (from r in db.Respuesta
-                               where r.PreguntaId == id && r.UsuarioId == usuario.Id
-                               select r).ToList();
-            if (respuestas1.Count() > 0)
-                //No tiene boton de responder
-                ViewData["Rusuario"] = false;
+            if (User.Identity.IsAuthenticated) { 
+                //Control de acceso a responder
+                ViewData["Rusuario"] = true;
+                var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);            
+                var respuestas1 = (from r in pregunta.Respuestas
+                                   where r.UsuarioId == usuario.Id
+                                   select r).ToList();
+                if (respuestas1.Count() > 0)
+                    //No tiene boton de responder
+                    ViewData["Rusuario"] = false;
+            }
 
             var cantidadRegistrosPorPagina = 30;
-             var totalRegistros = (from p in db.Respuesta
-                                  where p.PreguntaId == id
+             var totalRegistros = (from p in pregunta.Respuestas
                                   select p).Count();
 
             
@@ -236,7 +228,7 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Create([Bind(Include = "TituloPregunta,DescPregunta,CategoriaId")] Pregunta pregunta)
         {
             if (ModelState.IsValid)
-            {
+            {            
                 var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
                 var cuenta = (from c in db.Users where c.Id == usuario.Id select c).First();
                 pregunta.UsuarioId = cuenta.Id;
@@ -258,7 +250,7 @@ namespace puceAsk_dev1.Controllers
 
 
         // GET: Preguntas/Edit/5
-        [Authorize(Roles = "user, admin")]
+        [Authorize(Roles = "user")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -394,8 +386,8 @@ namespace puceAsk_dev1.Controllers
             }
             base.Dispose(disposing);
         }
+        
         [Authorize(Roles = "user")]
-
         public ActionResult PreguntasRealizadas(int pagina =1, int filtro = 0)
         {
             var cantidadRegistrosPorPagina = 4;
@@ -410,10 +402,7 @@ namespace puceAsk_dev1.Controllers
             preguntas = preguntas.OrderByDescending(s => s.PreguntaId)
                 .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                 .Take(cantidadRegistrosPorPagina);
-            var contar = (from p in db.Pregunta
-                .Include(i => i.Categoria)
-                .Include(i => i.Respuestas.Select(c => c.Usuario))
-                .Include(i => i.Usuario)
+            var contar = (from p in preguntas
                           where p.UsuarioId == usuario.Id
                           select p).Count();
             var totalRegistros = contar;

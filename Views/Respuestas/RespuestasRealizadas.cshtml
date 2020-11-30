@@ -47,14 +47,14 @@
                                             </div>
                                         }
                                     </div>
-                                    <div class="col-2">
+                                    <div class="btn-group" style="flex-flow:row">
                                         @if (DateTime.Now <= item.Pregunta.Fechapregunta.AddDays(5))
                                         {
-                                            <div class="row">
+                                            <div>
                                                 <a href="@Url.Action("Edit", "Respuestas", new { id = item.PreguntaId })" class="btn btn-primary btn-sm"> Editar</a>
                                             </div>
                                         }
-                                        <div class="row">
+                                        <div>
                                             <a href="@Url.Action("Details", "Preguntas", new { id = item.PreguntaId })" class="btn btn-secondary btn-sm"> Ver</a>
                                         </div>
                                     </div>
@@ -93,7 +93,7 @@
                             }
 
 
-                            Autor: <img src="@imgDataURL" alt="foto" width="100" height="100" class="fotos" /> @Html.DisplayFor(modelItem => item.Pregunta.Usuario.Nombre) @Html.DisplayFor(modelItem => item.Pregunta.Usuario.Apellido)
+                            Autor: <img src="@imgDataURL" alt="foto" width="100" height="100" class="fotos" /> @Html.DisplayFor(modelItem => item.Pregunta.Usuario.UserName)
                         </p>
 
                     </div>
@@ -113,6 +113,7 @@
         }
 
     </div>
+    <br />
     <div>
         @Html.ActionLink("Regresar", "Inicio", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
     </div>

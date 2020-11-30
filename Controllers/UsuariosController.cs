@@ -17,7 +17,7 @@ namespace puceAsk_dev1.Controllers
         // GET: Usuarios
 
         [Authorize(Roles ="admin")]
-        public ActionResult Index()
+        public ActionResult Index( int pagina = 1)
         {
             var cantidadRegistrosPorPagina = 10;
             var totalRegistros = db.Users.Count();

@@ -18,7 +18,9 @@ namespace puceAsk_dev1.Controllers
         public ActionResult Index(int pagina=1)
         {
             var cantidadRegistrosPorPagina = 10;
-            var preguntas = (from p in db.Respuesta select p)
+            var preguntas = (from p in db.Respuesta
+                             .Include(i => i.Pregunta)
+                             select p)
                 .OrderByDescending(s => s.FechaPublicacion)
                 .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                 .Take(cantidadRegistrosPorPagina);
@@ -33,7 +35,7 @@ namespace puceAsk_dev1.Controllers
             return View(preguntas);
         }
 
-
+        [Authorize(Roles = "user")]
         public ActionResult RespuestasRealizadas(int pagina =1) {
            
             var cantidadRegistrosPorPagina = 4;
@@ -93,7 +95,7 @@ namespace puceAsk_dev1.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[Authorize(Roles = "user")]
+        [Authorize(Roles = "user")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "DescRespuesta")] Respuesta respuesta)
         {           
@@ -190,6 +192,7 @@ namespace puceAsk_dev1.Controllers
 
         // GET: Respuestas/Edit/5
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public ActionResult EditAdmin( int? idp, string idu)
         {            
             TempData["idp"] = idp;

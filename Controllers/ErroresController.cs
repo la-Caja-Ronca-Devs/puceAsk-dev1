@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace puceAsk_dev1.Controllers
 {
+    [AllowAnonymous]
     public class ErroresController : Controller
     {
         // GET: Errores

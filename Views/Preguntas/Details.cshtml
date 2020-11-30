@@ -9,8 +9,8 @@
 </nav>
 <div class="container">
     <div class="card ">
-        <div class="card-horizontal">
-            <div class="col-md-auto">
+        <div class="card-horizontal" style="background-color: darkcyan;">
+            <div class="" style=" width:14%;">
                     @{
                         string imgDataURL_ = "";
                         if (Model.Usuario.Foto != null)
@@ -25,16 +25,13 @@
                         }
                     }
                 <div>
-                    <img alt="fotito" src="@imgDataURL_" width="100" height="100" class="embed-responsive fotos" />
+                    <img alt="fotito" src="@imgDataURL_" class="fotos" style="padding:20px 10px;width:150px; height:150px;" />
                 </div>
-                <div>
-                    <h6>@Model.Usuario.Nombre</h6>
-                </div>
-                <div>
-                    <h6>@Model.Usuario.Apellido</h6>
+                <div align ="center">
+                    <h6>@Model.Usuario.UserName</h6>
                 </div>
              </div>
-            <div class="col">
+            <div class="" style=" width:86%;">
                 <div class="card-header titulo">
                     <h5>@Html.DisplayFor(model => model.TituloPregunta) </h5>
                 </div>
@@ -67,8 +64,8 @@
 
     <br />
     <hr />
-
-
+</div>
+<div>
     @if (Model.Respuestas.Count() > 0)
     {
         <h3>Respuestas</h3>
@@ -149,10 +146,8 @@
     }
 </div>
 <br />
-<div align="right">
-
     @if (User.Identity.IsAuthenticated){
-<div>
+<div align="right">
     @if (Model.Usuario.UserName == User.Identity.Name)
     {
         @Html.ActionLink("Mis Preguntas", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })

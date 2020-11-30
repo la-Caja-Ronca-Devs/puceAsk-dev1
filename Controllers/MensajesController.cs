@@ -15,6 +15,7 @@ namespace puceAsk_dev1.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Mensajes
+        [Authorize(Roles = "admin")]
         public ActionResult Index()
         {
             var mensajes = db.Mensajes.Include(m => m.Emisor).Include(m => m.Receptor);
@@ -28,16 +29,17 @@ namespace puceAsk_dev1.Controllers
             
             
             var usuario = db.Users.SingleOrDefault(u => u.UserName == User.Identity.Name);
-            var mensajes = from m in db.Mensajes
+
+            var msm = (from m in db.Mensajes
                            .Include(m => m.Emisor)
                            .Include(m => m.Receptor)
-                           where m.Receptor.Id == usuario.Id select m;
-            mensajes = mensajes.OrderByDescending(s => s.FechaMensaje)
+                      where m.Receptor.Id == usuario.Id
+                      select m).ToList();
+     
+            var mensajes = msm.OrderByDescending(s => s.FechaMensaje)
                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                                      .Take(cantidadRegistrosPorPagina);
-            var contar = (from m in db.Mensajes
-                           .Include(m => m.Emisor)
-                           .Include(m => m.Receptor)
+            var contar = (from m in msm                        
                           where m.Receptor.Id == usuario.Id
                           select m).Count();
             var totalRegistros = contar;
@@ -50,6 +52,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Mensajes/Details/5
+        [Authorize(Roles = "user")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -104,6 +107,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Mensajes/Edit/5
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -122,6 +126,7 @@ namespace puceAsk_dev1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Encerar(ApplicationUser usuario)
         {
             if (ModelState.IsValid)
@@ -141,6 +146,7 @@ namespace puceAsk_dev1.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult Edit([Bind(Include = "MensajeId,ReceptorId,EmisorId,MensajeDesc,FechaMensaje")] Mensaje mensaje)
         {
             if (ModelState.IsValid)
@@ -154,6 +160,7 @@ namespace puceAsk_dev1.Controllers
         }
 
         // GET: Mensajes/Delete/5
+        [Authorize(Roles = "admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -171,6 +178,7 @@ namespace puceAsk_dev1.Controllers
         // POST: Mensajes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Mensaje mensaje = db.Mensajes.Find(id);

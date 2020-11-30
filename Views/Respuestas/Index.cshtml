@@ -4,34 +4,40 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2><br />Listado de Respuestas</h2><br />
 
 
 <table class="table">
     <tr>
-        <th>
+        <th style="width:32%">
+            @Html.DisplayNameFor(model => model.Pregunta.TituloPregunta)
+        </th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.FechaPublicacion)
         </th>
-        <th>
+        <th style="width:25%">
             @Html.DisplayNameFor(model => model.DescRespuesta)
         </th>
-        <th></th>
+        <th style="width:30%"></th>
     </tr>
 
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaPublicacion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DescRespuesta)            
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId}) |
-            @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Pregunta.TituloPregunta)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FechaPublicacion)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DescRespuesta)
+    </td>
+    <td>
+        @Html.ActionLink("Editar", "EditAdmin", new { idp = item.PreguntaId, idu = item.UsuarioId }, new { @class = "btn btn-success" })
+        @Html.ActionLink("Eliminar", "Delete", new { idp = item.PreguntaId, idu = item.UsuarioId }, new { @class = "btn btn-danger"})
+    </td>
+</tr>
 }
 
 </table>
@@ -85,6 +91,21 @@
     </ul>
 </div>
 <style>
+    .list-group-item.list-group-item-action.active {
+        background-color: darkcyan;
+        border-color: cyan;
+    }
+
+    .list-group-item:hover {
+        transform: scale(1.05);
+        background-color: darkcyan;
+        color: white;
+        border-color: cyan;
+        -moz-transition: all 0.2s ease-in;
+        -ms-transition: all 0.2s ease-in;
+        -o-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+    }
     .pagination {
         display: compact !important;
         margin-right: auto !important;

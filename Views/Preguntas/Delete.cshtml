@@ -5,16 +5,18 @@
 }
 
 <br/>
-<div align="center"><h2>¿Está seguro de eliminar esta pregunta?</h2></div> <br/>
+
 <div>
     <div class="d-flex justify-content-center align-items-center">
         <div class="card">
             <div class="card-header" align="center">
-                <h4>Pregunta</h4>
+                <h4>Eliminar Pregunta</h4>
             </div>
             <div class="card card-body" align="center" style="padding: 0 ;width: 500px;">
+                <h5><br />¿Está seguro de eliminar esta pregunta?</h5>
+                <hr />
                 <dl class="dl-horizontal">
-                    <br/>
+                    
                     <dt>
                         @Html.DisplayNameFor(model => model.TituloPregunta)
                     </dt>
@@ -38,7 +40,6 @@
                     <dd>
                         @Html.DisplayFor(model => model.Fechapregunta)
                     </dd>
-
                 </dl>
             </div>
             <div class="card-footer">
@@ -46,15 +47,13 @@
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="col" align="right">
-                        @Html.ActionLink("Cancelar", "Index", new { @class = "btn btn-default" })
-                        <input type="submit" value="Eliminar" class="btn btn-default" />
+                    <div class="col" align="left">
+                        @Html.ActionLink("Regresar", "Index",null, new { @class = "btn btn-danger btn-large" })
+                        <input type="submit" value="Eliminar" class="btn btn-primary" style="background-color:darkred; border-color:darkred" />
 
                     </div>
                 }
             </div>
         </div>
-
-       
     </div>
 </div>

@@ -2,168 +2,183 @@
 
 @{
     var mr = (puceAsk_dev1.Models.Respuesta)(from r in Model.Respuestas where r.UsuarioId == Model.MejorUsuarioRespuestaId select r).FirstOrDefault();
-
 }
 
 @using (Html.BeginForm("Edit", "Preguntas", FormMethod.Post, new { id = "EditarPregunta", enctype = "multipart/form-data", name = "Editar" }))
 {
     @Html.AntiForgeryToken()
-
-    <div class="container">
-        <h2>Pregunta</h2>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PreguntaId)
-        @Html.HiddenFor(model => model.TituloPregunta)
-
-        <div class="form-group">
-            <div>
-                <h3>@Model.TituloPregunta</h3>
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <h4>¿Por qué preguntas esto?</h4>
-            @if (DateTime.Now <= Model.Fechapregunta.AddDays(5))
-            {
-                <div>
-                    @Html.TextAreaFor(model => model.DescPregunta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tengo esta duda porque ... bla bla bla." } })
-                    @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="card carta" >
+            <div class="card-header titulo" style="text-align:center; width:inherit">
+                <div class="container">
+                    <h2>Pregunta</h2>
                 </div>
-            }
-            else
-            {
-                <h5>@Model.DescPregunta</h5>
-                @Html.HiddenFor(model => model.DescPregunta)
-            }
-        </div>
-        <div class="form-group">
-            <h4>Mejor Respuesta</h4>
-            @if (Model.Fechapregunta.AddDays(5) <= DateTime.Now)
-            {
-                if (Model.MejorUsuarioRespuestaId == null)
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PreguntaId)
+            @Html.HiddenFor(model => model.TituloPregunta)
+        <div class="card-body">
+            <div class="form-group">
+                <div>
+                    <h5>Título:</h5>
+                    <h6>@Model.TituloPregunta</h6>
+                  
+                </div>
+            </div>
+
+            <div class="form-group">
+                <h5>Descripción:</h5>
+                
+                @if (DateTime.Now <= Model.Fechapregunta.AddDays(5))
                 {
-                    if (Model.Respuestas.Count() > 0)
+                    <div>
+                        @Html.TextAreaFor(model => model.DescPregunta, 5, 200, new { htmlAttributes = new { @class = "form-control", @placeholder = "Tengo esta duda porque ... bla bla bla." } })
+                        @Html.ValidationMessageFor(model => model.DescPregunta, "", new { @class = "text-danger" })
+                    </div>
+                }
+                else
+                {
+                    <h5>@Model.DescPregunta</h5>
+                    @Html.HiddenFor(model => model.DescPregunta)
+                }
+            </div>
+
+            <div class="form-group">
+                <hr />
+                <h4>Mejor Respuesta</h4>
+                @if (Model.Fechapregunta.AddDays(5) <= DateTime.Now)
+                {
+                    if (Model.MejorUsuarioRespuestaId == null)
                     {
-                        foreach (var item in Model.Respuestas)
+                        if (Model.Respuestas.Count() > 0)
                         {
-
-                            string imgDataURL = "";
-                            if (item.Usuario.Foto != null)
+                            foreach (var item in Model.Respuestas)
                             {
-                                byte[] foto = item.Usuario.Foto;
-                                string imreBase64Data = Convert.ToBase64String(foto);
-                                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                            }
-                            else
-                            {
-                                imgDataURL = "https://img.icons8.com/color/user";
-                            }
 
-                            <div class="card respuesta order-1">
-                                <div class="card-horizontal">
-                                    <div class="col-md-auto">
-                                        @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId)
-                                        <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
-                                    </div>
-                                    <div class="col">
-                                        <div class="container">
-                                            <p class="lead">@item.DescRespuesta</p>
-                                            <hr class="my-4">
-                                            <p>
-                                                Usuario: @item.Usuario.Nombre
-                                            </p>
-                                            <div class="row card-footer">
-                                                <small class="text-muted">@item.FechaPublicacion</small>
+                                string imgDataURL = "";
+                                if (item.Usuario.Foto != null)
+                                {
+                                    byte[] foto = item.Usuario.Foto;
+                                    string imreBase64Data = Convert.ToBase64String(foto);
+                                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                                }
+                                else
+                                {
+                                    imgDataURL = "https://img.icons8.com/color/user";
+                                }
+
+                                <div class="card respuesta order-1">
+                                    <div class="card-horizontal">
+                                        <div class="col-md-auto">
+                                            @Html.RadioButtonFor(model => model.MejorUsuarioRespuestaId, item.UsuarioId)
+                                            <img alt="fotito" src="@imgDataURL" width="100" height="100" class="fotos" />
+                                        </div>
+                                        <div class="col">
+                                            <div class="container">
+                                                <p class="lead">@item.DescRespuesta</p>
+                                                <hr class="my-4">
+                                                <p>
+                                                    Usuario: @item.Usuario.Nombre
+                                                </p>
+                                                <div class="row card-footer">
+                                                    <small class="text-muted">@item.FechaPublicacion</small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="card">
+                                No hay respuestas de esta pregunta.
+                                @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                             </div>
                         }
                     }
                     else
                     {
-                        <div class="card">
-                            No hay respuestas de esta pregunta.
-                            @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
+                        string imgDataURL_ = "";
+                        if (mr.Usuario.Foto != null)
+                        {
+                            byte[] foto = mr.Usuario.Foto;
+                            string imreBase64Data = Convert.ToBase64String(foto);
+                            imgDataURL_ = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        }
+                        else
+                        {
+                            imgDataURL_ = "https://img.icons8.com/color/user";
+                        }
+
+                        <div class="card respuesta order-0">
+                            <div class="card-horizontal">
+                                <div class="col-2 text-center">
+                                    <div class="row text-center">
+                                        <img src="@imgDataURL_" alt="foto" width="100" height="100" class="embed-responsive fotos" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <hr />
+                                        </div>
+                                        <div class="col text-center">
+                                            <span class="badge badge-pill badge-success">Mejor Respuesta</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col">
+                                    <div class="container">
+                                        <p class="lead">@mr.DescRespuesta</p>
+                                        <hr class="my-4">
+                                        <p>
+                                            Usuario: @mr.Usuario.UserName
+                                        </p>
+                                        <div class="row card-footer">
+                                            <small class="text-muted">@mr.FechaPublicacion</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+
+
                     }
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.ActionLink("Regresar", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+                            <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
+                        </div>
+                    </div>
                 }
                 else
                 {
-                    string imgDataURL_ = "";
-                    if (mr.Usuario.Foto != null)
-                    {
-                        byte[] foto = mr.Usuario.Foto;
-                        string imreBase64Data = Convert.ToBase64String(foto);
-                        imgDataURL_ = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                    }
-                    else
-                    {
-                        imgDataURL_ = "https://img.icons8.com/color/user";
-                    }
-
-                    <div class="card respuesta order-0">
-                        <div class="card-horizontal">
-                            <div class="col-2 text-center">
-                                <div class="row text-center">
-                                    <img src="@imgDataURL_" alt="foto" width="100" height="100" class="embed-responsive fotos" />
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <hr />
-                                    </div>
-                                    <div class="col text-center">
-                                        <span class="badge badge-pill badge-success">Mejor Respuesta</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col">
-                                <div class="container">
-                                    <p class="lead">@mr.DescRespuesta</p>
-                                    <hr class="my-4">
-                                    <p>
-                                        Usuario: @mr.Usuario.Nombre
-                                    </p>
-                                    <div class="row card-footer">
-                                        <small class="text-muted">@mr.FechaPublicacion</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                    <div class="form-group">
+                        Quedan @((Model.Fechapregunta.AddDays(5) - DateTime.Now).Days) días para poder elegir la mejor respuesta. ¿Emocionante cierto?
+                        @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
                     </div>
-
-
+                    <hr />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.ActionLink("Regresar", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
+                            <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" style="background-color:darkcyan; border-color:darkcyan" />
+                        </div>
+                    </div>
                 }
-            }
-            else
-            {
-                <div class="card">
-                    Quedan @((Model.Fechapregunta.AddDays(5) - DateTime.Now).Days) días para poder elegir la mejor respuesta. ¿emocionante cierto?
-                    @Html.HiddenFor(model => model.MejorUsuarioRespuestaId)
-                </div>
-            }
 
-        </div>
-
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @Html.ActionLink("Regresar", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
-                <input type="submit" id="enviar" value="Actualizar" class="btn btn-primary" />
             </div>
+
+
+            
         </div>
+        </div>
+
     </div>
+
 }
-
-
-
 <style>
 
     .fotos {
@@ -226,6 +241,7 @@
     .pregunta {
         background-color: darkcyan;
         padding: 10px !important;
+        
     }
 
     .titulo {
@@ -305,6 +321,10 @@
         -ms-transition: all 0.2s ease-in;
         -o-transition: all 0.2s ease-in;
         transition: all 0.2s ease-in;
+    }
+    .card {
+        border-color: darkcyan;
+    }
 </style>
 
 @section Scripts {
@@ -318,11 +338,11 @@
 
                 swal({
                     title: '¿Seguro que deseas editar esta pregunta? La mejor respuesta solo puedes asignarla una vez.',
-                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de correo electrónico.',
+                    text: 'Para realilzar esta acción es necesarios que confirmes tu nombre de usuario.',
                     content: "input"
                 })
                     .then((value) => {
-                        if (value === "@Model.Usuario.Email") {
+                        if (value === "@User.Identity.Name") {
                             swal({
                                 title: "¡Excelente!",
                                 text: "¡Pregunta Actualizada!",
@@ -331,7 +351,7 @@
                                    $("#EditarPregunta").submit();
                             });
                         } else {
-                            swal("¡Incorrecto!", "Correo Electrónico Incorrecto", "error");
+                            swal("¡Incorrecto!", "Nombre de usuario incorrecto.", "error");
                         }
                     });
                 return false;
