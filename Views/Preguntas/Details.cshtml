@@ -25,8 +25,7 @@
                         }
                     }
                 <div>
-                    <img alt="fotito" src="@imgDataURL_" class="fotos" style="padding:20px 10px;width:150px; height:150px; ";
-" />
+                    <img alt="fotito" src="@imgDataURL_" class="fotos" style="padding:20px 10px;width:150px; height:150px;" />
                 </div>
                 <div align ="center">
                     <h6>@Model.Usuario.UserName</h6>
@@ -66,7 +65,7 @@
     <br />
     <hr />
 </div>
-
+<div>
     @if (Model.Respuestas.Count() > 0)
     {
         <h3>Respuestas</h3>
@@ -147,10 +146,8 @@
     }
 </div>
 <br />
-<div align="right">
-
     @if (User.Identity.IsAuthenticated){
-<div>
+<div align="right">
     @if (Model.Usuario.UserName == User.Identity.Name)
     {
         @Html.ActionLink("Mis Preguntas", "PreguntasRealizadas", "Preguntas", null, new { @class = "btn btn-danger", @role = "button" })
