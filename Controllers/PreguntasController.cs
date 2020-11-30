@@ -68,28 +68,32 @@ namespace puceAsk_dev1.Controllers
                                  select c).ToList();
                 var registrosCategoria = registros.Count();
                 viewModel.RegistrosCategoria = registrosCategoria;
-                if (registrosCategoria > cantidadRegistrosPorPagina)//mas de los registros para una página
-                {
-                    viewModel.preguntas = registros.OrderBy(x => x.Fechapregunta)
+                viewModel.preguntas = registros.OrderBy(x => x.Fechapregunta)
                                      .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                                      .Take(cantidadRegistrosPorPagina);
                     
                     var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
                     viewModel.PaginaActual = pagina;
-                    viewModel.TotalRegistros = totalRegistros;
+                    viewModel.TotalRegistros = registrosCategoria;
                     viewModel.TotalPaginas = totalpaginas;
                     viewModel.RegistrosPorPagina = cantidadRegistrosPorPagina;
-                }
-                else//Menos registros por pagina
-                {
-                    viewModel.preguntas = registros;
-
-                }
+                
                 ViewData["categoria"] = categoria;
             }
             else//Inicio todas las categorias
             {
-                viewModel.preguntas = pregBase.OrderBy(x => Guid.NewGuid()).Take(20);
+                var cantidadRegistrosPorPagina = 20;
+                var totalRegistros = db.Pregunta.Count();
+                var NombreCategoria = categoria;
+                viewModel.preguntas = pregBase.OrderBy(x => Guid.NewGuid())
+                                     .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                                     .Take(cantidadRegistrosPorPagina);
+
+                var totalpaginas = (int)Math.Ceiling((double)totalRegistros / cantidadRegistrosPorPagina);
+                viewModel.PaginaActual = pagina;
+                viewModel.TotalRegistros = totalRegistros;
+                viewModel.TotalPaginas = totalpaginas;
+                viewModel.RegistrosPorPagina = cantidadRegistrosPorPagina;
                 ViewData["categoria"] = "Todas";                
             }
             viewModel.categorias = db.Categoria.ToList();
